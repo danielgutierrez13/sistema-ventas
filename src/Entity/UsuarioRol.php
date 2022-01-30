@@ -15,7 +15,6 @@ use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\ManyToMany;
-use Doctrine\ORM\Mapping\ManyToOne;
 use Pidia\Apps\Demo\Entity\Traits\EntityTrait;
 use Pidia\Apps\Demo\Repository\UsuarioRolRepository;
 
@@ -41,9 +40,6 @@ class UsuarioRol
 
     #[ManyToMany(targetEntity: UsuarioPermiso::class, mappedBy: 'roles', cascade: ['persist', 'remove'])]
     private Collection $permisos;
-
-//    #[ManyToOne(targetEntity: 'Pidia\Apps\Demo\Entity\Config')]
-//    private $config;
 
     public function __construct()
     {
@@ -83,7 +79,7 @@ class UsuarioRol
     /**
      * @return Collection|Usuario[]
      */
-    public function getUsuarios(): Collection
+    public function getUsuarios(): Collection|array
     {
         return $this->usuarios;
     }
@@ -132,18 +128,6 @@ class UsuarioRol
 
         return $this;
     }
-
-//    public function getConfig(): ?Config
-//    {
-//        return $this->config;
-//    }
-//
-//    public function setConfig(?Config $config): self
-//    {
-//        $this->config = $config;
-//
-//        return $this;
-//    }
 
     public function __toString(): string
     {

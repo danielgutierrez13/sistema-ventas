@@ -45,7 +45,7 @@ abstract class BaseManager
     public function exportOfQuery(array $queryValues, array $headers, string $fileName = 'export'): Response
     {
         $params = Paginator::params($queryValues);
-        $items = $this->repositorio()->filter($params, false);
+        $items = $this->repositorio()->filter($params, true);
 
         return $this->export($items, $headers, $fileName);
     }
@@ -54,7 +54,7 @@ abstract class BaseManager
     {
         try {
             $export = new ExportExcel($items, $headers);
-            $export->headerStyle()->columnAutoSize();
+            $export->execute()->headerStyle()->columnAutoSize();
 
             return $export->download($fileName);
         } catch (Exception) {

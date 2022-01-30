@@ -46,7 +46,7 @@ class UsuarioRolController extends BaseController
             'activo' => 'Activo',
         ];
 
-        return $manager->exportOfQuery($request->query->all(), $headers, 'Reporte', 'usuario_rol');
+        return $manager->exportOfQuery($request->query->all(), $headers, 'Reporte');
     }
 
     #[Route(path: '/new', name: 'usuario_rol_new', methods: ['GET', 'POST'])]

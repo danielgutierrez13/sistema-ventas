@@ -22,12 +22,9 @@ use Pidia\Apps\Demo\Util\Paginator;
  */
 class UsuarioRolRepository extends ServiceEntityRepository implements BaseRepository
 {
-    private $security;
-
-    public function __construct(ManagerRegistry $registry, Security $security)
+    public function __construct(ManagerRegistry $registry, private Security $security)
     {
         parent::__construct($registry, UsuarioRol::class);
-        $this->security = $security;
     }
 
     public function findLatest(array $params): Paginator
