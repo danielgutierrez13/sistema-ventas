@@ -27,7 +27,7 @@ class MenuController extends BaseController
     #[Route(path: '/page/{page<[1-9]\d*>}', name: 'menu_index_paginated', methods: ['GET'])]
     public function index(Request $request, int $page, MenuManager $manager): Response
     {
-//        $this->denyAccess(Access::LIST, 'menu_index');
+        $this->denyAccess(Access::LIST, 'menu_index');
         $paginator = $manager->list($request->query->all(), $page);
 
         return $this->render(
