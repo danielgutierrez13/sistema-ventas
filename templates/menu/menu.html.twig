@@ -1,0 +1,22 @@
+{% for key,values in menus %}
+    <li class="{% if values.clases is defined %}{{ values.clases }}{% endif %}">
+        <a href="{% if values.ruta is defined and values.ruta !='' %}{{ path(values.ruta) }}{% else %}javascript:;{% endif %}"
+           class="nav-submenu" data-toggle="nav-submenu" href="#">
+            {% if values.icono is defined %}<i class="{{ values.icono }}"></i>{% endif %}
+            <span class="sidebar-mini-hide">{{ key | gtrans | upper }}</span>
+        </a>
+        {% if values.menus is defined and values.menus | length > 0 %}
+            <ul>
+                {% for menu in values.menus %}
+                    {% if menu.ruta is not null %}
+                        <li>
+                            <a href="{{ path(menu.ruta) }}" class="{% if menu.ruta == _section %}active{% endif %}">
+                                {{ menu.nombre | gtrans }}
+                            </a>
+                        </li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </li>
+{% endfor %}

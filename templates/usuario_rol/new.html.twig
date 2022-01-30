@@ -1,0 +1,54 @@
+{% extends 'base.html.twig' %}
+{% import 'macro/breadcrumb.html.twig' as breadcrumb %}
+{% import 'macro/action.html.twig' as action %}
+
+{% set _title = 'Roles' %}
+{% set _main_title = 'Nuevo' %}
+{% set _section =  'usuario_rol_index'%}
+
+{% block _breadcrumb %}
+    {{ breadcrumb.show2('Roles','usuario_rol_index','Nuevo') }}
+{% endblock %}
+
+{% form_theme form _self %}
+
+{% block _usuario_rol_permisos_label %}
+{% endblock %}
+
+{% block _usuario_rol_permisos_entry_widget %}
+    {% import 'macro/action.html.twig' as actions %}
+    {{ actions.frm_field_select_widget(form.menu) }}
+    {{ actions.frm_field_checkbox(form.listar) }}
+    {{ actions.frm_field_checkbox(form.mostrar) }}
+    {{ actions.frm_field_checkbox(form.crear) }}
+    {{ actions.frm_field_checkbox(form.editar) }}
+    {{ actions.frm_field_checkbox(form.eliminar) }}
+    {{ actions.frm_field_checkbox(form.imprimir) }}
+    {{ actions.frm_field_checkbox(form.exportar) }}
+    {{ actions.frm_field_checkbox(form.importar) }}
+    {{ actions.frm_field_checkbox(form.maestro) }}
+{% endblock %}
+
+{% block _main %}
+
+    {{ include('usuario_rol/_form.html.twig') }}
+
+{% endblock %}
+
+{% block _main_tools %}
+    <ul class="nav nav-pills nav-pills--success">
+        <li class="nav-item">
+            {{ action.btn_list_link_ico(path('usuario_rol_index')) }}
+        </li>
+    </ul>
+{% endblock %}
+
+{% block _javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('js/collection.js') }}" type="text/javascript"></script>
+    <script>
+        jQuery(document).ready(function() {
+            Collection.init('#usuario_rol_permisos');
+        });
+    </script>
+{% endblock %}

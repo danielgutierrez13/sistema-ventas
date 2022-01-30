@@ -1,0 +1,24 @@
+<form id="form_search" class="" autocomplete="off">
+    <div class="form-group row">
+        <label class="col-sm-1 col-4 col-form-label" for="filter_size">Ver:</label>
+        <div class="col-sm-1 col-4">
+            <select id="filter_size" class="form-control m-input" name="n">
+                {% for key,value in default_results_per_page %}
+                    <option value="{{ value }}"
+                            {% if app.request.get('n') == value %}selected{% endif %}>{{ key }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <label class="col-sm-2 col-4 col-form-label text-left">{{ 'records' | trans }}</label>
+        <label class="col-sm-1 col-4 col-form-label" for="filter_text">{{ 'search' | trans }}:</label>
+        <div class="col-sm-4 col-8">
+            <input class="form-control" name="b" id="filter_text" type="text" value="{{ app.request.get('b') }}">
+        </div>
+        <div class="col-md-3 text-right">
+            <button class="btn-send btn btn-rounded btn-noborder btn-outline-secondary"><i class="la la-search"></i>
+                {{ 'send' | trans }}
+            </button>
+            <button type="reset" class="btn-clean btn btn-rounded btn-noborder btn-secondary">{{ 'clean' | trans }}</button>
+        </div>
+    </div>
+</form>

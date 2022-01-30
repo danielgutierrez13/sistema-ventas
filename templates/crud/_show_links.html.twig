@@ -1,0 +1,20 @@
+{% import 'macro/action.html.twig' as action %}
+
+{% if access.list %}
+    {{ action.btn_list_link(path(route_base ~ '_index')) }}
+{% endif %}
+{% if access.new %}
+    {{ action.btn_new_link(path(route_base ~ '_new')) }}
+{% endif %}
+{% if access.edit %}
+    {{ action.btn_edit_link(path(route_base ~ '_edit', {'id': entity.id})) }}
+{% endif %}
+{% if access.delete and entity.activo == true %}
+    {{ action.btn_delete_form(path(route_base ~ '_delete', {'id': entity.id}), csrf_token('delete' ~ entity.id)) }}
+{% endif %}
+{% if access.delete and entity.activo == false %}
+    {{ action.btn_restore_form(path(route_base ~ '_delete', {'id': entity.id}), csrf_token('delete' ~ entity.id)) }}
+{% endif %}
+{% if access.master %}
+    {{ action.btn_delete_forever_form(path(route_base ~ '_delete_forever', {'id': entity.id}), csrf_token('delete_forever' ~ entity.id)) }}
+{% endif %}

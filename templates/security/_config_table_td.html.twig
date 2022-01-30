@@ -1,0 +1,5 @@
+{% if access is defined and access.isSuperAdmin -%}
+    <td class="d-none d-sm-table-cell">
+        {% if entity.config is defined %} {{ entity.config }} {% endif %}
+    </td>
+{%- endif %}

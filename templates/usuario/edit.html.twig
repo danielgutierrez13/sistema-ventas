@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+{% import 'macro/breadcrumb.html.twig' as breadcrumb %}
+{% import 'macro/action.html.twig' as action %}
+
+{% set _title = 'Usuario' %}
+{% set _main_title = 'Editar' %}
+{% set _section = 'usuario_index' %}
+
+{% block _breadcrumb %}
+    {{ breadcrumb.show2('Usuarios',_section,'Editar') }}
+{% endblock %}
+
+{% block _main %}
+    {{ include('usuario/_form.html.twig', {'button_label': 'Actualizar'}) }}
+{% endblock %}
+
+{% block _main_tools %}
+    {% include 'crud/_tools_ico.html.twig' %}
+{% endblock %}
+
+{% block _body_tools %}
+    {% include 'crud/_edit_links_ico.html.twig' with {'route_base':'usuario','entity': usuario} %}
+{% endblock %}
+
+{% block _body_tools_ico %}
+    {% include 'crud/_edit_links_tool.html.twig' with {'route_base':'usuario','entity': usuario} %}
+{% endblock %}
+
+{% block _main_footer %}
+    {% include 'crud/_edit_links.html.twig' with {'route_base':'usuario','entity': usuario} %}
+{% endblock %}
+
+{% block _stylesheets %}
+    <link rel="stylesheet" href="{{ asset(_theme ~ 'js/plugins/select2/css/select2.min.css') }}">
+{% endblock %}
+
+{% block _javascripts %}
+    <script src="{{ asset(_theme ~ 'js/plugins/select2/js/select2.full.min.js') }}"></script>
+    <script src="{{ asset('js/select2.js') }}"></script>
+    <script>
+        jQuery(document).ready(function() {
+            Select2();
+        });
+    </script>
+{% endblock %}

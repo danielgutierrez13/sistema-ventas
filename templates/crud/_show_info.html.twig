@@ -1,0 +1,8 @@
+{% import 'macro/action.html.twig' as action %}
+
+{{ action.tbl_tr('Activo',entity.activo | yesnocustom) }}
+{% if access.master %}
+    {{ action.tbl_tr('Propietario',entity.propietario) }}
+    {{ action.tbl_tr('Creado',entity.createdAt) }}
+    {{ action.tbl_tr('Actualizado',entity.updatedAt) }}
+{% endif %}

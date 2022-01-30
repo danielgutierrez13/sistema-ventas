@@ -1,0 +1,1301 @@
+{% use "form_div_layout.html.twig" %}
+
+{########### BOTONES #################}
+{% macro btn(title, icon, btn_class='default',attributes='') -%}
+    <button class="btn btn-{{ btn_class }}" {{ attributes }}>
+        {% if title %}<span>{% endif %}
+            {% if icon %}<i class="{{ icon }}"></i>{% endif %}
+            {% if title %}<span>{{ title|trans }}</span>{% endif %}
+            {% if title %}</span>{% endif %}
+    </button>
+{%- endmacro %}
+
+{% macro btn_save(title, attributes='') %}
+    {% import _self as actions %}
+    {{ actions.btn(title,'fa fa-save','warning', attributes) }}
+{% endmacro %}
+
+{% macro btn_link(label, link, icon, btn_class='default',attributes='', title='') %}
+    <a href="{{ link }}" title="{{ title|trans }}"
+       class="btn btn-light-{{ btn_class }} btn-sm" {{ attributes }}>
+        {% if title %}<span>{% endif %}
+            {% if icon %}<i class="{{ icon }}"></i>{% endif %}
+            {% if label %}<span>{{ label|trans }}</span>{% endif %}
+            {% if label %}</span>{% endif %}
+    </a>
+{% endmacro %}
+
+{% macro btn_link_ico(link, icon, btn_class='default',attributes='', title='') %}
+    <a href="{{ link }}" data-toggle="tooltip" title="{{ title|trans }}"
+       class="btn btn-sm btn-icon btn-light-{{ btn_class }}" {{ attributes }}>
+       <i class="{{ icon }}"></i>
+    </a>
+{% endmacro %}
+
+{% macro btn_list_link(link, attributes='') %}
+    {% import _self as actions %}
+    {{ actions.btn_link('lbl.list',link,'fa fa-list-ul','info', attributes) }}
+{% endmacro %}
+
+{% macro btn_new_link(link, attributes='') %}
+    {% import _self as actions %}
+    {{ actions.btn_link('lbl.new',link,'fa fa-file','success', attributes) }}
+{% endmacro %}
+
+{% macro btn_edit_link(link, attributes='') %}
+    {% import _self as actions %}
+    {{ actions.btn_link('lbl.edit',link,'fa fa-pencil-alt','warning', attributes) }}
+{% endmacro %}
+
+{% macro btn_print_link(link, attributes='') %}
+    {% import _self as actions %}
+    {{ actions.btn_link('lbl.print',link,'fa fa-print','primary btn-print', attributes) }}
+{% endmacro %}
+
+{% macro btn_export_link(link, attributes='') %}
+    {% import _self as actions %}
+    {{ actions.btn_link('lbl.export',link,'fa fa-download','dark btn-export', attributes) }}
+{% endmacro %}
+
+{% macro btn_import_link(link, attributes='') %}
+    {% import _self as actions %}
+    {{ actions.btn_link('lbl.import',link,'fa fa-upload','primary btn-import', attributes) }}
+{% endmacro %}
+
+{% macro btn_report_link(link, attributes='') %}
+    {% import _self as actions %}
+    {{ actions.btn_link('lbl.report',link,'fa fa-print','info btn-report', attributes) }}
+{% endmacro %}
+
+{% macro btn_list_link_ico(link, attributes='') %}
+    {% import _self as actions %}
+    {{ actions.btn_link_ico(link,'fa fa-list-ul','info', attributes, 'lbl.list') }}
+{% endmacro %}
+
+{% macro btn_new_link_ico(link, attributes='') %}
+    {% import _self as actions %}
+    {{ actions.btn_link_ico(link,'fa fa-file','success', attributes, 'lbl.new') }}
+{% endmacro %}
+
+{% macro btn_edit_link_ico(link, attributes='') %}
+    {% import _self as actions %}
+    {{ actions.btn_link_ico(link,'fa fa-pencil-alt','warning', attributes, 'lbl.edit') }}
+{% endmacro %}
+
+{% macro btn_print_link_ico(link, attributes='') %}
+    {% import _self as actions %}
+    {{ actions.btn_link_ico(link,'fa fa-print','primary', attributes, 'lbl.print') }}
+{% endmacro %}
+
+{% macro btn_export_link_ico(link, attributes='') %}
+    {% import _self as actions %}
+    {{ actions.btn_link_ico(link,'fa fa-download','dark btn-export', attributes, 'lbl.export') }}
+{% endmacro %}
+
+{% macro btn_import_link_ico(link, attributes='') %}
+    {% import _self as actions %}
+    {{ actions.btn_link_ico(link,'fa fa-upload','primary btn-import', attributes, 'lbl.import') }}
+{% endmacro %}
+
+{% macro btn_report_link_ico(link, attributes='') %}
+    {% import _self as actions %}
+    {{ actions.btn_link_ico(link,'fa fa-print','info btn-report', attributes, 'lbl.report') }}
+{% endmacro %}
+
+{% macro btn_delete_form(link, token) %}
+    <form method="post" action="{{ link }}" onsubmit="return confirm('Seguro de eliminar este registro?');"
+          style="display: inline">
+        <input type="hidden" name="_method" value="DELETE">
+        <input type="hidden" name="_token" value="{{ token }}">
+        <button class="js-swal-confirm btn btn-sm btn-light-danger">
+                <span>
+                    <i class="fa fa-ban"></i>
+                    <span>{{ 'lbl.disable'|trans }}</span>
+                </span>
+        </button>
+    </form>
+{% endmacro %}
+
+{% macro btn_delete_form_ico(link, token) %}
+    <form method="post" action="{{ link }}" onsubmit="return confirm('Seguro de eliminar este registro?');"
+          style="display: inline">
+        <input type="hidden" name="_method" value="DELETE">
+        <input type="hidden" name="_token" value="{{ token }}">
+        <button class="btn btn-sm btn-icon btn-light-danger" data-toggle="tooltip" title="{{ 'lbl.delete'| trans }}">
+            <i class="fa fa-ban"></i>
+        </button>
+    </form>
+{% endmacro %}
+
+{% macro btn_restore_form(link, token) %}
+    <form method="post" action="{{ link }}" onsubmit="return confirm('Seguro de restuarar este registro?');"
+          style="display: inline">
+        <input type="hidden" name="_method" value="DELETE">
+        <input type="hidden" name="_token" value="{{ token }}">
+        <button class="btn btn-sm btn-light-info">
+                <span>
+                    <i class="fa fa-redo"></i>
+                    <span>{{ 'lbl.restore'|trans }}</span>
+                </span>
+        </button>
+    </form>
+{% endmacro %}
+
+{% macro btn_restore_form_ico(link, token) %}
+    <form method="post" action="{{ link }}" onsubmit="return confirm('Seguro de resturar este registro?');"
+          style="display: inline">
+        <input type="hidden" name="_method" value="DELETE">
+        <input type="hidden" name="_token" value="{{ token }}">
+        <button class="btn btn-sm btn-icon btn-light-info" data-toggle="tooltip" title="{{ 'lbl.restore'| trans }}">
+            <i class="fa fa-redo"></i>
+        </button>
+    </form>
+{% endmacro %}
+
+{% macro btn_delete_forever_form(link, token) %}
+    <form method="post" action="{{ link }}" onsubmit="return confirm('Seguro de eliminar definitivamente este registro?');"
+          style="display: inline">
+        <input type="hidden" name="_method" value="DELETE">
+        <input type="hidden" name="_token" value="{{ token }}">
+        <button class="btn btn-danger btn-sm">
+                <span>
+                    <i class="fa fa-trash"></i>
+                    <span>{{ 'lbl.delete.forever'|trans }}</span>
+                </span>
+        </button>
+    </form>
+{% endmacro %}
+
+{% macro btn_delete_forever_form_ico(link, token) %}
+    <form method="post" action="{{ link }}" onsubmit="return confirm('Seguro de eliminar este registro?');"
+          style="display: inline">
+        <input type="hidden" name="_method" value="DELETE">
+        <input type="hidden" name="_token" value="{{ token }}">
+        <button class="btn btn-sm btn-icon btn-danger" data-toggle="tooltip" title="{{ 'lbl.delete.forever'| trans }}">
+            <i class="fa fa-trash"></i>
+        </button>
+    </form>
+{% endmacro %}
+
+{% macro btn_link2(label, link, icon, btn_class='default',attributes='', title='') %}
+    <a href="{{ link }}" class="btn btn-sm btn-light btn-active-light-primary btn-icon" {{ attributes }} title="{{ title | trans }}" >
+        {% if icon %}<i class="{{ icon }} text-{{ btn_class }}"></i>{% endif %}
+        {% if label %}<span>{{ label|trans }}</span>{% endif %}
+    </a>
+{% endmacro %}
+
+{% macro btn_show_link2(link, attributes='') %}
+    {% import _self as actions %}
+    {{ actions.btn_link2('lbl.view',link,'search','info', attributes, 'lbl.view') }}
+{% endmacro %}
+
+{% macro btn_show_link2_ico(link, attributes='') %}
+    {% import _self as actions %}
+    {{ actions.btn_link2(null,link,'fa fa-search','info', attributes, 'lbl.view') }}
+{% endmacro %}
+
+{% macro btn_edit_link2_ico(link, attributes='') %}
+    {% import _self as actions %}
+    {{ actions.btn_link2(null,link,'fa fa-pencil-alt','warning', attributes, 'lbl.edit') }}
+{% endmacro %}
+
+{% macro btn_print_link2_ico(link, attributes='') %}
+    {% import _self as actions %}
+    {{ actions.btn_link2(null,link,'fa fa-print','primary', attributes, 'lbl.print') }}
+{% endmacro %}
+
+{% macro btn_delete_link2_ico(link, attributes='') %}
+    {% import _self as actions %}
+    {{ actions.btn_link2(null,link,'fa fa-trash','danger btn-delete', attributes, 'lbl.delete') }}
+{% endmacro %}
+
+{% macro btn_link_tool(title='', link, icon, color='', class='',attributes='') %}
+    <a href="{{ link }}" class="dropdown-item {{class }}" {{ attributes }}>
+        <i class="{{ icon }} {{ color }} mr-5"></i> {{ title | trans }}
+    </a>
+{% endmacro %}
+
+{% macro btn_list_link_tool(link, class='', attributes='') %}
+    {% import _self as actions %}
+    {{ actions.btn_link_tool('lbl.list',link,'fa fa-list-ul','',class,attributes) }}
+{% endmacro %}
+
+{% macro btn_new_link_tool(link, class='', attributes='') %}
+    {% import _self as actions %}
+    {{ actions.btn_link_tool('lbl.new',link,'fa fa-file','text-success',class,attributes) }}
+{% endmacro %}
+
+{% macro btn_edit_link_tool(link, class='', attributes='') %}
+    {% import _self as actions %}
+    {{ actions.btn_link_tool('lbl.edit',link,'fa fa-pencil-alt','text-warning',class,attributes) }}
+{% endmacro %}
+
+{% macro btn_export_link_tool(link, class='', attributes='') %}
+    {% import _self as actions %}
+    {{ actions.btn_link_tool('lbl.export',link,'fa fa-download','text-secondary',class,attributes) }}
+{% endmacro %}
+
+{% macro btn_import_link_tool(link, class='', attributes='') %}
+    {% import _self as actions %}
+    {{ actions.btn_link_tool('lbl.import',link,'fa fa-upload','text-primary',class,attributes) }}
+{% endmacro %}
+
+{% macro btn_delete_form_tool(link, token) %}
+    <form method="post" action="{{ link }}" onsubmit="return confirm('Seguro de eliminar este registro?');"
+          style="display: inline">
+        <input type="hidden" name="_method" value="DELETE">
+        <input type="hidden" name="_token" value="{{ token }}">
+        <button class="dropdown-item">
+            <i class="fa fa-trash-o text-danger mr-5"></i> {{ 'lbl.delete'|trans }}
+        </button>
+    </form>
+{% endmacro %}
+
+{% macro btn_restore_form_tool(link, token) %}
+    <form method="post" action="{{ link }}" onsubmit="return confirm('Seguro de restuarar este registro?');"
+          style="display: inline">
+        <input type="hidden" name="_method" value="DELETE">
+        <input type="hidden" name="_token" value="{{ token }}">
+        <button class="dropdown-item">
+            <i class="fa fa-repeat text-info mr-5"></i> {{ 'lbl.restore'|trans }}
+        </button>
+    </form>
+{% endmacro %}
+
+{% macro btn_delete_forever_form_tool(link, token) %}
+    <form method="post" action="{{ link }}" onsubmit="return confirm('Seguro de eliminar definitivamente este registro?');"
+          style="display: inline">
+        <input type="hidden" name="_method" value="DELETE">
+        <input type="hidden" name="_token" value="{{ token }}">
+        <button class="dropdown-item">
+            <i class="fa fa-fw fa-trash text-danger mr-5"></i><span class="text-danger">{{ 'lbl.delete.forever'|trans }}</span>
+        </button>
+    </form>
+{% endmacro %}
+
+{# ########## FORMULARIOS ################# #}
+
+{% macro frm_start(form, form_class='kt-form kt-form--fit kt-form--label-right') -%}
+    {{ form_start(form, {attr: {class: form_class, id: form.vars.id, autocomplete: 'off'}}) }}
+{%- endmacro %}
+
+{% macro frm_end(form) -%}
+    {{ form_rest(form) }}
+    {{ form_errors(form) }}
+    {{ form_end(form) }}
+{%- endmacro %}
+
+{% macro frm_field(value, class='', class_widget='') %}
+    {% import _self as actions %}
+    <div class="form-group  row {{ class }}">
+        {{ actions.frm_label(value) }}
+        <div class="{{ _class_horizontal_widget }}">
+            {{ form_widget(value, {attr: {class: 'form-control m-input ' ~ class_widget} }) }}
+            {{ actions.frm_help(value) }}
+            {{ actions.frm_errors(value) }}
+        </div>
+    </div>
+{% endmacro %}
+
+{%- macro frm_label(value, class=null) -%}
+    {% set label = value.vars.label %}
+    {% if label is not same as(false) -%}
+        {% set label_attr = {} %}
+
+        {% if not value.vars.compound -%}
+            {% set label_attr = label_attr|merge({'for': value.vars.id}) %}
+        {%- endif -%}
+        {% if class is null %} {% set class = _class_horizontal_label %} {% endif %}
+        {% set label_attr = label_attr|merge({'class': 'col-form-label ' ~ class }) %}
+        {% if value.vars.required -%}
+            {% set label_attr = label_attr|merge({'class': (label_attr.class|default('') ~ ' required')|trim}) %}
+        {%- endif -%}
+        {% if value.vars.label is empty -%}
+            {%- if value.vars.label_format is not empty -%}
+                {% set label = label_format|replace({
+                    '%name%': value.vars.name,
+                    '%id%': value.vars.id,
+                }) %}
+            {%- else -%}
+                {% set label = value.vars.name|humanize %}
+            {%- endif -%}
+        {%- endif -%}
+
+        <label {% if label_attr %}{% with { attr: label_attr } %}{{ block('attributes') }}{% endwith %}{% endif %}>
+            {{ label | gtrans }}
+{#            {% if value.vars.required -%}<span class="text-danger">*</span>{% endif %}#}
+            {% if value.vars.popover ?? false %}
+                <span class="float-right">
+                    &nbsp;
+                    <i class="fa fa-question-circle-o text-primary" data-toggle="popover" data-placement="top"
+                       data-content="{{ value.vars.popover }}"></i>
+                </span>
+            {% endif %}
+        </label>
+    {% endif %}
+{%- endmacro -%}
+
+{%- macro frm_label_single(value) -%}
+    {%- if value.vars.label -%}
+        {{ value.vars.label | gtrans }}
+    {%- else -%}
+        {{ value.vars.name | gtrans | capitalize }}
+    {%- endif -%}
+{%- endmacro -%}
+
+{% macro frm_help(value) %}
+    {% set help = value.vars.help %}
+    {% set help_attr = value.vars.help_attr %}
+    {%- if help is not empty -%}
+        {%- set help_attr = help_attr|merge({class: (help_attr.class|default('') ~ ' form-text font-italic font-size-sm mb-0')|trim}) -%}
+        <span id="{{ value.vars.id }}_help" {% for attrname, attrvalue in help_attr %} {{ attrname }}="{{ attrvalue }}"{% endfor %} >
+        {{ help }}
+        </span>
+    {%- endif -%}
+{% endmacro %}
+
+{% macro frm_btn(label, class='') %}
+    {% import _self as actions %}
+    <div class="form-group  row">
+        <div class="{{ _class_horizontal_label }}"></div>
+        <div class="{{ _class_horizontal_widget }}">
+            {{ actions.btn_save(label) }}
+        </div>
+    </div>
+{% endmacro %}
+
+{% macro frm_field_checkbox(value, class='', class_widget='') %}
+    <span class="p-3 {{ class }}">
+        <label class="m-checkbox">
+            {{ form_widget(value, {attr: {class: '' ~ class_widget} }) }}
+            {% if value.vars.label %}
+                {{ value.vars.label | capitalize }}
+            {% else %}
+                {{ value.vars.name | capitalize }}
+            {% endif %}
+            <span></span>
+        </label>
+    </span>
+{% endmacro %}
+
+{% macro frm_field_checkbox_inline(value, class='', class_widget='') %}
+    {% import _self as actions %}
+    <div class="form-group  row {{ class }}">
+        {{ actions.frm_label(value) }}
+        <div class="col-sm-9">
+            <div class="m-checkbox-inline">
+                {% for child in value.vars.form.children %}
+                    <label class="m-checkbox pr-3">
+                        {{ form_widget(child, {attr: {class: '' ~ class_widget} }) }}
+                        {{ actions.frm_label_single(child) }}
+                        <span></span>
+                    </label>
+                {% endfor %}
+            </div>
+            {{ actions.frm_help(value) }}
+        </div>
+    </div>
+{% endmacro %}
+
+{% macro frm_field_switch(value, class='', class_widget='', color='success') %}
+    {% import _self as actions %}
+    <div class="form-group  row {{ class }}">
+        {{ actions.frm_label(value) }}
+        <div class="{{ _class_horizontal_widget }}">
+                <span class="m-bootstrap-switch m-bootstrap-switch--pill">
+                    {{ form_widget(value, {attr: {'class': '' ~ class_widget, 'data-switch': 'true', 'data-on-color':'success', 'data-on-text':'SI', 'data-off-text': 'NO' } }) }}
+                </span>
+            {% if value.vars.help %}<span class="m-form__help ml-2"> {{ value.vars.help }} </span>{% endif %}
+        </div>
+    </div>
+{% endmacro %}
+
+{% macro frm_field_select_widget(value, class_widget='') -%}
+    {{ form_widget(value, {attr: {class: 'm-input' ~ class_widget} }) }}
+{%- endmacro %}
+
+{% macro frm_field_collection(value, class='', class_widget='', style='') -%}
+    {% import _self as actions %}
+    <div class="form-group  {{ class }} row">
+        {% if value.vars.label %}
+            {{ actions.frm_label(value) }}
+        {% endif %}
+        <div class="{% if value.vars.label %}col-md-9{% endif %} col-sm-12">
+            <ul id="{{ value.vars.id }}" class="list-group"
+                data-prototype="{{ form_widget(value.vars.prototype)|e }}"
+                    {% if value.vars.prototype.vars.name %} data-prototype-name="{{ value.vars.prototype.vars.name }}" {% endif %}
+                data-widget-tags="{{ '<li class="list-group-item"></li>'|e }}">
+                {% for item in value %}
+                    <li class="list-group-item {% if style != '' %}list-group-item-dark{% endif %}">
+                        {{ form_errors(item) }}
+                        {{ form_widget(item, {attr: {class: '' ~ class_widget} }) }}
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="float-right" style="display: none;">
+            {{ form_row(value) }}
+        </div>
+    </div>
+{%- endmacro %}
+
+{% macro frm_field_file(value, item=null,class='', class_widget='') %}
+    {% import _self as actions %}
+    <div class="form-group  {{ class }}" style="float: left;">
+        {{ form_label(value,null,{label_attr: {class: 'col-form-label'} }) }}
+        <div class="custom-file col-sm-12">
+            {{ form_widget(value, {attr: {class: '' ~ class_widget} }) }}
+            <label id="{{ value.vars.id }}-label" class="custom-file-label" for="{{ value.vars.id }}">Seleccione ...</label>
+        </div>
+    </div>
+{% endmacro %}
+
+{% macro frm_field_file_row(value, item=null,class='', class_widget='') %}
+    {% import _self as actions %}
+    <div class="form-group  {{ class }}">
+        {{ actions.frm_label(value) }}
+        <div class="custom-file {{ _class_horizontal_label }}">
+            {{ form_widget(value, {attr: {class: '' ~ class_widget} }) }}
+            <label class="custom-file-label" for="{{ value.vars.id }}">Seleccione ...</label>
+        </div>
+        {#<div class="custom-file col-lg-4 col-md-9 col-sm-12">
+            {% if item %}
+                <label class="">
+                    {{ item.nombre }}
+                </label>
+            {% endif %}
+        </div>#}
+    </div>
+{% endmacro %}
+
+{% macro frm_field_textarea(value, class='', class_widget='') %}
+    {% import _self as actions %}
+    <div class="form-group  row {{ class }}">
+        {{ actions.frm_label(value) }}
+        <div class="col-lg-9 col-sm-12">
+            {{ form_widget(value, {attr: {class: 'form-control m-input ' ~ class_widget} }) }}
+            {{ actions.frm_errors(value) }}
+        </div>
+    </div>
+{% endmacro %}
+
+{% macro frm_field_two(value1, value2, class='', class_widget='') %}
+    {% import _self as actions %}
+    <div class="form-group  row {{ class }}">
+        {% if value1 %}
+            {{ actions.frm_label(value1) }}
+            <div class="col-lg-3">
+                {{ form_widget(value1, {attr: {class: 'form-control m-input ' ~ class_widget, 'autocomplete':'off'} }) }}
+                {{ actions.frm_errors(value1) }}
+            </div>
+        {% endif %}
+        {% if value2 %}
+            {{ actions.frm_label(value2) }}
+            <div class="col-lg-3">
+                {{ form_widget(value2, {attr: {class: 'form-control m-input ' ~ class_widget, 'autocomplete':'off'} }) }}
+                {{ actions.frm_errors(value2) }}
+            </div>
+        {% endif %}
+    </div>
+{% endmacro %}
+
+{% macro frm_field_two_without_label(value1, value2, class='', class_widget='') %}
+    {% import _self as actions %}
+    <div class="form-group  row {{ class }}" style="float: left;">
+        {% if value1 %}
+            {% if value1.vars.label %}{{ actions.frm_label(value1, 'col-sm-2') }}{% endif %}
+            {% set mClass = (value1.vars.attr.class is defined) ? value1.vars.attr.class:'' %}
+            <div class="col-sm-{% if value1.vars.label %}3{% else %}6{% endif %} ml-0">
+                {{ form_widget(value1, {attr: {class: mClass ~ ' form-control m-input ' ~ class_widget, 'autocomplete':'off'} }) }}
+            </div>
+        {% endif %}
+        {% if value2 %}
+            {% if value2.vars.label %}{{ actions.frm_label(value2, 'col-sm-2') }}{% endif %}
+            {% set mClass = (value2.vars.attr.class is defined) ? value2.vars.attr.class:'' %}
+            <div class="col-sm-{% if value2.vars.label %}3{% else %}6{% endif %} ml-0">
+                {{ form_widget(value2, {attr: {class: mClass ~ ' form-control m-input ' ~ class_widget, 'autocomplete':'off'} }) }}
+            </div>
+        {% endif %}
+    </div>
+{% endmacro %}
+
+{% macro frm_field_two_with_label(value1, value2, class='', class_widget='') %}
+    {% import _self as actions %}
+    <div class="row {{ class }}">
+        {% if value1 %}
+            {% if value1.vars.label %}{{ actions.frm_label(value1, 'col-sm-3') }}{% endif %}
+            <div class="col-sm-{% if value1.vars.label %}3{% else %}6{% endif %} col-6">
+                {{ form_widget(value1, {attr: {class: 'form-control m-input ' ~ class_widget, 'autocomplete':'off'} }) }}
+                {{ actions.frm_help(value1) }}
+                {{ actions.frm_errors(value1) }}
+            </div>
+        {% endif %}
+        {% if value2 %}
+            {% if value2.vars.label %}{{ actions.frm_label(value2, 'col-sm-3') }}{% endif %}
+            <div class="col-sm-{% if value2.vars.label %}3{% else %}6{% endif %} col-6">
+                {{ form_widget(value2, {attr: {class: 'form-control m-input ' ~ class_widget, 'autocomplete':'off'} }) }}
+                {{ actions.frm_help(value2) }}
+                {{ actions.frm_errors(value2) }}
+            </div>
+        {% endif %}
+    </div>
+{% endmacro %}
+
+{% macro frm_field_three(label,value1, value2, value3, class='', class_widget='') %}
+    <div class="form-group  row {{ class }}">
+        {{ form_label(value1,label, {label_attr: {class: 'col-lg-3 col-form-label'} }) }}
+        <div class="col-sm-3">
+            {% set myclass = 'form-control m-input ' %}
+            {% if value1 is not null and value1.vars.attr is defined %}
+                {% set myclass = value1.vars.attr.class is defined ? myclass ~ value1.vars.attr.class : myclass %}
+            {% endif %}
+            {{ form_widget(value1, {attr: {class: (myclass ~ class_widget) | trim} }) }}
+        </div>
+        <div class="col-sm-3">
+            {% set myclass = 'form-control m-input ' %}
+            {% if value2 is not null and value2.vars.attr is defined %}
+                {% set myclass = value2.vars.attr.class is defined ? myclass ~ value2.vars.attr.class : myclass %}
+            {% endif %}
+            {{ form_widget(value2, {attr: {class: (myclass ~ class_widget) | trim} }) }}
+        </div>
+        <div class="col-sm-3">
+            {% set myclass = 'form-control m-input ' %}
+            {% if value3 is not null and value3.vars.attr is defined %}
+                {% set myclass = value3.vars.attr.class is defined ? myclass ~ value3.vars.attr.class : myclass %}
+            {% endif %}
+            {{ form_widget(value3, {attr: {class: (myclass ~ class_widget) | trim} }) }}
+        </div>
+    </div>
+{% endmacro %}
+
+{% macro frm_field_three_without_label(value1, value2, value3, class='', class_widget='') %}
+    {% import _self as actions %}
+    <div class="form-group  row {{ class }}" style="float: left;">
+        {% if value1 %}
+            {% if value1.vars.label %}{{ actions.frm_label(value1, 'col-sm-2') }}{% endif %}
+            <div class="col-sm-{% if value1.vars.label %}3{% else %}4{% endif %}">
+                {{ form_widget(value1, {attr: {class: 'form-control m-input ' ~ class_widget, 'autocomplete':'off'} }) }}
+            </div>
+        {% endif %}
+        {% if value2 %}
+            {% if value2.vars.label %}{{ actions.frm_label(value2, 'col-sm-2') }}{% endif %}
+            <div class="col-sm-{% if value2.vars.label %}3{% else %}4{% endif %}">
+                {{ form_widget(value2, {attr: {class: 'form-control m-input ' ~ class_widget, 'autocomplete':'off'} }) }}
+            </div>
+        {% endif %}
+        {% if value3 %}
+            {% if value3.vars.label %}{{ actions.frm_label(value3, 'col-sm-2') }}{% endif %}
+            <div class="col-sm-{% if value3.vars.label %}3{% else %}4{% endif %}">
+                {{ form_widget(value3, {attr: {class: 'form-control m-input ' ~ class_widget, 'autocomplete':'off'} }) }}
+            </div>
+        {% endif %}
+    </div>
+{% endmacro %}
+
+{% macro frm_field_four_without_label(value1, value2, value3, value4, class='', class_widget='') %}
+    {% import _self as actions %}
+    <div class="form-group  row {{ class }}" style="float: left;">
+        {% if value1 %}
+            {% if value1.vars.label %}{{ actions.frm_label(value1, 'col-sm-2') }}{% endif %}
+            <div class="col-sm-{% if value1.vars.label %}2{% else %}3{% endif %}">
+                {{ form_widget(value1, {attr: {class: 'form-control m-input ' ~ class_widget, 'autocomplete':'off'} }) }}
+            </div>
+        {% endif %}
+        {% if value2 %}
+            {% if value2.vars.label %}{{ actions.frm_label(value2, 'col-sm-2') }}{% endif %}
+            <div class="col-sm-{% if value2.vars.label %}2{% else %}3{% endif %}">
+                {{ form_widget(value2, {attr: {class: 'form-control m-input ' ~ class_widget, 'autocomplete':'off'} }) }}
+            </div>
+        {% endif %}
+        {% if value3 %}
+            {% if value3.vars.label %}{{ actions.frm_label(value3, 'col-sm-2') }}{% endif %}
+            <div class="col-sm-{% if value3.vars.label %}2{% else %}3{% endif %}">
+                {{ form_widget(value3, {attr: {class: 'form-control m-input ' ~ class_widget, 'autocomplete':'off'} }) }}
+            </div>
+        {% endif %}
+        {% if value4 %}
+            {% if value4.vars.label %}{{ actions.frm_label(value4, 'col-sm-2') }}{% endif %}
+            <div class="col-sm-{% if value4.vars.label %}2{% else %}3{% endif %}">
+                {{ form_widget(value4, {attr: {class: 'form-control m-input ' ~ class_widget, 'autocomplete':'off'} }) }}
+            </div>
+        {% endif %}
+    </div>
+{% endmacro %}
+
+{% macro frm_errors(value) %}
+    {%- if value is not null and value.vars.errors|length > 0 -%}
+        <ul class="list-unstyled font-size-xs m-0">
+            {%- for error in value.vars.errors -%}
+                <li class="text-danger">{{ error.message }}</li>
+            {%- endfor -%}
+        </ul>
+
+    {%- endif -%}
+{% endmacro %}
+
+{% macro frm_errors_class(value) %}
+    {%- if value is not null and value.vars.errors|length > 0 -%}
+        is-invalid
+    {%- endif -%}
+{% endmacro %}
+
+{% macro frm_column(section1, section2=null, section3=null, section4=null, num=1) %}
+    {% import _self as actions %}
+    <div class="row">
+        {% if section1 or num >=1 %}
+            <div class="col-sm">
+                {{ section1 }}
+            </div>
+        {% endif %}
+        {% if section2 or num >=2 %}
+            <div class="col-sm">
+                {{ section2 }}
+            </div>
+        {% endif %}
+        {% if section3 or num >=3 %}
+            <div class="col-sm">
+                {{ section3 }}
+            </div>
+        {% endif %}
+        {% if section4 or num >=4 %}
+            <div class="col-sm p-0">
+                {{ section4 }}
+            </div>
+        {% endif %}
+    </div>
+{% endmacro %}
+
+{% macro frm_column_field(value, class='', class_widget='', col=4) %}
+    {% import _self as actions %}
+    <div class="form-group row mb-1 p-1 {{ class }} {{ actions.frm_errors_class(value) }}">
+        {{ actions.frm_label(value,'col-sm-' ~ col ~ ' col-4') }}
+        <div class="col-sm-{{ 12-col }} col-8">
+            {{ form_widget(value, {attr: {class: 'form-control ' ~ class_widget ~ actions.frm_errors_class(value)} }) }}
+            {{ actions.frm_help(value) }}
+            {{ actions.frm_errors(value) }}
+        </div>
+    </div>
+{% endmacro %}
+
+{% macro frm_column_field_select(value, class='', class_widget='', col=4, placeholder='Seleccione...') %}
+    {% import _self as actions %}
+    <div class="form-group row mb-1 p-1 {{ class }} {{ actions.frm_errors_class(value) }}">
+        {{ actions.frm_label(value,'col-sm-' ~ col ~ ' col-4') }}
+        <div class="col-sm-{{ 12-col }} col-8">
+            {{ form_widget(value, {attr: {class: 'js-select2 form-control ' ~ class_widget ~ actions.frm_errors_class(value), 'data-placeholder': placeholder | gtrans} }) }}
+            {{ actions.frm_help(value) }}
+            {{ actions.frm_errors(value) }}
+        </div>
+    </div>
+{% endmacro %}
+
+{% macro frm_column_field_file(value, class='', class_widget='', col=4) %}
+    {% import _self as actions %}
+    <div class="form-group row mb-1 p-1 {{ class }} {{ actions.frm_errors_class(value) }}">
+        {{ actions.frm_label(value,'col-sm-' ~ col ~ ' col-4') }}
+        <div class="col-sm-{{ 12-col }} col-8" style="height: auto;">
+            {% if value.vars.value %}
+                <figure>
+                    <img src="{{ asset(_media_directory ~ value.vars.value.path) | imagine_filter('small') }}" class="img-fluid"
+                         alt="{{ value.vars.value.nombre }}" title="{{ value.vars.value.nombre }}" />
+                </figure>
+            {% endif %}
+            {{ form_widget(value, {attr: {class: 'form-control m-input ' ~ class_widget ~ actions.frm_errors_class(value)} }) }}
+{#            <label id="{{ value.vars.id }}-label" class="custom-file-label" for="{{ value.vars.id }}" style="text-align: left;">Seleccione ...</label>#}
+            {{ actions.frm_help(value) }}
+            {{ actions.frm_errors(value) }}
+        </div>
+    </div>
+{% endmacro %}
+
+{% macro frm_column_field_date(value, class='', class_widget='', col=4) %}
+    {% import _self as actions %}
+    <div class="form-group row mb-1 p-1 {{ class }} {{ actions.frm_errors_class(value) }}">
+        {{ actions.frm_label(value,'col-sm-' ~ col ~ ' col-4') }}
+        <div class="col-sm-{{ 12-col }} col-8">
+            <div class="input-group">
+                {{ form_widget(value, {attr: {class: 'js-flatpickr form-control bg-white ' ~ class_widget ~ actions.frm_errors_class(value)} }) }}
+                <div class="input-group-append">
+                    <span class="input-group-text">
+                        <i class="fa fa-calendar"></i>
+                    </span>
+                </div>
+            </div>
+            {{ actions.frm_help(value) }}
+            {{ actions.frm_errors(value) }}
+        </div>
+    </div>
+{% endmacro %}
+
+{% macro frm_column_field_number(value, class='', class_widget='') %}
+    <div class="form-group row mb-1 p-1 {{ class }} {{ _self.frm_errors_class(value) }}">
+        {{ _self.frm_label(value,'col-sm-4 col-4') }}
+        <div class="col-sm-8 col-8">
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">
+                        <i class="fa fa-calculator"></i>
+                    </span>
+                </div>
+                {{ form_widget(value, {attr: {class: 'form-control ' ~ class_widget ~ _self.frm_errors_class(value)} }) }}
+            </div>
+            {{ _self.frm_help(value) }}
+            {{ _self.frm_errors(value) }}
+        </div>
+    </div>
+{% endmacro %}
+
+{% macro frm_column_field_number_select(value1, value2, class='', class_widget='') %}
+    <div class="form-group row mb-1 p-1 {{ class }} {{ _self.frm_errors_class(value1) }}">
+        {{ _self.frm_label(value1,'col-sm-4 col-4') }}
+        <div class="col-sm-8 col-8">
+            <div class="input-group">
+                <div class="input-group-prepend d-none d-sm-flex">
+                    <span class="input-group-text">
+                        <i class="fa fa-calculator"></i>
+                    </span>
+                </div>
+                {{ form_widget(value1, {attr: {class: 'form-control ' ~ class_widget ~ _self.frm_errors_class(value1)} }) }}
+                {{ form_widget(value2, {attr: {class: 'form-control ' ~ class_widget ~ _self.frm_errors_class(value2)} }) }}
+            </div>
+            {{ _self.frm_help(value1) }}
+            {{ _self.frm_errors(value1) }}
+        </div>
+    </div>
+{% endmacro %}
+
+{% macro frm_column_field_ticket(value1, value2, class='', class_widget='') %}
+    {% import _self as actions %}
+    <div class="form-group row mb-1 p-1 {{ class }}">
+        {% if value1 and value2 %}
+            {{ actions.frm_label(value2,'col-sm-4 col-4') }}
+            <div class="col-md-3 col-4">
+                {{ form_widget(value1, {attr: {class: 'form-control m-input ' ~ class_widget ~ _self.frm_errors_class(value1), 'autocomplete':'off'} }) }}
+                {{ _self.frm_errors(value1) }}
+            </div>
+            <div class="col-md-5 col-4">
+                {{ form_widget(value2, {attr: {class: 'form-control m-input ' ~ class_widget ~ _self.frm_errors_class(value2), 'autocomplete':'off'} }) }}
+                {{ _self.frm_errors(value2) }}
+            </div>
+        {% endif %}
+    </div>
+{% endmacro %}
+
+{% macro frm_column_field_radio_inline(value, class='', class_widget='',col=4) %}
+    {% import _self as actions %}
+    <div class="form-group  row mb-1 p-1 {{ class }}">
+        {{ actions.frm_label(value,'col-sm-' ~ col ~ ' col-4') }}
+        <div class="col-sm-{{ 12-col }} col-8">
+            {% for child in value.vars.form.children %}
+                <label class="css-control css-control-primary css-radio">
+                    {% if loop.first %}
+                        {{ form_widget(child, {attr: {class: 'css-control-input ' ~ class_widget, checked: 'checked'} }) }}
+                    {% else %}
+                        {{ form_widget(child, {attr: {class: 'css-control-input ' ~ class_widget} }) }}
+                    {% endif %}
+                    <span class="css-control-indicator"></span> {{ actions.frm_label_single(child) }}
+                </label>
+            {% endfor %}
+            {{ actions.frm_help(value) }}
+        </div>
+    </div>
+{% endmacro %}
+
+{% macro frm_column_field_radio_inline_field(value, value2, class='', class_widget='',col=4) %}
+    {% import _self as actions %}
+    <div class="form-group  row mb-1 p-1 {{ class }}">
+        {{ actions.frm_label(value,'col-sm-' ~ col ~ ' col-4') }}
+        {% set col_widget = ((12-col)/2) | round %}
+        <div class="col-sm-{{col_widget }} col-4">
+            {% for child in value.vars.form.children %}
+                <label class="css-control css-control-primary css-radio ml-0 mr-3">
+                    {% if loop.first %}
+                        {{ form_widget(child, {attr: {class: 'css-control-input ' ~ class_widget, checked: 'checked'} }) }}
+                    {% else %}
+                        {{ form_widget(child, {attr: {class: 'css-control-input ' ~ class_widget} }) }}
+                    {% endif %}
+                    <span class="css-control-indicator"></span> {{ actions.frm_label_single(child) }}
+                </label>
+            {% endfor %}
+            {{ actions.frm_help(value) }}
+        </div>
+        <div class="col-sm-{{ 12 - col - col_widget }} col-4">
+            {{ form_widget(value2, {attr: {class: 'form-control ' ~ class_widget ~ actions.frm_errors_class(value2)} }) }}
+        </div>
+    </div>
+{% endmacro %}
+
+{% macro frm_column_field_checkbox_inline(value, class='', class_widget='',col=4) %}
+    {% import _self as actions %}
+    <div class="form-group  row mb-1 p-1 {{ class }}">
+        {{ actions.frm_label(value,'col-sm-' ~ col ~ ' col-4') }}
+        <div class="col-sm-{{ 12-col }} col-8">
+            {% for child in value.vars.form.children %}
+                <label class="css-control css-control-primary css-checkbox">
+                    {{ form_widget(child, {attr: {class: 'css-control-input ' ~ class_widget} }) }}
+                    <span class="css-control-indicator"></span> {{ actions.frm_label_single(child) }}
+                </label>
+            {% endfor %}
+            {{ actions.frm_help(value) }}
+        </div>
+    </div>
+{% endmacro %}
+
+{% macro frm_column_field_slider(value, class='', class_widget='', col=4) %}
+    {% import _self as actions %}
+    <div class="form-group  row p-2 {{ class }}">
+        {{ actions.frm_label(value,'col-sm-'~col) }}
+        <div class="col-sm-{{ 12-col }}">
+            <div class="m-ion-range-slider">
+                {% set class = 'form-control js-rangeslider ' ~ class_widget %}
+                {{ form_widget(value, {attr: {'class': class, 'value': value.vars.data ? : 6, 'data-min':'6', 'data-max':'10', 'data-grid': 'true', 'data-step': 0.25, 'data-skin': 'big' } }) }}
+            </div>
+            {{ actions.frm_help(value) }}
+            {{ actions.frm_errors(value) }}
+        </div>
+    </div>
+{% endmacro %}
+
+{% macro frm_column_field_slider_ui(value, class='', class_widget='', col=4) %}
+    {% import _self as actions %}
+    <div class="form-group  row align-items-center p-5 {{ class }}">
+        {{ actions.frm_label(value,'col-sm-'~col) }}
+        <div class="col-sm-2">
+            {{ form_widget(value, {attr: {class: 'form-control m-input ' ~ class_widget} }) }}
+            {{ actions.frm_help(value) }}
+            {{ actions.frm_errors(value) }}
+        </div>
+        <div class="col-sm-{{ 10-col }}">
+            <div id="{{ value.vars.id }}_slider" class="m-nouislider m-nouislider--handle-danger"></div>
+        </div>
+    </div>
+{% endmacro %}
+
+{% macro frm_column_field_no_measure(value1, value2, class='', class_widget='', col=4) %}
+    {% import _self as actions %}
+    <div class="form-group  row align-items-center p-5 {{ class }}">
+        {{ actions.frm_label(value1,'col-sm-'~col) }}
+        <div class="col-sm-{{ 12-col }}">
+            <div class="input-group">
+                <div class="input-group-prepend d-none d-sm-flex">
+                    <span class="input-group-text">
+                        <i class="fa fa-balance-scale"></i>
+                    </span>
+                </div>
+                {{ form_widget(value1, {attr: {class: 'form-control m-input ' ~ class_widget} }) }}
+                {{ form_widget(value2, {attr: {class: 'form-control m-input ' ~ class_widget} }) }}
+            </div>
+        </div>
+    </div>
+{% endmacro %}
+
+{% macro frm_column_field_switch_custom(value, class='', class_widget='', col=4) %}
+    {% import _self as actions %}
+    <div class="form-group  row p-2 {{ class }}">
+        {{ actions.frm_label(value,'col-sm-'~col) }}
+        <div class="col-sm-{{ 12-col }}">
+            <div class="row align-items-center">
+                <div class="col-md-2 col-sm-3 col-xs-2">
+                    {{ form_widget(value, {attr: {class: 'form-control input-switch ' ~ class_widget} }) }}
+                </div>
+                <div id="{{ value.vars.id }}_switch" class="col-md-10 col-sm-9 col-xs-10">
+                    {% if value.vars.data %}
+                        {% set contador = 0 %}
+                        {% for i in 1..value.vars.data/2 %}
+                            <label class="css-control css-control-secondary css-switch mr-3">
+                                <input type="checkbox" class="css-control-input" checked>
+                                <span class="css-control-indicator"></span> Taza {{ i }}
+                            </label>
+                            {% set contador = i %}
+                        {% endfor %}
+                        {% if value.vars.data < 10 %}
+                            {% set limit = (10-value.vars.data)/2 %}
+                            {% for j in 1..limit %}
+                                <label class="css-control css-control-secondary css-switch">
+                                    <input type="checkbox" class="css-control-input">
+                                    <span class="css-control-indicator"></span> Taza {{ contador + j }}
+                                </label>
+                            {% endfor %}
+                        {% endif %}
+                    {% endif %}
+                </div>
+            </div>
+            {{ actions.frm_help(value) }}
+            {{ actions.frm_errors(value) }}
+        </div>
+        <script>
+            setTimeout(function(){
+                $(document).ready(function () {
+                    $('#{{ value.vars.id }}').prop('readOnly', true);
+
+                    $('#{{ value.vars.id }}_switch .css-control-input').on('click', function () {
+                        let increment = this.checked ? 2 : -2;
+                        let val = parseInt($('#{{ value.vars.id }}').val());
+                        $('#{{ value.vars.id }}').val(val + increment);
+                    });
+                });
+            }, 1000);
+
+        </script>
+    </div>
+{% endmacro %}
+
+{% macro frm_column_field_collection(value, class='', class_widget='', style='', num=4) %}
+    {% import _self as actions %}
+    <div class="form-group row {{ class }}">
+        {% if num > 0 %}
+            {{ actions.frm_label(value,'col-sm-' ~ num ) }}
+        {% endif %}
+        <div class="col-sm-{{ 12-num }}">
+            <ul id="{{ value.vars.id }}" class="list-group list-unstyled"
+                data-prototype="{{ form_widget(value.vars.prototype)|e('html_attr') }}"
+                    {% if value.vars.prototype.vars.name %} data-prototype-name="{{ value.vars.prototype.vars.name | e }}" {% endif %}
+                data-widget-tags="{{ '<li class="list-group-item"></li>'|e }}">
+                {% for item in value %}
+                    <li class="list-group-item collection-item pb-1 pt-0" style="position: relative;">
+                        {{ form_errors(item) }}
+                        {{ form_widget(item, {attr: {class: '' ~ class_widget} }) }}
+                    </li>
+                {% endfor %}
+            </ul>
+            {{ actions.frm_help(value) }}
+            {{ actions.frm_errors(value) }}
+        </div>
+    </div>
+{% endmacro %}
+
+{% macro frm_column_field_collection_files(value, class='', class_widget='', style='', num=4) %}
+    {% import _self as actions %}
+    <div class="form-group row {{ class }}">
+        {% if num > 0 %}
+            {{ actions.frm_label(value,'col-sm-' ~ num ) }}
+        {% endif %}
+        <div class="col-sm-{{ 12-num }}">
+            <ul id="{{ value.vars.id }}" class="list-group list-unstyled"
+                data-prototype="{{ form_widget(value.vars.prototype)|e }}"
+                    {% if value.vars.prototype.vars.name %} data-prototype-name="{{ value.vars.prototype.vars.name }}" {% endif %}
+                data-widget-tags="{{ '<li class="list-group-item"></li>'|e }}">
+                {% for item in value %}
+                    {% if item.vars.value %}
+                        <li class="list-group-item collection-item p-1" style="position: relative;">
+                            <a href="{{ path('adjunto_download', {'secure': item.vars.value.secure}) }}">{{ item.vars.value.nombre }}</a>
+                            <div class="hidden">
+                                {{ form_widget(item, {attr: {class: '' ~ class_widget} }) }}
+                            </div>
+                        </li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+            {{ actions.frm_help(value) }}
+            {{ actions.frm_errors(value) }}
+        </div>
+    </div>
+{% endmacro %}
+
+{% macro frm_column_field_collection_files_img(value, class='', class_widget='', style='', num=4) %}
+    {% import _self as actions %}
+    <div class="form-group row {{ class }}">
+        {% if num > 0 %}
+            {{ actions.frm_label(value,'col-sm-' ~ num ) }}
+        {% endif %}
+        <div class="col-sm-{{ 12-num }}">
+            <ul id="{{ value.vars.id }}" class="list-group list-unstyled"
+                data-prototype="{{ form_widget(value.vars.prototype)|e }}"
+                    {% if value.vars.prototype.vars.name %} data-prototype-name="{{ value.vars.prototype.vars.name }}" {% endif %}
+                data-widget-tags="{{ '<li class="list-group-item"></li>'|e }}">
+                {% for item in value %}
+                    {% if item.vars.value %}
+                        <li class="list-group-item collection-item p-1" style="position: relative;">
+                            {#                            <a href="{{ path('adjunto_download', {'secure': item.vars.value.secure}) }}">#}
+                            {#                                <img src="{{ asset(_media_directory ~ '/' ~ item.vars.value.secure) | imagine_filter('slider_thumb') }}" class="img-fluid">#}
+                            {#                            </a>#}
+                            <div class="hidden">
+                                {{ form_widget(item, {attr: {class: '' ~ class_widget} }) }}
+                            </div>
+                        </li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+            {{ actions.frm_help(value) }}
+            {{ actions.frm_errors(value) }}
+        </div>
+        {#        <div class="float-right" style="display: none;">#}
+        {#            {{ form_row(value) }}#}
+        {#        </div>#}
+    </div>
+{% endmacro %}
+
+{% macro frm_column_btn(label, class='', attributes = '', cols=4) %}
+    {% import _self as actions %}
+    <div class="form-group  row p-1 {{ class }}">
+        {% if cols > 0 %}
+        <div class="col-sm-{{ cols }}"></div>
+        {% endif %}
+        <div class="col-sm-{{ 12-cols }}">
+            {{ actions.btn_save(label, attributes) }}
+        </div>
+    </div>
+{% endmacro %}
+
+{# ########## ALDAIR ################# #}
+
+{% macro btn_delete_modal(link, token) %}
+    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#m_modal_1"> Eliminar</button>
+    <div class="modal fade" id="m_modal_1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Confirmacion</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    ¿ Esta seguro de eliminar este registro?
+                </div>
+                <div class="modal-footer">
+
+                    <form method="post" action="{{ link }}">
+                        <input type="hidden" name="_method" value="DELETE">
+                        <input type="hidden" name="_token" value="{{ token }}">
+                        <button class="btn">Delete</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endmacro %}
+
+{# ########## BLOQUES ################# #}
+{% block attributes -%}
+    {%- for attrname, attrvalue in attr -%}
+        {{- " " -}}
+        {%- if attrname in ['placeholder', 'title'] -%}
+            {{- attrname }}="{{ translation_domain is same as(false) ? attrvalue : attrvalue|trans({}, translation_domain) }}"
+        {%- elseif attrvalue is same as(true) -%}
+            {{- attrname }}="{{ attrname }}"
+        {%- elseif attrvalue is not same as(false) -%}
+            {{- attrname }}="{{ attrvalue }}"
+        {%- endif -%}
+    {%- endfor -%}
+{%- endblock attributes -%}
+
+{# ########## DISPLAY ################# #}
+{% macro tbl_start(class='table-striped',attributes='') %}
+<table class="table {{ class }} table-vcenter" {{ attributes }}>
+    {% endmacro %}
+
+    {% macro tbl_end() %}
+</table>
+{% endmacro %}
+
+{% macro thead_start(class='',attributes='') %}
+<thead class="thead-light {{ class }}" {{ attributes }}>
+    {% endmacro %}
+
+    {% macro thead_end() %}
+</thead>
+{% endmacro %}
+
+{% macro tbody_start(class='',attributes='') %}
+<tbody class="{{ class }}" {{ attributes }}>
+    {% endmacro %}
+
+    {% macro tbody_end() %}
+</tbody>
+{% endmacro %}
+
+{% macro tfoot_start(class='',attributes='') %}
+<tfoot class="{{ class }}" {{ attributes }}>
+{% endmacro %}
+
+{% macro tfoot_end() %}
+</tfoot>
+{% endmacro %}
+
+{% macro tbl_head(class='', value1, value2, value3, value4) %}
+    <thead class="{{ class }}">
+    {% if value1 %} {{ value1 }} {% endif %}
+    {% if value2 %} {{ value2 }} {% endif %}
+    {% if value3 %} {{ value3 }} {% endif %}
+    {% if value4 %} {{ value4 }} {% endif %}
+    </thead>
+{% endmacro %}
+
+{% macro tbl_tr(label, value, nullable=true, value2=null,value3=null,value4=null) %}
+    {%- if value is not null or nullable == true -%}
+        {% import _self as actions %}
+        <tr>
+            <th>{{ label }}</th>
+            <td>{{ actions.display(value) }}</td>
+            {% if value2 %}<td>{{ actions.display(value2) }}</td>{% endif %}
+            {% if value3 %}<td>{{ actions.display(value3) }}</td>{% endif %}
+            {% if value4 %}<td>{{ actions.display(value4) }}</td>{% endif %}
+        </tr>
+    {%- endif -%}
+{% endmacro %}
+
+{% macro tbl_th(nullable=true, head1=null, head2=null, head3=null, head4=null) %}
+    {%- if head1 is not null or nullable == true -%}
+        {% import _self as actions %}
+        <tr>
+            {% if head1 %}<th>{{ head1 | trans | upper }}</th>{% endif %}
+            {% if head2 %}<th>{{ head2 | trans | upper }}</th>{% endif %}
+            {% if head3 %}<th>{{ head3 | trans | upper }}</th>{% endif %}
+            {% if head4 %}<th>{{ head4 | trans | upper }}</th>{% endif %}
+        </tr>
+    {%- endif -%}
+{% endmacro %}
+
+{% macro tbl_tr_file_img(label, image, type = '', nullable=true) %}
+    {%- if nullable == true -%}
+        {% import _self as actions %}
+        <tr>
+            <th>{{ label }}</th>
+            <td>
+                {%- if image != null -%}
+                    {% set imagePath = asset(_media_directory ~ image.path) %}
+                    {% set imagePath = (type == '') ? imagePath : imagePath | imagine_filter(type) %}
+                    <figure>
+                        <img src="{{ imagePath }}" class="img-fluid" alt="{{ image.nombre }}" title="{{ image.nombre }}" />
+{#                        <figcaption>{{ image.descripcion }}</figcaption>#}
+                    </figure>
+                {%- endif -%}
+            </td>
+        </tr>
+    {%- endif -%}
+{% endmacro %}
+
+{% macro tbl_tr_td_multiple(label, values, nullable=true, class_label = '', class_value = '') %}
+    {%- if values is iterable or nullable == true -%}
+        {% import _self as actions %}
+        <tr>
+            <td class="{{ class_label }}">{{ label }}</td>
+            {% for value in values %}
+                <td class="{{ class_value }}">{{ actions.display(value) }}</td>
+            {% endfor %}
+        </tr>
+    {%- endif -%}
+{% endmacro %}
+
+{% macro th(label, trans = false, class = '', attributes = '') %}
+    {% if trans %}
+        <th class="{{ class }}" {{ attributes }}>{{ label | gtrans }}</th>
+    {% else %}
+        <th class="{{ class }}" {{ attributes }}>{{ label }}</th>
+    {% endif %}
+{% endmacro %}
+
+{% macro td(value, trans = false, class = '') %}
+    {% if trans %}
+        <td class="{{ class }}">{{ value | gtrans }}</td>
+    {% else %}
+        <td class="{{ class }}">{{ value }}</td>
+    {% endif %}
+{% endmacro %}
+
+{% macro display(value) -%}
+    {%- if value.timestamp is defined -%}
+        {{ value | fecha }}
+    {%- elseif value is iterable -%}
+        {% for item in value %}
+            {{ item }},
+        {% endfor %}
+    {%- else -%}
+        {{ value | raw }}
+    {%- endif %}
+{%- endmacro %}
+
+{% macro row(class='', value1, value2, value3, value4) %}
+    <div class="row {{ class }}">
+        {% if value1 %} {{ value1 }} {% endif %}
+        {% if value2 %} {{ value2 }} {% endif %}
+        {% if value3 %} {{ value3 }} {% endif %}
+        {% if value4 %} {{ value4 }} {% endif %}
+    </div>
+{% endmacro %}
+
+{% macro col(label, value, label_num=4, value_num=0, nullable=true) %}
+    {%- if value is not null or nullable == true -%}
+        {% import _self as actions %}
+        <div class="col-sm-{{ label_num }} col-5">
+            <span>{{ label }}</span>
+        </div>
+        {% set value_num = (value_num != 0) ? value_num : 12 - label_num %}
+        <div class="col-sm-{{ value_num }} col-7">
+            {{ actions.display(value) }}
+        </div>
+    {%- endif -%}
+{% endmacro %}
+
+{# ########## GRUPO DE BOTONES ################# #}
+{%- macro gbtn_show_ico(entity, entity_id, links, enable_print=true) -%}
+    {% import _self as actions %}
+    {% if links.list %}
+        {{ actions.btn_list_link_ico(path(entity ~'_index')) }}
+    {% endif %}
+    {% if links.new %}
+        {{ actions.btn_new_link_ico(path(entity ~'_new')) }}
+    {% endif %}
+    {% if links.edit %}
+        {{ actions.btn_edit_link_ico(path(entity ~'_edit', {'id': entity_id})) }}
+    {% endif %}
+    {% if links.print and enable_print == true %}
+        {{ actions.btn_print_link_ico(path(entity ~'_print', {'id': entity_id})) }}
+    {% endif %}
+    {% if links.delete %}
+        {{ actions.btn_delete_form_ico(path(entity ~'_delete', {'id': entity_id}), csrf_token('delete' ~ entity_id)) }}
+    {% endif %}
+{%- endmacro -%}
+
+{%- macro gbtn_show(entity, entity_id, links, enable_print=true) -%}
+    {% import _self as actions %}
+    {% if links.list %}
+        {{ actions.btn_list_link(path(entity ~'_index')) }}
+    {% endif %}
+    {% if links.new %}
+        {{ actions.btn_new_link(path(entity ~'_new')) }}
+    {% endif %}
+    {% if links.edit %}
+        {{ actions.btn_edit_link(path(entity ~'_edit', {'id': entity_id})) }}
+    {% endif %}
+    {% if links.print and enable_print == true %}
+        {{ actions.btn_print_link(path(entity ~'_print', {'id': entity_id})) }}
+    {% endif %}
+    {% if links.delete %}
+        {{ actions.btn_delete_form(path(entity ~'_delete', {'id': entity_id}), csrf_token('delete' ~ entity_id)) }}
+    {% endif %}
+{%- endmacro -%}
+
+{%- macro gbtn_edit_ico(entity, entity_id, links) -%}
+    {% import _self as actions %}
+    {% if links.list %}
+        {{ actions.btn_list_link_ico(path(entity ~'_index')) }}
+    {% endif %}
+    {% if links.new %}
+        {{ actions.btn_new_link_ico(path(entity ~'_new')) }}
+    {% endif %}
+    {% if links.print %}
+        {{ actions.btn_print_link_ico(path(entity ~'_print', {'id': entity_id})) }}
+    {% endif %}
+    {% if links.delete %}
+        {{ actions.btn_delete_form_ico(path(entity ~'_delete', {'id': entity_id}), csrf_token('delete' ~ entity_id)) }}
+    {% endif %}
+{%- endmacro -%}
+
+{# ########## MENUS ################# #}
+{%- macro mnu_item(label, link='#', icon='flaticon2-box-1 kt-font-brand', class='') -%}
+    <li class="kt-nav__item">
+        <a href="{{ link }}" class="kt-nav__link {{ class }}">
+            <i class="kt-nav__link-icon {{ icon }}"></i>
+            <span class="kt-nav__link-text">{{ label | trans }}</span>
+        </a>
+    </li>
+{%- endmacro -%}
+
+{# ########## SPINNERS ################# #}
+{%- macro spinner(style='primary') -%}
+    spinner-grow text-{{ style }}
+{%- endmacro -%}

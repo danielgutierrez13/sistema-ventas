@@ -1,0 +1,26 @@
+{% import 'macro/action.html.twig' as action %}
+
+{{ action.frm_start(form) }}
+    {{ action.frm_column(
+        action.frm_column_field_select(form.padre),
+        null,
+        null,
+        null,
+        2
+    ) }}
+    {{ action.frm_column(
+        action.frm_column_field(form.nombre),
+        action.frm_column_field_select(form.ruta)
+    ) }}
+    {{ action.frm_column(
+        action.frm_column_field(form.orden),
+        action.frm_column_field(form.icono)
+    ) }}
+    {{ action.frm_column(
+        action.frm_column_btn(button_label|default('Guardar')),
+        null,
+        null,
+        null,
+        2
+    ) }}
+{{ action.frm_end(form) }}

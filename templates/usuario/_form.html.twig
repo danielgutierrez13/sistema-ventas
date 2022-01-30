@@ -1,0 +1,48 @@
+{% import 'macro/action.html.twig' as action %}
+
+{{ action.frm_start(form) }}
+    {{ action.frm_column(
+        action.frm_column_field(form.fullName, '', '', 2),
+        null,
+        null,
+        null,
+        1
+    ) }}
+
+    {{ action.frm_column(
+        action.frm_column_field(form.username),
+        action.frm_column_field(form.email)
+    ) }}
+
+    {{ action.frm_column(
+        action.frm_column_field(form.password.first),
+        action.frm_column_field(form.password.second)
+    ) }}
+
+    {{ action.frm_column(
+        action.frm_column_field_select(form.usuarioRoles),
+        null,
+        null,
+        null,
+        2
+    ) }}
+
+    {% if access.isSuperAdmin -%}
+        {{ action.frm_column(
+            action.frm_column_field_select(form.config),
+            null,
+            null,
+            null,
+            2
+        ) }}
+    {% endif %}
+
+    {{ action.frm_column(
+        action.frm_column_btn(button_label|default('Guardar')),
+        null,
+        null,
+        null,
+        2
+    ) }}
+
+{{ action.frm_end(form) }}

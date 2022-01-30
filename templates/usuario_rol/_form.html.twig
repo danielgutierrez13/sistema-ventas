@@ -1,0 +1,40 @@
+{% import 'macro/action.html.twig' as action %}
+
+{{ action.frm_start(form) }}
+    {% if access.isSuperAdmin -%}
+        {{ action.frm_column(
+            action.frm_column_field(form.nombre),
+            action.frm_column_field(form.rol)
+        ) }}
+
+        {{ action.frm_column(
+            action.frm_column_field_select(form.config),
+            null,
+            null,
+            null,
+            2
+        ) }}
+    {% else %}
+        {{ action.frm_column(
+            action.frm_column_field(form.nombre),
+            null,null,null,2
+        ) }}
+    {% endif %}
+
+    {{ action.frm_column(
+        action.frm_column_field_collection(form.permisos, '', '', '', 2),
+        null,
+        null,
+        null,
+        1
+    ) }}
+
+    {{ action.frm_column(
+        action.frm_column_btn(button_label|default('Guardar')),
+        null,
+        null,
+        null,
+        2
+    ) }}
+
+{{ action.frm_end(form) }}

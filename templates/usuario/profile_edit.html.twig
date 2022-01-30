@@ -1,0 +1,156 @@
+{% extends 'base.html.twig' %}
+{% import 'macro/breadcrumb.html.twig' as breadcrumb %}
+{% import 'macro/action.html.twig' as action %}
+
+{% set _title = 'Perfil' %}
+{% set _main_title = 'Editar' %}
+{% set _section =  'usuario_index'%}
+
+{% block _content_header %}
+    <!-- User Info -->
+    <div class="bg-image bg-image-bottom" style="background-image: url({{ asset(_theme ~ 'media/photos/photo13@2x.jpg') }});">
+        <div class="bg-black-op-75 py-30">
+            <div class="content content-full text-center">
+                <!-- Avatar -->
+                <div class="mb-15">
+                    <a class="img-link" href="#">
+                        {% if usuario.data and usuario.data.foto %}
+                            <img class="img-avatar img-avatar96 img-avatar-thumb" src="{{ asset(_media_directory ~ usuario.data.foto.path) | imagine_filter('small') }}" alt="">
+                        {% else %}
+                            <img class="img-avatar img-avatar96 img-avatar-thumb" src="{{ asset('img/avatar.png') }}" alt="">
+                        {% endif %}
+                    </a>
+                </div>
+                <!-- END Avatar -->
+
+                <!-- Personal -->
+                <h1 class="h3 text-white font-w700 mb-10">{{ usuario.fullName }}</h1>
+                <h2 class="h5 text-white-op">
+                    {% if usuario.data and usuario.data.cargo %}
+                        {{ usuario.data.cargo }}
+                    {% endif %}
+                    <a class="text-primary-light" href="javascript:void(0)">{{ usuario.email }}</a>
+                </h2>
+                {% if usuario.data and usuario.data.telefono %}
+                    <h2 class="h5 text-white-op">
+                        <i class="fa fa-phone"></i> {{ usuario.data.telefono }}
+                    </h2>
+                {% endif %}
+                <!-- END Personal -->
+
+                <!-- Actions -->
+                <a href="{{ path('usuario_profile', {'id' : usuario.id }) }}" class="btn btn-rounded btn-hero btn-sm btn-alt-secondary mb-5">
+                    <i class="fa fa-arrow-left mr-5"></i> Regresar al perfil
+                </a>
+                <!-- END Actions -->
+            </div>
+        </div>
+    </div>
+    <!-- END User Info -->
+{% endblock %}
+
+{% block _content %}
+    <div class="row">
+        <div class="col-md-7">
+            <!-- User Profile -->
+            <div class="block">
+                <div class="block-header block-header-default">
+                    <h3 class="block-title">
+                        <i class="fa fa-user-circle mr-5 text-muted"></i> Datos Generales
+                    </h3>
+                </div>
+                <div class="block-content">
+                    {{ action.frm_start(formProfile) }}
+                        <div class="row items-push">
+                            <div class="col-lg-3">
+                                <p class="text-muted">
+                                    La información vital de tu cuenta. Su nombre de usuario será visible públicamente.
+                                </p>
+                            </div>
+                            <div class="col-lg-7 offset-lg-1">
+                                {{ action.frm_column_field(formProfile.fullName) }}
+                                {{ action.frm_column_field(formProfile.username) }}
+                                {{ action.frm_column_field(formProfile.email) }}
+                                {{ action.frm_column_field_select(formProfile.almacen) }}
+                                {{ action.frm_column_field(formProfile.data.nombreCorto) }}
+                                {{ action.frm_column_field(formProfile.data.cargo) }}
+                                {{ action.frm_column_field(formProfile.data.telefono) }}
+                                {{ action.frm_column_field_file(formProfile.data.foto) }}
+                                <div class="form-group row">
+                                    <div class="col-12">
+                                        <button type="submit" class="btn btn-alt-primary">Actualizar</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {{ action.frm_end(formProfile) }}
+                </div>
+            </div>
+            <!-- END User Profile -->
+        </div>
+        <div class="col-md-5">
+            <!-- Change Password -->
+            <div class="block">
+                <div class="block-header block-header-default">
+                    <h3 class="block-title">
+                        <i class="fa fa-asterisk mr-5 text-muted"></i> Cambiar contraseña
+                    </h3>
+                </div>
+                <div class="block-content">
+                    {{ action.frm_start(formPassword) }}
+                        <div class="row items-push">
+                            <div class="col-lg-3">
+                                <p class="text-muted">
+                                    Cambiar su contraseña de inicio de sesión es una manera fácil de mantener segura su cuenta.
+                                </p>
+                            </div>
+                            <div class="col-lg-7 offset-lg-1">
+                                <div class="form-group row">
+                                    <div class="col-12">
+                                        {{ form_label(formPassword.passwordActual) }}
+                                        {{ form_widget(formPassword.passwordActual, {'attr': {'class': 'form-control form-control-lg'}}) }}
+                                        {{ form_errors(formPassword.passwordActual) }}
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-12">
+                                        {{ form_label(formPassword.passwordNuevo.first) }}
+                                        {{ form_widget(formPassword.passwordNuevo.first, {'attr': {'class': 'form-control form-control-lg'}}) }}
+                                        {{ form_errors(formPassword.passwordNuevo.first) }}
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-12">
+                                        {{ form_label(formPassword.passwordNuevo.second) }}
+                                        {{ form_widget(formPassword.passwordNuevo.second, {'attr': {'class': 'form-control form-control-lg'}}) }}
+                                        {{ form_errors(formPassword.passwordNuevo.second) }}
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-12">
+                                        <button type="submit" class="btn btn-alt-primary">Actualizar</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {{ action.frm_end(formPassword) }}
+                </div>
+            </div>
+            <!-- END Change Password -->
+        </div>
+    </div>
+{% endblock %}
+
+{% block _stylesheets %}
+    <link rel="stylesheet" href="{{ asset(_theme ~ 'js/plugins/select2/css/select2.min.css') }}">
+{% endblock %}
+
+{% block _javascripts %}
+    <script src="{{ asset(_theme ~ 'js/plugins/select2/js/select2.full.min.js') }}"></script>
+    <script src="{{ asset('js/select2.js') }}"></script>
+    <script>
+        jQuery(document).ready(function() {
+            Select2();
+        });
+    </script>
+{% endblock %}

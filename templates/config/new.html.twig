@@ -1,0 +1,55 @@
+{% extends 'base.html.twig' %}
+{% import 'macro/breadcrumb.html.twig' as breadcrumb %}
+{% import 'macro/action.html.twig' as action %}
+
+{% set _title = 'Configuración' %}
+{% set _main_title = 'Nuevo' %}
+{% set _section =  'config_index'%}
+
+{% block _breadcrumb %}
+    {{ breadcrumb.show2(_title,_section,'Nuevo') }}
+{% endblock %}
+
+{% form_theme form _self %}
+
+{% block _config_menus_label -%}
+{% endblock %}
+
+{% block _config_menus_entry_widget -%}
+    {% import 'macro/action.html.twig' as actions %}
+    {{ actions.frm_field_two_with_label(form.name,form.route, 'mb-0','form-control-sm') }}
+{%- endblock %}
+
+{% block _main %}
+    {{ include('config/_form.html.twig') }}
+{% endblock %}
+
+{% block _main_tools %}
+    {% include 'crud/_tools_ico.html.twig' %}
+{% endblock %}
+
+{% block _body_tools %}
+    {% include 'crud/_new_links_ico.html.twig' with {'route_base':'config'} %}
+{% endblock %}
+
+{% block _body_tools_ico %}
+    {% include 'crud/_new_links_tool.html.twig' with {'route_base': 'config'}  %}
+{% endblock %}
+
+{% block _main_footer %}
+    {% include 'crud/_new_links.html.twig' with {'route_base':'config'} %}
+{% endblock %}
+
+{% block _stylesheets %}
+    <link rel="stylesheet" href="{{ asset(_theme ~ 'js/plugins/select2/css/select2.min.css') }}">
+{% endblock %}
+
+{% block _javascripts %}
+    <script src="{{ asset(_theme ~ 'js/plugins/select2/js/select2.full.min.js') }}"></script>
+    <script src="{{ asset('js/select2.js') }}"></script>
+    <script>
+        $(document).ready(function() {
+            Select2();
+        });
+    </script>
+{% endblock %}

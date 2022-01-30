@@ -1,0 +1,6 @@
+{% macro btn_new(element, route) %}
+    <a href="#" class="modal-link btn btn-success" data-toggle="modal" data-original-title="{{ 'lbl.new' | trans }}"
+       data-target="{{ element }}" data-href="{{ route }}" data-title="{{ 'lbl.new' | trans }}">
+        <i class="fa fa-file-text-o"></i> Nuevo
+    </a>
+{% endmacro %}

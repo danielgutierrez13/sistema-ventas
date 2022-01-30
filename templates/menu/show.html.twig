@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+{% import 'macro/breadcrumb.html.twig' as breadcrumb %}
+{% import 'macro/action.html.twig' as action %}
+
+{% set _title = 'Menu' %}
+{% set _main_title = 'Mostrar' %}
+{% set _section =  'menu_index'%}
+
+{% block _breadcrumb %}
+    {{ breadcrumb.show2(_title, _section, 'Mostrar') }}
+{% endblock %}
+
+{% block _main %}
+    {{ action.tbl_start() }}
+        {{ action.tbl_tr('Padre',menu.padre) }}
+        {{ action.tbl_tr('Nombre',menu.nombre) }}
+        {{ action.tbl_tr('Ruta',menu.ruta) }}
+        {{ action.tbl_tr('Icono',menu.icono) }}
+        {{ action.tbl_tr('Orden',menu.orden) }}
+        {% include 'crud/_show_info.html.twig' with {'entity': menu} %}
+    {{ action.tbl_end() }}
+
+{% endblock %}
+
+{% block _main_footer %}
+    {% include 'crud/_show_links.html.twig' with {'route_base':'menu','entity': menu} %}
+{% endblock %}
+
+{% block _main_tools %}
+    {% include 'crud/_tools_ico.html.twig' %}
+{% endblock %}
+
+{% block _body_tools %}
+    {% include 'crud/_show_links_ico.html.twig' with {'route_base':'menu','entity': menu} %}
+{% endblock %}
+
+{% block _body_tools_ico %}
+    {% include 'crud/_show_links_tool.html.twig' with {'route_base':'menu','entity': menu} %}
+{% endblock %}

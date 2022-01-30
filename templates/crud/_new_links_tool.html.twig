@@ -1,0 +1,5 @@
+{% import 'macro/action.html.twig' as action %}
+
+{% if access.list %}
+    {{ action.btn_list_link_tool(path(route_base ~ '_index')) }}
+{% endif %}

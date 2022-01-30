@@ -1,0 +1,378 @@
+{% extends 'base.html.twig' %}
+{% import 'macro/breadcrumb.html.twig' as breadcrumb %}
+{% import 'macro/action.html.twig' as action %}
+{% import 'macro/pagination.html.twig' as pagination %}
+
+{% set _title = 'Usuario Auditoria' %}
+{% set _main_title = 'Listado' %}
+{% set _section =  'usuario_auditoria_total' %}
+
+{% block _breadcrumb %}
+    {{ breadcrumb.show('Usuarios') }}
+{% endblock %}
+
+{% block _content %}
+    <div class="row">
+        <div class="col-md-4 col-sm-6">
+            <div class="block block-rounded">
+                {% include 'default/_card_header.html.twig' with {'title': 'Acopio Cerezo'} %}
+                <div class="block-content">
+                    <div class="table-responsive">
+                        {{ action.tbl_start('table-sm') }}
+                        {{ action.thead_start() }}
+                        <tr>
+                            {{ action.th('#', false, 'text-center') }}
+                            {{ action.th('Nombre', true, '') }}
+                            {{ action.th('Registros Ingresados', true, '') }}
+                        </tr>
+                        {{ action.thead_end() }}
+                        {{ action.tbody_start() }}
+                        {% for item in data.cerezoAcopios %}
+                            <tr>
+                                <td class="text-center">{{ loop.index }}</td>
+                                <td class="">{{ item.nombre | upper }}</td>
+                                <td class="text-center">{{ item.total }}</td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="3">No hay registros</td>
+                            </tr>
+                        {% endfor %}
+                        {{ action.tbody_end() }}
+                        {{ action.tbl_end() }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 col-sm-6">
+            <div class="block block-rounded">
+                {% include 'default/_card_header.html.twig' with {'title': 'Acopio Pergamino'} %}
+                <div class="block-content">
+                    <div class="table-responsive">
+                        {{ action.tbl_start('table-sm') }}
+                        {{ action.thead_start() }}
+                        <tr>
+                            {{ action.th('#', false, 'text-center') }}
+                            {{ action.th('Nombre', true, '') }}
+                            {{ action.th('Registros Ingresados', true, '') }}
+                        </tr>
+                        {{ action.thead_end() }}
+                        {{ action.tbody_start() }}
+                        {% for item in data.pergaminoAcopios %}
+                            <tr>
+                                <td class="text-center">{{ loop.index }}</td>
+                                <td class="">{{ item.nombre | upper }}</td>
+                                <td class="text-center">{{ item.total }}</td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="3">No hay registros</td>
+                            </tr>
+                        {% endfor %}
+                        {{ action.tbody_end() }}
+                        {{ action.tbl_end() }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 col-sm-6">
+            <div class="block block-rounded">
+                {% include 'default/_card_header.html.twig' with {'title': 'Socio Adelantos'} %}
+                <div class="block-content">
+                    <div class="table-responsive">
+                        {{ action.tbl_start('table-sm') }}
+                        {{ action.thead_start() }}
+                        <tr>
+                            {{ action.th('#', false, 'text-center') }}
+                            {{ action.th('Nombre', true, '') }}
+                            {{ action.th('Registros Ingresados', true, '') }}
+                        </tr>
+                        {{ action.thead_end() }}
+                        {{ action.tbody_start() }}
+                        {% for item in data.adelantos %}
+                            <tr>
+                                <td class="text-center">{{ loop.index }}</td>
+                                <td class="">{{ item.nombre | upper }}</td>
+                                <td class="text-center">{{ item.total }}</td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="3">No hay registros</td>
+                            </tr>
+                        {% endfor %}
+                        {{ action.tbody_end() }}
+                        {{ action.tbl_end() }}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 col-sm-6">
+            <div class="block block-rounded">
+                {% include 'default/_card_header.html.twig' with {'title': 'Compra Terceros'} %}
+                <div class="block-content">
+                    <div class="table-responsive">
+                        {{ action.tbl_start('table-sm') }}
+                        {{ action.thead_start() }}
+                        <tr>
+                            {{ action.th('#', false, 'text-center') }}
+                            {{ action.th('Nombre', true, '') }}
+                            {{ action.th('Registros Ingresados', true, '') }}
+                        </tr>
+                        {{ action.thead_end() }}
+                        {{ action.tbody_start() }}
+                        {% for item in data.pergaminoCompras %}
+                            <tr>
+                                <td class="text-center">{{ loop.index }}</td>
+                                <td class="">{{ item.nombre | upper }}</td>
+                                <td class="text-center">{{ item.total }}</td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="3">No hay registros</td>
+                            </tr>
+                        {% endfor %}
+                        {{ action.tbody_end() }}
+                        {{ action.tbl_end() }}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 col-sm-6">
+            <div class="block block-rounded">
+                {% include 'default/_card_header.html.twig' with {'title': 'Proveedores'} %}
+                <div class="block-content">
+                    <div class="table-responsive">
+                        {{ action.tbl_start('table-sm') }}
+                        {{ action.thead_start() }}
+                        <tr>
+                            {{ action.th('#', false, 'text-center') }}
+                            {{ action.th('Nombre', true, '') }}
+                            {{ action.th('Registros Ingresados', true, '') }}
+                        </tr>
+                        {{ action.thead_end() }}
+                        {{ action.tbody_start() }}
+                        {% for item in data.proveedores %}
+                            <tr>
+                                <td class="text-center">{{ loop.index }}</td>
+                                <td class="">{{ item.nombre | upper }}</td>
+                                <td class="text-center">{{ item.total }}</td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="3">No hay registros</td>
+                            </tr>
+                        {% endfor %}
+                        {{ action.tbody_end() }}
+                        {{ action.tbl_end() }}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 col-sm-6">
+            <div class="block block-rounded">
+                {% include 'default/_card_header.html.twig' with {'title': 'Socios'} %}
+                <div class="block-content">
+                    <div class="table-responsive">
+                        {{ action.tbl_start('table-sm') }}
+                        {{ action.thead_start() }}
+                        <tr>
+                            {{ action.th('#', false, 'text-center') }}
+                            {{ action.th('Nombre', true, '') }}
+                            {{ action.th('Registros Ingresados', true, '') }}
+                        </tr>
+                        {{ action.thead_end() }}
+                        {{ action.tbody_start() }}
+                        {% for item in data.socios %}
+                            <tr>
+                                <td class="text-center">{{ loop.index }}</td>
+                                <td class="">{{ item.nombre | upper }}</td>
+                                <td class="text-center">{{ item.total }}</td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="3">No hay registros</td>
+                            </tr>
+                        {% endfor %}
+                        {{ action.tbody_end() }}
+                        {{ action.tbl_end() }}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 col-sm-6">
+            <div class="block block-rounded">
+                {% include 'default/_card_header.html.twig' with {'title': 'Analisis Fisico Pergamino'} %}
+                <div class="block-content">
+                    <div class="table-responsive">
+                        {{ action.tbl_start('table-sm') }}
+                        {{ action.thead_start() }}
+                        <tr>
+                            {{ action.th('#', false, 'text-center') }}
+                            {{ action.th('Nombre', true, '') }}
+                            {{ action.th('Registros Ingresados', true, '') }}
+                        </tr>
+                        {{ action.thead_end() }}
+                        {{ action.tbody_start() }}
+                        {% for item in data.analisisFisicoAcopios %}
+                            <tr>
+                                <td class="text-center">{{ loop.index }}</td>
+                                <td class="">{{ item.nombre | upper }}</td>
+                                <td class="text-center">{{ item.total }}</td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="3">No hay registros</td>
+                            </tr>
+                        {% endfor %}
+                        {{ action.tbody_end() }}
+                        {{ action.tbl_end() }}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 col-sm-6">
+            <div class="block block-rounded">
+                {% include 'default/_card_header.html.twig' with {'title': 'Analisis Sensorial Pergamino'} %}
+                <div class="block-content">
+                    <div class="table-responsive">
+                        {{ action.tbl_start('table-sm') }}
+                        {{ action.thead_start() }}
+                        <tr>
+                            {{ action.th('#', false, 'text-center') }}
+                            {{ action.th('Nombre', true, '') }}
+                            {{ action.th('Registros Ingresados', true, '') }}
+                        </tr>
+                        {{ action.thead_end() }}
+                        {{ action.tbody_start() }}
+                        {% for item in data.analisisSensorialAcopios %}
+                            <tr>
+                                <td class="text-center">{{ loop.index }}</td>
+                                <td class="">{{ item.nombre | upper }}</td>
+                                <td class="text-center">{{ item.total }}</td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="3">No hay registros</td>
+                            </tr>
+                        {% endfor %}
+                        {{ action.tbody_end() }}
+                        {{ action.tbl_end() }}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 col-sm-6">
+            <div class="block block-rounded">
+                {% include 'default/_card_header.html.twig' with {'title': 'Traslados'} %}
+                <div class="block-content">
+                    <div class="table-responsive">
+                        {{ action.tbl_start('table-sm') }}
+                        {{ action.thead_start() }}
+                        <tr>
+                            {{ action.th('#', false, 'text-center') }}
+                            {{ action.th('Nombre', true, '') }}
+                            {{ action.th('Registros Ingresados', true, '') }}
+                        </tr>
+                        {{ action.thead_end() }}
+                        {{ action.tbody_start() }}
+                        {% for item in data.traslados %}
+                            <tr>
+                                <td class="text-center">{{ loop.index }}</td>
+                                <td class="">{{ item.nombre | upper }}</td>
+                                <td class="text-center">{{ item.total }}</td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="3">No hay registros</td>
+                            </tr>
+                        {% endfor %}
+                        {{ action.tbody_end() }}
+                        {{ action.tbl_end() }}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 col-sm-6">
+            <div class="block block-rounded">
+                {% include 'default/_card_header.html.twig' with {'title': 'Liquidaciones'} %}
+                <div class="block-content">
+                    <div class="table-responsive">
+                        {{ action.tbl_start('table-sm') }}
+                        {{ action.thead_start() }}
+                        <tr>
+                            {{ action.th('#', false, 'text-center') }}
+                            {{ action.th('Nombre', true, '') }}
+                            {{ action.th('Registros Ingresados', true, '') }}
+                        </tr>
+                        {{ action.thead_end() }}
+                        {{ action.tbody_start() }}
+                        {% for item in data.liquidaciones %}
+                            <tr>
+                                <td class="text-center">{{ loop.index }}</td>
+                                <td class="">{{ item.nombre | upper }}</td>
+                                <td class="text-center">{{ item.total }}</td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="3">No hay registros</td>
+                            </tr>
+                        {% endfor %}
+                        {{ action.tbody_end() }}
+                        {{ action.tbl_end() }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block _main_footer %}
+{#    {% include 'crud/_index_links.html.twig' with {'route_base': 'usuario'} %}#}
+{% endblock%}
+
+{% block _main_options %}
+{#    {% include 'crud/_index_filter.html.twig' %}#}
+{% endblock %}
+
+{% block _main_tools %}
+{#    {% include 'crud/_tools_ico.html.twig' %}#}
+{% endblock %}
+
+{% block _body_tools_ico %}
+{#    {% include 'crud/_index_links_tool.html.twig' with {'route_base': 'usuario'}  %}#}
+{% endblock %}
+
+{% block _body_tools %}
+{#    {% include 'crud/_index_links_ico.html.twig' with {'route_base': 'usuario'}  %}#}
+{% endblock %}
+
+{% block _stylesheets %}
+{% endblock %}
+
+{% block _javascripts %}
+    <script>
+        jQuery(document).ready(function () {
+            $(document).on('change', '#filter_size', function () {
+                let route = '{{ path('usuario_index') }}';
+                route = route + "?" + 'n=' + $('#filter_size option:selected').val();
+                route = route + "&" + 'b=' + $('#filter_text').val();
+                window.location = route;
+            });
+
+            $(document).on('click', '.btn-send', function () {
+                window.location = '{{ path('usuario_index') }}';
+            });
+
+            $(document).on('click', '.btn-clean', function () {
+                window.location.href = '{{ path('usuario_index') }}';
+            });
+        });
+    </script>
+{% endblock %}

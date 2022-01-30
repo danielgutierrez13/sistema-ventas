@@ -1,0 +1,17 @@
+{% if menus.items | length > 0 %}
+    <li class="{{ menus.class }}">
+        <a class="nav-submenu" data-toggle="nav-submenu" href="#">
+            <i class="si si-grid"></i>{{ 'administración' | gtrans | upper }}
+        </a>
+        <ul class="font-size-xs">
+            {% for menu in menus.items %}
+                <li>
+                    <a href="{% if menu.route is defined and menu.route !='' %}{{ path(menu.route) }}{% else %}javascript:;{% endif %}"
+                       class="{% if menu.active %}active{% endif %}" style="padding: 4px 8px 4px 0;">
+                        {{ menu.name | gtrans}}
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+    </li>
+{% endif %}

@@ -1,0 +1,8 @@
+{% import 'macro/action.html.twig' as action %}
+
+{% if access.has('new') %}
+    {{ action.btn_new_link(path(route_base ~ '_new')) }}
+{% endif %}
+{% if access.has('export') %}
+    {{ action.btn_export_link(path(route_base ~ '_export')) }}
+{% endif %}

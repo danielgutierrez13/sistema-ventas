@@ -1,0 +1,100 @@
+{% extends 'base.html.twig' %}
+{% import 'macro/breadcrumb.html.twig' as breadcrumb %}
+{% import 'macro/action.html.twig' as action %}
+
+{% set _title = 'Perfil' %}
+{% set _main_title = 'Mostrar' %}
+{% set _section =  'usuario_index'%}
+
+{% block _content_header %}
+    <!-- User Info -->
+    <div class="bg-image bg-image-bottom" style="background-image: url({{ asset(_theme ~ 'media/photos/photo6@2x.jpg')}} );">
+        <div class="bg-primary-dark-op py-30">
+            <div class="content content-full text-center">
+                <!-- Avatar -->
+                <div class="mb-15">
+                    <a class="img-link" href="#">
+                        {% if usuario.data and usuario.data.foto %}
+                            <img class="img-avatar img-avatar96 img-avatar-thumb" src="{{ asset(_media_directory ~ usuario.data.foto.path) | imagine_filter('small') }}" alt="">
+                        {% else %}
+                            <img class="img-avatar img-avatar96 img-avatar-thumb" src="{{ asset('img/avatar.png') }}" alt="">
+                        {% endif %}
+                    </a>
+                </div>
+                <!-- END Avatar -->
+
+                <!-- Personal -->
+                <h1 class="h3 text-white font-w700 mb-10">
+                    {{ usuario.fullName }}
+                </h1>
+
+                <h2 class="h5 text-white-op">
+                    {% if usuario.data and usuario.data.cargo %}
+                        {{ usuario.data.cargo }}
+                    {% endif %}
+                    <a class="text-primary-light" href="javascript:void(0)">{{ usuario.email }}</a>
+                </h2>
+                {% if usuario.data and usuario.data.telefono %}
+                    <h2 class="h5 text-white-op">
+                        <i class="fa fa-phone"></i> {{ usuario.data.telefono }}
+                    </h2>
+                {% endif %}
+                <!-- END Personal -->
+
+                <!-- Actions -->
+                <button type="button" class="btn btn-rounded btn-hero btn-sm btn-alt-success mb-5">
+                    <i class="fa fa-plus mr-5"></i> Agregar contacto
+                </button>
+                <button type="button" class="btn btn-rounded btn-hero btn-sm btn-alt-primary mb-5">
+                    <i class="fa fa-envelope-o mr-5"></i> Mensaje
+                </button>
+                <a class="btn btn-rounded btn-hero btn-sm btn-alt-secondary mb-5 px-20" href="{{ path('usuario_profile_edit', {'id' : usuario.id}) }}">
+                    <i class="fa fa-pencil"></i>
+                </a>
+                <!-- END Actions -->
+            </div>
+        </div>
+    </div>
+    <!-- END User Info -->
+{% endblock %}
+
+{% block _content %}
+    <!-- Articles -->
+    <h2 class="content-heading">
+        <button type="button" class="btn btn-sm btn-rounded btn-alt-secondary float-right">Ver más..</button>
+        <i class="si si-note mr-5"></i> Actividades
+    </h2>
+    <a class="block block-rounded block-link-shadow" href="javascript:void(0)">
+        <div class="block-content block-content-full">
+            <p class="font-size-sm text-muted float-sm-right mb-5"><em>3 hours ago</em></p>
+            <h4 class="font-size-default text-primary mb-0">
+                <i class="fa fa-newspaper-o text-muted mr-5"></i> Acopio editar
+            </h4>
+        </div>
+    </a>
+    <a class="block block-rounded block-link-shadow" href="javascript:void(0)">
+        <div class="block-content block-content-full">
+            <p class="font-size-sm text-muted float-sm-right mb-5"><em>2 days ago</em></p>
+            <h4 class="font-size-default text-primary mb-0">
+                <i class="fa fa-newspaper-o text-muted mr-5"></i> Acopio crear
+            </h4>
+        </div>
+    </a>
+    <!-- END Articles -->
+{% endblock %}
+
+{#{% block _main_footer %}#}
+{#    {% include 'crud/_show_links.html.twig' with {'route_base':'usuario','entity': usuario} %}#}
+{#{% endblock %}#}
+
+{#{% block _main_tools %}#}
+{#    {% include 'crud/_tools_ico.html.twig' %}#}
+{#{% endblock %}#}
+
+{#{% block _body_tools %}#}
+{#    {% include 'crud/_show_links_ico.html.twig' with {'route_base':'usuario','entity': usuario} %}#}
+{#{% endblock %}#}
+
+{#{% block _body_tools_ico %}#}
+{#    {% include 'crud/_show_links_tool.html.twig' with {'route_base':'usuario','entity': usuario} %}#}
+{#{% endblock %}#}

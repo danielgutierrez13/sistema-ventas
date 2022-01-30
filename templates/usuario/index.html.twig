@@ -1,0 +1,115 @@
+{% extends 'base.html.twig' %}
+{% import 'macro/breadcrumb.html.twig' as breadcrumb %}
+{% import 'macro/action.html.twig' as action %}
+{% import 'macro/pagination.html.twig' as pagination %}
+
+{% set _title = 'Usuario' %}
+{% set _main_title = 'Listado' %}
+{% set _section =  'usuario_index' %}
+
+{% block _breadcrumb %}
+    {{ breadcrumb.show('Usuarios') }}
+{% endblock %}
+
+{% block _main %}
+    <div class="table-responsive">
+        {{ action.tbl_start('table-sm') }}
+        {{ action.thead_start() }}
+        <tr>
+            {{ action.th('#', false, 'text-center') }}
+            {{ action.th('Datos', false, 'd-block d-sm-none') }}
+            {{ action.th('Usuario', true, 'd-none d-sm-table-cell') }}
+            {{ action.th('Nombres', true, 'd-none d-sm-table-cell') }}
+            {{ action.th('Correo', true, 'd-none d-sm-table-cell') }}
+            {{ action.th('Roles', true, 'd-none d-sm-table-cell') }}
+            {% include 'security/_config_table_th.html.twig' %}
+            {{ action.th('Activo', true, 'text-center d-none d-sm-table-cell') }}
+            <th></th>
+        </tr>
+        {{ action.thead_end() }}
+        {{ action.tbody_start() }}
+        {% for usuario in paginator.results %}
+            <tr>
+                <td class="text-center">{{ loop.index | indexReverse(paginator) }}</td>
+                <td class="d-block d-sm-none font-size-xs">
+                    {{ usuario.fullName }}<br>
+                    {{ usuario.username }}<br>
+                    {{ usuario.email }}<br>
+                    {% for rol in usuario.usuarioRoles %}
+                        {{ rol }},
+                    {% endfor %} <br>
+                    {{ usuario.activo | yesnocustom | raw }}
+                </td>
+                <td class="d-none d-sm-table-cell">{{ usuario.fullName}}</td>
+                <td class="d-none d-sm-table-cell">{{ usuario.username }}</td>
+                <td class="d-none d-sm-table-cell">{{ usuario.email }}</td>
+                <td class="d-none d-sm-table-cell">
+                    {% for rol in usuario.usuarioRoles %}
+                        {{ rol }},
+                    {% endfor %}
+                </td>
+                {% include 'security/_config_table_td.html.twig' with {'entity': usuario} %}
+                <td class="d-none d-sm-table-cell">{{ usuario.activo | yesnocustom | raw }}</td>
+                <td>
+                    {% if access.has('view') %}
+                        {{ action.btn_show_link2_ico(path('usuario_show', {'id': usuario.id})) }}
+                    {% endif %}
+                    {% if access.has('edit', usuario) %}
+                        {{ action.btn_edit_link2_ico(path('usuario_edit', {'id': usuario.id})) }}
+                    {% endif %}
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">No hay registros</td>
+            </tr>
+        {% endfor %}
+        {{ action.tbody_end() }}
+        {{ action.tbl_end() }}
+    </div>
+    {{ pagination.show(paginator, _section) }}
+{% endblock %}
+
+{% block _main_footer %}
+    {% include 'crud/_index_links.html.twig' with {'route_base': 'usuario'} %}
+{% endblock%}
+
+{% block _main_options %}
+    {% include 'crud/_index_filter.html.twig' %}
+{% endblock %}
+
+{% block _main_tools %}
+    {% include 'crud/_tools_ico.html.twig' %}
+{% endblock %}
+
+{% block _body_tools_ico %}
+    {% include 'crud/_index_links_tool.html.twig' with {'route_base': 'usuario'}  %}
+{% endblock %}
+
+{% block _body_tools %}
+    {% include 'crud/_index_links_ico.html.twig' with {'route_base': 'usuario'}  %}
+{% endblock %}
+
+{% block _stylesheets %}
+{% endblock %}
+
+{% block _javascripts %}
+    <script>
+        jQuery(document).ready(function () {
+            $(document).on('change', '#filter_size', function () {
+                let route = '{{ path('usuario_index') }}';
+                route = route + "?" + 'n=' + $('#filter_size option:selected').val();
+                route = route + "&" + 'b=' + $('#filter_text').val();
+                window.location = route;
+            });
+
+            $(document).on('click', '.btn-send', function () {
+                window.location = '{{ path('usuario_index') }}';
+            });
+
+            $(document).on('click', '.btn-clean', function () {
+                window.location.href = '{{ path('usuario_index') }}';
+            });
+        });
+    </script>
+{% endblock %}

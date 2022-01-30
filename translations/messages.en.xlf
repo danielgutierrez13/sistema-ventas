@@ -1,0 +1,108 @@
+<?xml version="1.0"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+    <file source-language="en" target-language="en" datatype="plaintext" original="file.ext">
+        <body>
+            <trans-unit id="user_not_found">
+                            <source>user_not_found</source>
+                            <target>User not found</target>
+                        </trans-unit>
+                        <trans-unit id="user_disabled">
+                            <source>user_disabled</source>
+                            <target>User disabled</target>
+                        </trans-unit>
+                        <trans-unit id="lbl.yes">
+                            <source>lbl.yes</source>
+                            <target>Yes</target>
+                        </trans-unit>
+                        <trans-unit id="lbl.no">
+                            <source>lbl.no</source>
+                            <target>No</target>
+                        </trans-unit>
+                        <trans-unit id="lbl.list">
+                            <source>lbl.list</source>
+                            <target>List</target>
+                        </trans-unit>
+                        <trans-unit id="lbl.view">
+                            <source>lbl.view</source>
+                            <target>View</target>
+                        </trans-unit>
+                        <trans-unit id="lbl.new">
+                            <source>lbl.new</source>
+                            <target>New</target>
+                        </trans-unit>
+                        <trans-unit id="lbl.edit">
+                            <source>lbl.edit</source>
+                            <target>Edit</target>
+                        </trans-unit>
+                        <trans-unit id="lbl.print">
+                            <source>lbl.print</source>
+                            <target>Print</target>
+                        </trans-unit>
+                        <trans-unit id="lbl.pay">
+                            <source>lbl.pay</source>
+                            <target>Pay</target>
+                        </trans-unit>
+                        <trans-unit id="lbl.delete">
+                            <source>lbl.delete</source>
+                            <target>Delete</target>
+                        </trans-unit>
+                        <trans-unit id="lbl.disable">
+                            <source>lbl.disable</source>
+                            <target>Inhabilitar</target>
+                        </trans-unit>
+                        <trans-unit id="lbl.restore">
+                            <source>lbl.restore</source>
+                            <target>Restore</target>
+                        </trans-unit>
+                        <trans-unit id="lbl.delete.forever">
+                            <source>lbl.delete.forever</source>
+                            <target>Delete forever</target>
+                        </trans-unit>
+                        <trans-unit id="lbl.report">
+                            <source>lbl.report</source>
+                            <target>Report</target>
+                        </trans-unit>
+                        <trans-unit id="lbl.export">
+                            <source>lbl.export</source>
+                            <target>Export</target>
+                        </trans-unit>
+                        <trans-unit id="lbl.import">
+                            <source>lbl.import</source>
+                            <target>Import</target>
+                        </trans-unit>
+                        <trans-unit id="lbl.saveAndCreateNew">
+                            <source>lbl.saveAndCreateNew</source>
+                            <target>Save and create new</target>
+                        </trans-unit>
+                        <trans-unit id="lbl.update">
+                            <source>lbl.update</source>
+                            <target>Update</target>
+                        </trans-unit>
+
+                        <trans-unit id="record_created">
+                            <source>record_created</source>
+                            <target>Record created</target>
+                        </trans-unit>
+                        <trans-unit id="record_updated">
+                            <source>record_updated</source>
+                            <target>Record updated</target>
+                        </trans-unit>
+                        <trans-unit id="record_deleted">
+                            <source>record_deleted</source>
+                            <target>Record deleted</target>
+                        </trans-unit>
+                        <trans-unit id="record_restored">
+                            <source>record_restored</source>
+                            <target>Record restored</target>
+                        </trans-unit>
+                        <trans-unit id="record_purged">
+                            <source>record_purged</source>
+                            <target>Record purged</target>
+                        </trans-unit>
+                        <trans-unit id="record_failed">
+                            <source>record_failed</source>
+                            <target>Record failed</target>
+                        </trans-unit>
+        </body>
+    </file>
+</xliff>

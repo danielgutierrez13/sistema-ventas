@@ -1,0 +1,5 @@
+{% if access is defined and access.isSuperAdmin -%}
+    <th class="d-none d-sm-table-cell">
+        {{ 'Configuración' | gtrans }}
+    </th>
+{% endif %}
