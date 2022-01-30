@@ -12,6 +12,9 @@
 
 {% form_theme form _self %}
 
+{% block _usuario_rol_permisos_label%}
+{% endblock %}
+
 {% block _usuario_rol_permisos_entry_widget %}
     {% import 'macro/action.html.twig' as actions %}
     {{ actions.frm_field_select_widget(form.menu) }}
@@ -27,21 +30,25 @@
 {% endblock %}
 
 {% block _main %}
-
     {{ include('usuario_rol/_form.html.twig', {'button_label': 'Actualizar'}) }}
-
 {% endblock %}
 
 {% block _main_tools %}
-    <ul class="nav nav-pills nav-pills--success">
-        <li class="nav-item">
-            {{ action.btn_list_link_ico(path('usuario_rol_index')) }}
-        </li>
-        <li class="nav-item">
-            {{ action.btn_delete_form_ico(path('usuario_rol_delete', {'id': usuario_rol.id}), csrf_token('delete' ~ usuario_rol.id)) }}
-        </li>
-    </ul>
+    {% include 'crud/_tools_ico.html.twig' %}
 {% endblock %}
+
+{% block _body_tools %}
+    {% include 'crud/_edit_links_ico.html.twig' with {'route_base':'usuario_rol','entity': usuario_rol} %}
+{% endblock %}
+
+{% block _body_tools_ico %}
+    {% include 'crud/_edit_links_tool.html.twig' with {'route_base':'usuario_rol','entity': usuario_rol} %}
+{% endblock %}
+
+{% block _main_footer %}
+    {% include 'crud/_edit_links.html.twig' with {'route_base':'usuario_rol','entity': usuario_rol} %}
+{% endblock %}
+
 
 {% block _javascripts %}
     {{ parent() }}

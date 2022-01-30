@@ -279,14 +279,14 @@ final class Security
     {
         $user = $this->user();
 
-        return isset($user['uuid']) ? $user['uuid']->toString() : 'no-user';
+        return isset($user['uuid']) ? (string) $user['uuid'] : 'no-user';
     }
 
     private function keyCacheConfig(): string
     {
         $config = $this->config();
 
-        return isset($config['uuid']) ? $config['uuid']->toString() : 'no-config';
+        return isset($config['uuid']) ? (string) $config['uuid'] : 'no-config';
     }
 
     public function tagConfig(): string

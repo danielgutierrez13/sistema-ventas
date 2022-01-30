@@ -14,7 +14,7 @@ var Collection = function () {
 
     // Handle Entity
     var handleEntity = function (collection, child) {
-        var $addLink = $('<a href="#" class="btn btn-outline-success btn-sm tm-btn m-btn--icon m-btn--pill"><span><i class="fa flaticon-plus"></i><span>Agregar</span></span></a>');
+        var $addLink = $('<a href="#" class="btn btn-light-success btn-sm tm-btn m-btn--icon m-btn--pill"><span><i class="fa fa-plus"></i><span>Agregar</span></span></a>');
         var $newLink = $(child).append($addLink);
         initDataForm(collection, $addLink, $newLink, child);
     };
@@ -53,7 +53,7 @@ var Collection = function () {
     };
 
     var addBlockFormDeleteLink = function($formLi) {
-        var $removeFormA = $('<a href="#" class="btn btn-outline-danger m-btn m-btn--icon m-btn--icon-only m-btn--pill"><i class="fa flaticon-delete"></i></a>');
+        var $removeFormA = $('<a href="#" class="btn btn-sm btn-light-danger btn-icon"><i class="fa fa-times"></i></a>');
         //var $auxForm = $('<div class="col-sm-1"></div>').append($removeFormA);
         //$tagFormLi.children('.row').append($auxForm);
         $formLi.append($removeFormA);
