@@ -67,6 +67,7 @@ class MenuRepository extends ServiceEntityRepository implements BaseRepository
     {
         $queryBuilder = $this->createQueryBuilder('menu')
             ->select('padre.nombre as padre_nombre')
+            ->addSelect('menu.id as menuId')
             ->addSelect('menu.nombre as nombre')
             ->addSelect('menu.ruta as ruta')
             ->addSelect('menu.icono as icono')

@@ -33,6 +33,7 @@ class UsuarioPermisoRepository extends ServiceEntityRepository
     {
         $queryBuilder = $this->createQueryBuilder('permiso')
             ->select('menu.nombre as nombre')
+            ->addSelect('padre.id as padreId')
             ->addSelect('padre.nombre as padre_nombre')
             ->addSelect('menu.ruta as ruta')
             ->addSelect('permiso.listar as listar')

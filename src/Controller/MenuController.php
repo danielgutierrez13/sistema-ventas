@@ -175,7 +175,7 @@ class MenuController extends BaseController
         foreach ($menus as $menu) {
             $agregar = false;
             foreach ($usuarioMenus as $usuarioMenu) {
-                if ($usuarioMenu['padre_nombre'] === $menu['padre_nombre'] && $usuarioMenu['ruta'] === $menu['ruta']) {
+                if ($usuarioMenu['padreId'] === $menu['menuId'] || $usuarioMenu['ruta'] === $menu['ruta']) {
                     $agregar = true;
                     break;
                 }
@@ -183,7 +183,7 @@ class MenuController extends BaseController
             if (true === $agregar || true === $isSuperAdmin) {
                 if (null !== $menu['padre_nombre']) {
                     if (empty($data[$menu['padre_nombre']]['clases']) && $menu['ruta'] === $section) {
-                        $data[$menu['padre_nombre']]['clases'] = 'hover show'; //'active';
+                        $data[$menu['padre_nombre']]['clases'] = 'hover show';
                     }
                     $data[$menu['padre_nombre']]['menus'][] = $menu;
                 } else {
