@@ -38,7 +38,7 @@ class MenuController extends BaseController
         );
     }
 
-    #[Route(path: '/export', methods: ['GET'], name: 'menu_export')]
+    #[Route(path: '/export', name: 'menu_export', methods: ['GET'])]
     public function export(Request $request, MenuManager $manager): Response
     {
         $this->denyAccess(Access::EXPORT, 'menu_index');
