@@ -1,6 +1,6 @@
 {% set _theme = 'theme/assets/' %}
 {#{% set _theme = 'https://cdn.sisprocoffee.com/metronic/v8.0/' %}#}
-{% set _title = _title | default('LACHOZA') %}
+{% set _title = _title | default('PIDIA') %}
 {% set _main_title = _main_title | default(null) %}
 {% set _section = _section | default(app.request.attributes.get('_route')) %}
 
@@ -17,9 +17,6 @@
     <!--begin::Fonts-->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" />
     <!--end::Fonts-->
-    <!--begin::Page Vendors Styles -->
-{#    {% block _stylesheets_vendors %}{% endblock %}#}
-    <!--end::Page Vendors Styles -->
     <!--begin::Global Stylesheets Bundle(used by all pages)-->
     <link href="{{ asset(_theme ~ 'plugins/global/plugins.bundle.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset(_theme ~ 'css/style.bundle.css') }}" rel="stylesheet" type="text/css" />
@@ -63,10 +60,10 @@
                                     <!--begin::Description-->
                                     <span class="text-gray-600 fw-bold d-block fs-8 mb-1">{{ app.user.fullName }}</span>
                                     <!--end::Description-->
-                                    {#                                    <!--begin::Label-->#}
-                                    {#                                    <div class="d-flex align-items-center text-success fs-9">#}
-                                    {#                                        <span class="bullet bullet-dot bg-success me-1"></span>online</div>#}
-                                    {#                                    <!--end::Label-->#}
+{#                                    <!--begin::Label-->#}
+{#                                    <div class="d-flex align-items-center text-success fs-9">#}
+{#                                        <span class="bullet bullet-dot bg-success me-1"></span>online</div>#}
+{#                                    <!--end::Label-->#}
                                 </div>
                                 <!--end::Info-->
                                 <!--begin::User menu-->
@@ -139,31 +136,7 @@
                 </div>
                 <!--end::Aside Toolbarl-->
                 <!--begin::Aside menu-->
-                <div class="aside-menu flex-column-fluid" style="border-top: 1px solid #2d2d43;">
-                    <!--begin::Aside Menu-->
-                    <div class="hover-scroll-overlay-y px-2 my-5 my-lg-5" id="kt_aside_menu_wrapper" data-kt-scroll="true" data-kt-scroll-height="auto" data-kt-scroll-dependencies="{default: '#kt_aside_toolbar, #kt_aside_footer', lg: '#kt_header, #kt_aside_toolbar, #kt_aside_footer'}" data-kt-scroll-wrappers="#kt_aside_menu" data-kt-scroll-offset="5px">
-                        <!--begin::Menu-->
-                        <div class="menu menu-column menu-title-gray-800 menu-state-title-primary menu-state-icon-primary menu-state-bullet-primary menu-arrow-gray-500" id="#kt_aside_menu" data-kt-menu="true">
-                            <div class="menu-item">
-                                <a class="menu-link {% if _section == 'homepage' %}active{% endif %}" href="{{ path('homepage') }}">
-                                <span class="menu-icon">
-                                    <!--begin::Svg Icon | path: assets/media/icons/duotune/general/gen001.svg-->
-                                    <span class="svg-icon svg-icon-2">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                                            <path d="M11 2.375L2 9.575V20.575C2 21.175 2.4 21.575 3 21.575H9C9.6 21.575 10 21.175 10 20.575V14.575C10 13.975 10.4 13.575 11 13.575H13C13.6 13.575 14 13.975 14 14.575V20.575C14 21.175 14.4 21.575 15 21.575H21C21.6 21.575 22 21.175 22 20.575V9.575L13 2.375C12.4 1.875 11.6 1.875 11 2.375Z" fill="black"/>
-                                        </svg>
-                                    </span>
-                                    <!--end::Svg Icon-->
-                                </span>
-                                    <span class="menu-title">Escritorio</span>
-                                </a>
-                            </div>
-                            {{ render(controller("Pidia\\Apps\\Demo\\Controller\\MenuController::build",{ 'section': _section })) }}
-                        </div>
-                        <!--end::Menu-->
-                    </div>
-                    <!--end::Aside Menu-->
-                </div>
+                {{ render(controller("Pidia\\Apps\\Demo\\Action\\Menu\\BuildMenuAction",{ 'menuSelected': _section })) }}
                 <!--end::Aside menu-->
             </div>
             <!--end::Aside-->

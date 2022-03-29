@@ -14,26 +14,33 @@ use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Pidia\Apps\Demo\Entity\Traits\EntityTrait;
+use Pidia\Apps\Demo\Repository\MenuRepository;
 
-#[Entity(repositoryClass: 'Pidia\Apps\Demo\Repository\MenuRepository')]
+#[Entity(repositoryClass: MenuRepository::class)]
 #[HasLifecycleCallbacks]
 class Menu
 {
     use EntityTrait;
+
     #[Id]
     #[GeneratedValue]
     #[Column(type: 'integer')]
-    private $id;
+    private ?int $id = null;
+
     #[Column(type: 'string', length: 50)]
-    private $nombre;
+    private ?string $nombre;
+
     #[Column(type: 'string', length: 50, nullable: true)]
-    private $ruta;
+    private ?string $ruta = null;
+
     #[Column(type: 'string', length: 50, nullable: true)]
-    private $icono;
+    private ?string $icono = null;
+
     #[Column(type: 'smallint')]
-    private $orden;
-    #[ManyToOne(targetEntity: 'Pidia\Apps\Demo\Entity\Menu')]
-    private $padre;
+    private int $orden;
+
+    #[ManyToOne(targetEntity: Menu::class)]
+    private ?Menu $padre = null;
 
     public function __construct()
     {
@@ -107,6 +114,18 @@ class Menu
 
     public function __toString(): string
     {
-        return $this->getNombre() ?? '';
+        return $this->getNombre();
+    }
+
+    public function toArray(): array
+    {
+        return [
+            'id' => $this->getId(),
+            'nombre' => $this->getNombre(),
+            'ruta' => $this->getRuta(),
+            'icono' => $this->getIcono(),
+            'orden' => $this->getOrden(),
+//            'insignia' => $this->getInsignia(),
+        ];
     }
 }

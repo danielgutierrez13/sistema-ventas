@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/carloschininin/app.git",
-                "reference": "92a950ba7aca81343c73ac77fe1e67ba8b1b0d2b"
+                "reference": "423ee9fa53c056b17277db28eb897f85efcf42be"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/carloschininin/app/zipball/92a950ba7aca81343c73ac77fe1e67ba8b1b0d2b",
-                "reference": "92a950ba7aca81343c73ac77fe1e67ba8b1b0d2b",
+                "url": "https://api.github.com/repos/carloschininin/app/zipball/423ee9fa53c056b17277db28eb897f85efcf42be",
+                "reference": "423ee9fa53c056b17277db28eb897f85efcf42be",
                 "shasum": ""
             },
             "require": {
@@ -59,7 +59,7 @@
                 "issues": "https://github.com/carloschininin/app/issues",
                 "source": "https://github.com/carloschininin/app/tree/main"
             },
-            "time": "2022-03-29T04:11:38+00:00"
+            "time": "2022-03-29T16:19:06+00:00"
         },
         {
             "name": "carloschininin/data",
@@ -2456,16 +2456,16 @@
         },
         {
             "name": "phpdocumentor/type-resolver",
-            "version": "1.6.0",
+            "version": "1.6.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpDocumentor/TypeResolver.git",
-                "reference": "93ebd0014cab80c4ea9f5e297ea48672f1b87706"
+                "reference": "77a32518733312af16a44300404e945338981de3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpDocumentor/TypeResolver/zipball/93ebd0014cab80c4ea9f5e297ea48672f1b87706",
-                "reference": "93ebd0014cab80c4ea9f5e297ea48672f1b87706",
+                "url": "https://api.github.com/repos/phpDocumentor/TypeResolver/zipball/77a32518733312af16a44300404e945338981de3",
+                "reference": "77a32518733312af16a44300404e945338981de3",
                 "shasum": ""
             },
             "require": {
@@ -2500,9 +2500,9 @@
             "description": "A PSR-5 based resolver of Class names, Types and Structural Element Names",
             "support": {
                 "issues": "https://github.com/phpDocumentor/TypeResolver/issues",
-                "source": "https://github.com/phpDocumentor/TypeResolver/tree/1.6.0"
+                "source": "https://github.com/phpDocumentor/TypeResolver/tree/1.6.1"
             },
-            "time": "2022-01-04T19:58:01+00:00"
+            "time": "2022-03-15T21:29:03+00:00"
         },
         {
             "name": "phpoffice/phpspreadsheet",
@@ -2610,16 +2610,16 @@
         },
         {
             "name": "phpstan/phpdoc-parser",
-            "version": "1.4.0",
+            "version": "1.4.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpdoc-parser.git",
-                "reference": "aa111aa1fecbc436f01e5439d88906bd3b612027"
+                "reference": "05333065c88f9518e08b094bdd10a4a9e538b2d4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpdoc-parser/zipball/aa111aa1fecbc436f01e5439d88906bd3b612027",
-                "reference": "aa111aa1fecbc436f01e5439d88906bd3b612027",
+                "url": "https://api.github.com/repos/phpstan/phpdoc-parser/zipball/05333065c88f9518e08b094bdd10a4a9e538b2d4",
+                "reference": "05333065c88f9518e08b094bdd10a4a9e538b2d4",
                 "shasum": ""
             },
             "require": {
@@ -2648,9 +2648,9 @@
             "description": "PHPDoc parser with support for nullable, intersection and generic types",
             "support": {
                 "issues": "https://github.com/phpstan/phpdoc-parser/issues",
-                "source": "https://github.com/phpstan/phpdoc-parser/tree/1.4.0"
+                "source": "https://github.com/phpstan/phpdoc-parser/tree/1.4.1"
             },
-            "time": "2022-03-28T10:52:48+00:00"
+            "time": "2022-03-29T09:28:16+00:00"
         },
         {
             "name": "psr/cache",

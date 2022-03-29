@@ -1,22 +1,31 @@
-{% for key,values in menus %}
-    <li class="{% if values.clases is defined %}{{ values.clases }}{% endif %}">
-        <a href="{% if values.ruta is defined and values.ruta !='' %}{{ path(values.ruta) }}{% else %}javascript:;{% endif %}"
-           class="nav-submenu" data-toggle="nav-submenu" href="#">
-            {% if values.icono is defined %}<i class="{{ values.icono }}"></i>{% endif %}
-            <span class="sidebar-mini-hide">{{ key | gtrans | upper }}</span>
-        </a>
-        {% if values.menus is defined and values.menus | length > 0 %}
-            <ul>
-                {% for menu in values.menus %}
-                    {% if menu.ruta is not null %}
-                        <li>
-                            <a href="{{ path(menu.ruta) }}" class="{% if menu.ruta == _section %}active{% endif %}">
-                                {{ menu.nombre | gtrans }}
-                            </a>
-                        </li>
-                    {% endif %}
-                {% endfor %}
-            </ul>
-        {% endif %}
-    </li>
-{% endfor %}
+{% import 'menu/build_macro.html.twig' as myMenu %}
+
+{% set homeActive = menuSelected == 'homepage' ? 'active' : '' %}
+
+<div class="aside-menu flex-column-fluid" style="border-top: 1px solid #2d2d43;">
+    <!--begin::Aside Menu-->
+    <div class="hover-scroll-overlay-y px-2 my-5 my-lg-5" id="kt_aside_menu_wrapper" data-kt-scroll="true" data-kt-scroll-height="auto" data-kt-scroll-dependencies="{default: '#kt_aside_toolbar, #kt_aside_footer', lg: '#kt_header, #kt_aside_toolbar, #kt_aside_footer'}" data-kt-scroll-wrappers="#kt_aside_menu" data-kt-scroll-offset="5px">
+        <!--begin::Menu-->
+        <div class="menu menu-column menu-title-gray-800 menu-state-title-primary menu-state-icon-primary menu-state-bullet-primary menu-arrow-gray-500" id="#kt_aside_menu" data-kt-menu="true">
+            <div class="menu-item">
+                <a class="menu-link {{ homeActive }}" href="{{ path('homepage') }}">
+                    <span class="menu-icon">
+                        <!--begin::Svg Icon | path: assets/media/icons/duotune/general/gen001.svg-->
+                        <span class="svg-icon svg-icon-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                <path d="M11 2.375L2 9.575V20.575C2 21.175 2.4 21.575 3 21.575H9C9.6 21.575 10 21.175 10 20.575V14.575C10 13.975 10.4 13.575 11 13.575H13C13.6 13.575 14 13.975 14 14.575V20.575C14 21.175 14.4 21.575 15 21.575H21C21.6 21.575 22 21.175 22 20.575V9.575L13 2.375C12.4 1.875 11.6 1.875 11 2.375Z" fill="black"/>
+                            </svg>
+                        </span>
+                        <!--end::Svg Icon-->
+                    </span>
+                    <span class="menu-title">Escritorio</span>
+                </a>
+            </div>
+            {{ myMenu.generator(menus) }}
+        </div>
+        <!--end::Menu-->
+    </div>
+    <!--end::Aside Menu-->
+</div>
+
+

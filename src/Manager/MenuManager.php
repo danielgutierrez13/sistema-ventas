@@ -9,13 +9,14 @@ declare(strict_types=1);
 
 namespace Pidia\Apps\Demo\Manager;
 
-use Pidia\Apps\Demo\Entity\Menu;
-use CarlosChininin\App\Infrastructure\Repository\BaseRepository;
+use CarlosChininin\App\Infrastructure\Manager\CRUDManager;
+use Pidia\Apps\Demo\Repository\MenuRepository;
+use Symfony\Component\Security\Core\Security;
 
-final class MenuManager extends BaseManager
+final class MenuManager extends CRUDManager
 {
-    public function repositorio(): BaseRepository
+    public function __construct(MenuRepository $repository, Security $security)
     {
-        return $this->manager()->getRepository(Menu::class);
+        parent::__construct($repository, $security);
     }
 }

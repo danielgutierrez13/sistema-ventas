@@ -8,6 +8,7 @@
 namespace Pidia\Apps\Demo\Repository;
 
 use CarlosChininin\App\Infrastructure\Repository\BaseRepository;
+use CarlosChininin\Util\Filter\DoctrineValueSearch;
 use CarlosChininin\Util\Http\ParamFetcher;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
@@ -56,7 +57,7 @@ class MenuRepository extends BaseRepository
 
         $this->security->configQuery($queryBuilder, true);
 
-        Paginator::queryTexts($queryBuilder, $params, ['menu.nombre', 'padre.nombre']);
+        DoctrineValueSearch::apply($queryBuilder, $params->getNullableString('b'), ['menu.nombre', 'padre.nombre']);
 
         return $queryBuilder;
     }
@@ -109,5 +110,17 @@ class MenuRepository extends BaseRepository
             ->join('menu.config', 'config')
             ->leftJoin('menu.padre', 'padre')
             ;
+    }
+
+    /** @return Menu[] */
+    public function searchAllActiveWithOrder(): array
+    {
+        return $this->allQuery()
+            ->where('menu.activo = true')
+            ->orderBy('padre.orden')
+            ->addOrderBy('menu.orden')
+            ->addOrderBy('menu.nombre', 'ASC')
+            ->getQuery()
+            ->getResult();
     }
 }

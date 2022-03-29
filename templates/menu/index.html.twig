@@ -35,7 +35,7 @@
                 <td>{{ menu.orden }}</td>
                 <td class="text-center">{{ menu.activo | yesnocustom | raw }}</td>
                 <td>
-                    {% if access.has('view') %}
+                    {% if access.has('view', menu) %}
                         {{ action.btn_show_link2_ico(path('menu_show', {'id': menu.id})) }}
                     {% endif %}
                     {% if access.has('edit', menu) %}
