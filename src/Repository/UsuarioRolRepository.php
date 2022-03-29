@@ -72,16 +72,4 @@ class UsuarioRolRepository extends BaseRepository
             ->setParameter('roleSuperAdmin', Security::ROLE_SUPER_ADMIN)
             ->setParameter('isSuperAdmin', $this->security->isSuperAdmin());
     }
-
-    public function userPermissions(int $userId): array
-    {
-        return $this->allQuery()
-            ->select('usuarioRol.permissions as permissions')
-            ->andWhere('usuarioRol.activo = true')
-            ->andWhere('usuarios.id = :userId')
-            ->setParameter('userId', $userId)
-            ->getQuery()
-            ->getSingleColumnResult()
-            ;
-    }
 }
