@@ -10,7 +10,7 @@ declare(strict_types=1);
 namespace Pidia\Apps\Demo\Manager;
 
 use Pidia\Apps\Demo\Entity\Usuario;
-use Pidia\Apps\Demo\Repository\BaseRepository;
+use CarlosChininin\App\Infrastructure\Repository\BaseRepository;
 
 final class UsuarioManager extends BaseManager
 {

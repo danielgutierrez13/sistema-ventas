@@ -7,6 +7,7 @@
 
 namespace Pidia\Apps\Demo\Form;
 
+use CarlosChininin\App\Infrastructure\Security\Form\MenuPermissionType;
 use Doctrine\ORM\EntityRepository;
 use Pidia\Apps\Demo\Entity\Config;
 use Pidia\Apps\Demo\Entity\UsuarioRol;
@@ -40,6 +41,14 @@ class UsuarioRolType extends AbstractType
                 'entry_options' => [
                     'attr' => ['class' => '_permiso'],
                 ],
+            ])
+            ->add('permissions', CollectionType::class, [
+                'required' => false,
+                'label' => 'Permisoss',
+                'entry_type' => MenuPermissionType::class,
+                'allow_add' => true,
+                'allow_delete' => true,
+                'by_reference' => false,
             ])
         ;
 

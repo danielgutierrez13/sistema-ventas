@@ -1,4 +1,7 @@
 {
+    "carloschininin/app": {
+        "version": "dev-main"
+    },
     "carloschininin/data": {
         "version": "dev-master"
     },

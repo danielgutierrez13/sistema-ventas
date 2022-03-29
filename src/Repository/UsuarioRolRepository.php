@@ -7,11 +7,14 @@
 
 namespace Pidia\Apps\Demo\Repository;
 
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use CarlosChininin\App\Infrastructure\Repository\BaseRepository;
+use CarlosChininin\App\Infrastructure\Security\Security;
+use CarlosChininin\Util\Filter\DoctrineValueSearch;
+use CarlosChininin\Util\Http\ParamFetcher;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
+use Pidia\Apps\Demo\Controller\UsuarioRolController;
 use Pidia\Apps\Demo\Entity\UsuarioRol;
-use Pidia\Apps\Demo\Security\Security;
 use Pidia\Apps\Demo\Util\Paginator;
 
 /**
@@ -20,7 +23,7 @@ use Pidia\Apps\Demo\Util\Paginator;
  * @method UsuarioRol[]    findAll()
  * @method UsuarioRol[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class UsuarioRolRepository extends ServiceEntityRepository implements BaseRepository
+class UsuarioRolRepository extends BaseRepository
 {
     public function __construct(ManagerRegistry $registry, private Security $security)
     {
@@ -34,9 +37,9 @@ class UsuarioRolRepository extends ServiceEntityRepository implements BaseReposi
         return Paginator::create($queryBuilder, $params);
     }
 
-    public function filter(array $params, bool $inArray = true): array
+    public function filter(array|ParamFetcher $params, bool $inArray = true, array $permissions = []): array
     {
-        $queryBuilder = $this->filterQuery($params);
+        $queryBuilder = $this->filterQuery($params, $permissions);
 
         if (true === $inArray) {
             return $queryBuilder->getQuery()->getArrayResult();
@@ -45,19 +48,27 @@ class UsuarioRolRepository extends ServiceEntityRepository implements BaseReposi
         return $queryBuilder->getQuery()->getResult();
     }
 
-    private function filterQuery(array $params): QueryBuilder
+    public function filterQuery(array|ParamFetcher $params, array $permissions = []): QueryBuilder
     {
-        $queryBuilder = $this->createQueryBuilder('usuarioRol')
-            ->select(['usuarioRol', 'config', 'permisos', 'menu'])
+        $queryBuilder = $this->allQuery();
+
+        $this->security->filterQuery($queryBuilder, UsuarioRolController::BASE_ROUTE, $permissions);
+
+        DoctrineValueSearch::apply($queryBuilder, $params->getNullableString('b'), ['usuarioRol.nombre']);
+
+        return $queryBuilder;
+    }
+
+    public function allQuery(): QueryBuilder
+    {
+        return $this->createQueryBuilder('usuarioRol')
+            ->select(['usuarioRol', 'config', 'permisos', 'menu', 'owner'])
             ->leftJoin('usuarioRol.config', 'config')
             ->leftJoin('usuarioRol.permisos', 'permisos')
             ->leftJoin('permisos.menu', 'menu')
-        ;
-
-        $this->security->configQuery($queryBuilder);
-
-        Paginator::queryTexts($queryBuilder, $params, ['usuarioRol.nombre']);
-
-        return $queryBuilder;
+            ->leftJoin('usuarioRol.propietario', 'owner')
+            ->andWhere('usuarioRol.rol <> :roleSuperAdmin OR :isSuperAdmin = true')
+            ->setParameter('roleSuperAdmin', Security::ROLE_SUPER_ADMIN)
+            ->setParameter('isSuperAdmin', $this->security->isSuperAdmin());
     }
 }

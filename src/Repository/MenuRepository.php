@@ -7,7 +7,8 @@
 
 namespace Pidia\Apps\Demo\Repository;
 
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use CarlosChininin\App\Infrastructure\Repository\BaseRepository;
+use CarlosChininin\Util\Http\ParamFetcher;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 use Pidia\Apps\Demo\Entity\Menu;
@@ -20,14 +21,11 @@ use Pidia\Apps\Demo\Util\Paginator;
  * @method Menu[]    findAll()
  * @method Menu[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class MenuRepository extends ServiceEntityRepository implements BaseRepository
+class MenuRepository extends BaseRepository
 {
-    private $security;
-
-    public function __construct(ManagerRegistry $registry, Security $security)
+    public function __construct(ManagerRegistry $registry, private Security $security)
     {
         parent::__construct($registry, Menu::class);
-        $this->security = $security;
     }
 
     public function findLatest(array $params): Paginator
@@ -37,9 +35,9 @@ class MenuRepository extends ServiceEntityRepository implements BaseRepository
         return Paginator::create($queryBuilder, $params);
     }
 
-    public function filter(array $params, bool $inArray = true): array
+    public function filter(array|ParamFetcher $params, bool $inArray = true, array $permissions = []): array
     {
-        $queryBuilder = $this->filterQuery($params);
+        $queryBuilder = $this->filterQuery($params, $permissions);
 
         if (true === $inArray) {
             return $queryBuilder->getQuery()->getArrayResult();
@@ -48,7 +46,7 @@ class MenuRepository extends ServiceEntityRepository implements BaseRepository
         return $queryBuilder->getQuery()->getResult();
     }
 
-    private function filterQuery(array $params): QueryBuilder
+    public function filterQuery(array|ParamFetcher $params, array $permissions = []): QueryBuilder
     {
         $queryBuilder = $this->createQueryBuilder('menu')
             ->select(['menu', 'padre'])
@@ -82,5 +80,34 @@ class MenuRepository extends ServiceEntityRepository implements BaseRepository
         $this->security->configQuery($queryBuilder, true);
 
         return $queryBuilder->getQuery()->getArrayResult();
+    }
+
+    public function allForMenus(): array
+    {
+        $queryBuilder = $this->createQueryBuilder('menu')
+            ->select('padre.nombre as padre_nombre')
+            ->addSelect('menu.nombre as nombre')
+            ->addSelect('menu.ruta as ruta')
+            ->leftJoin('menu.padre', 'padre')
+            ->leftJoin('menu.config', 'config')
+            ->where('menu.activo = TRUE')
+            ->andWhere('menu.padre IS NOT NULL')
+            ->orderBy('padre.orden', 'ASC')
+            ->addOrderBy('menu.orden', 'ASC')
+            ->addOrderBy('menu.nombre', 'ASC')
+        ;
+
+        $this->security->configQuery($queryBuilder, true);
+
+        return $queryBuilder->getQuery()->getArrayResult();
+    }
+
+    public function allQuery(): QueryBuilder
+    {
+        return $this->createQueryBuilder('menu')
+            ->select(['menu', 'padre'])
+            ->join('menu.config', 'config')
+            ->leftJoin('menu.padre', 'padre')
+            ;
     }
 }

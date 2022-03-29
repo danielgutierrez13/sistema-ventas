@@ -29,6 +29,14 @@
     {{ actions.frm_field_checkbox(form.maestro) }}
 {% endblock %}
 
+{% block _usuario_rol_permissions_entry_attributes_entry_label %}
+{% endblock %}
+
+{% block _usuario_rol_permissions_entry_attributes_entry_widget %}
+    {% import 'macro/action.html.twig' as actions %}
+    {{ actions.frm_field_checkbox(form) }}
+{% endblock %}
+
 {% block _main %}
     {{ include('usuario_rol/_form.html.twig', {'button_label': 'Actualizar'}) }}
 {% endblock %}
@@ -56,6 +64,7 @@
     <script>
         jQuery(document).ready(function() {
             Collection.init('#usuario_rol_permisos');
+            Collection.init('#usuario_rol_permissions');
         });
     </script>
 {% endblock %}

@@ -17,7 +17,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 abstract class BaseController extends AbstractController
 {
-    public const CACHE_TIME = 300; //seconds
+    public const CACHE_TIME = 300; // seconds
 
     public function __construct(
         protected EntityManagerInterface $entityManager,

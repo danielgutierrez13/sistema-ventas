@@ -9,13 +9,14 @@ declare(strict_types=1);
 
 namespace Pidia\Apps\Demo\Manager;
 
-use Pidia\Apps\Demo\Entity\UsuarioRol;
-use Pidia\Apps\Demo\Repository\BaseRepository;
+use CarlosChininin\App\Infrastructure\Manager\CRUDManager;
+use Pidia\Apps\Demo\Repository\UsuarioRolRepository;
+use Symfony\Component\Security\Core\Security;
 
-final class UsuarioRolManager extends BaseManager
+final class UsuarioRolManager extends CRUDManager
 {
-    public function repositorio(): BaseRepository
+    public function __construct(UsuarioRolRepository $repository, Security $security)
     {
-        return $this->manager()->getRepository(UsuarioRol::class);
+        parent::__construct($repository, $security);
     }
 }

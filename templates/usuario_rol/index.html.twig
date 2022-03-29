@@ -49,7 +49,7 @@
                 {% include 'security/_config_table_td.html.twig' with {'entity': usuario_rol} %}
                 <td class="d-none d-sm-table-cell">{{ usuario_rol.activo | yesnocustom | raw }}</td>
                 <td>
-                    {% if access.has('view') %}
+                    {% if access.has('show', usuario_rol) %}
                         {{ action.btn_show_link2_ico(path('usuario_rol_show', {'id': usuario_rol.id})) }}
                     {% endif %}
                     {% if access.has('edit', usuario_rol) %}

@@ -7,6 +7,7 @@
 
 namespace Pidia\Apps\Demo\Entity;
 
+use CarlosChininin\App\Infrastructure\Security\Permission;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping\Column;
@@ -191,7 +192,7 @@ class UsuarioPermiso
     /**
      * @return Collection|UsuarioRol[]
      */
-    public function getRoles(): Collection
+    public function getRoles(): Collection|array
     {
         return $this->roles;
     }

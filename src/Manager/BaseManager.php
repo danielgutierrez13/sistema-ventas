@@ -9,12 +9,12 @@ declare(strict_types=1);
 
 namespace Pidia\Apps\Demo\Manager;
 
+use CarlosChininin\App\Infrastructure\Repository\BaseRepository;
 use CarlosChininin\Data\Export\ExportExcel;
 use CarlosChininin\Util\Error\Error;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Exception;
-use Pidia\Apps\Demo\Repository\BaseRepository;
 use Pidia\Apps\Demo\Util\Paginator;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;

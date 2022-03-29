@@ -7,6 +7,7 @@
 
 namespace Pidia\Apps\Demo\Entity;
 
+use CarlosChininin\App\Domain\Model\AuthRole\AuthRole;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping\Column;
@@ -20,7 +21,7 @@ use Pidia\Apps\Demo\Repository\UsuarioRolRepository;
 
 #[Entity(repositoryClass: UsuarioRolRepository::class)]
 #[HasLifecycleCallbacks]
-class UsuarioRol
+class UsuarioRol extends AuthRole
 {
     use EntityTrait;
 
@@ -40,6 +41,9 @@ class UsuarioRol
 
     #[ManyToMany(targetEntity: UsuarioPermiso::class, mappedBy: 'roles', cascade: ['persist', 'remove'])]
     private Collection $permisos;
+
+    #[Column(type: 'menu_permission_json', nullable: true)]
+    private ?array $permissions = [];
 
     public function __construct()
     {
@@ -105,7 +109,7 @@ class UsuarioRol
     /**
      * @return Collection|UsuarioPermiso[]
      */
-    public function getPermisos(): Collection
+    public function getPermisos(): Collection|array
     {
         return $this->permisos;
     }
@@ -129,8 +133,35 @@ class UsuarioRol
         return $this;
     }
 
+    public function getPermissions(): ?array
+    {
+        return $this->permissions;
+    }
+
+    public function setPermissions(?array $permissions): self
+    {
+        $this->permissions = $permissions;
+
+        return $this;
+    }
+
     public function __toString(): string
     {
         return $this->getNombre();
+    }
+
+    public function permissions(): array
+    {
+        return $this->getPermissions();
+    }
+
+    public function role(): string
+    {
+        return $this->getRol();
+    }
+
+    public function owner(): ?Usuario
+    {
+        return $this->propietario();
     }
 }

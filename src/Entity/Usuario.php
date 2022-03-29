@@ -7,6 +7,7 @@
 
 namespace Pidia\Apps\Demo\Entity;
 
+use CarlosChininin\App\Domain\Model\AuthUser\AuthUser;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping\Column;
@@ -15,7 +16,6 @@ use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\ManyToMany;
-use Serializable;
 use Pidia\Apps\Demo\Entity\Traits\EntityTrait;
 use Pidia\Apps\Demo\Repository\UsuarioRepository;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -27,7 +27,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 
 #[Entity(repositoryClass: UsuarioRepository::class)]
 #[HasLifecycleCallbacks]
-class Usuario implements UserInterface, PasswordAuthenticatedUserInterface
+class Usuario extends AuthUser
 {
     use EntityTrait;
 
@@ -76,7 +76,7 @@ class Usuario implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function setUsername(string $username): self
     {
-        $this->username = $username; //Generator::withoutWhiteSpaces($username);
+        $this->username = $username; // Generator::withoutWhiteSpaces($username);
 
         return $this;
     }
@@ -88,7 +88,7 @@ class Usuario implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function setEmail(string $email): self
     {
-        $this->email = $email; //Generator::withoutWhiteSpaces($email);
+        $this->email = $email; // Generator::withoutWhiteSpaces($email);
 
         return $this;
     }
@@ -103,7 +103,7 @@ class Usuario implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function setPassword(?string $password): self
     {
-        $this->password = $password; //Generator::withoutWhiteSpaces($password);
+        $this->password = $password; // Generator::withoutWhiteSpaces($password);
 
         return $this;
     }
@@ -158,9 +158,6 @@ class Usuario implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    /**
-     * @return Collection|null
-     */
     public function getUsuarioRoles(): ?Collection
     {
         return $this->usuarioRoles;
@@ -218,5 +215,10 @@ class Usuario implements UserInterface, PasswordAuthenticatedUserInterface
     public function __toString(): string
     {
         return $this->getUsername();
+    }
+
+    public function authRoles(): Collection|array
+    {
+        return $this->getUsuarioRoles();
     }
 }

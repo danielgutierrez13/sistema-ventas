@@ -7,7 +7,8 @@
 
 namespace Pidia\Apps\Demo\Repository;
 
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use CarlosChininin\App\Infrastructure\Repository\BaseRepository;
+use CarlosChininin\Util\Http\ParamFetcher;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 use Pidia\Apps\Demo\Entity\ConfigMenu;
@@ -19,7 +20,7 @@ use Pidia\Apps\Demo\Util\Paginator;
  * @method ConfigMenu[]    findAll()
  * @method ConfigMenu[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class ConfigMenuRepository extends ServiceEntityRepository implements BaseRepository
+class ConfigMenuRepository extends BaseRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
@@ -33,9 +34,9 @@ class ConfigMenuRepository extends ServiceEntityRepository implements BaseReposi
         return Paginator::create($queryBuilder, $params);
     }
 
-    public function filter(array $params, bool $inArray = true): array
+    public function filter(array|ParamFetcher $params, bool $inArray = true, array $permissions = []): array
     {
-        $queryBuilder = $this->filterQuery($params);
+        $queryBuilder = $this->filterQuery($params, $permissions);
 
         if (true === $inArray) {
             return $queryBuilder->getQuery()->getArrayResult();
@@ -44,7 +45,7 @@ class ConfigMenuRepository extends ServiceEntityRepository implements BaseReposi
         return $queryBuilder->getQuery()->getResult();
     }
 
-    private function filterQuery(array $params): QueryBuilder
+    public function filterQuery(array|ParamFetcher $params, array $permissions = []): QueryBuilder
     {
         $queryBuilder = $this->createQueryBuilder('configMenu')
             ->select('configMenu')
@@ -54,5 +55,12 @@ class ConfigMenuRepository extends ServiceEntityRepository implements BaseReposi
         Paginator::queryTexts($queryBuilder, $params, ['configMenu.name']);
 
         return $queryBuilder;
+    }
+
+    public function allQuery(): QueryBuilder
+    {
+        return $this->createQueryBuilder('configMenu')
+            ->select('configMenu')
+        ;
     }
 }

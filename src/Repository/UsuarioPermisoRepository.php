@@ -51,7 +51,7 @@ class UsuarioPermisoRepository extends ServiceEntityRepository
             ->leftJoin('roles.usuarios', 'usuarios')
             ->where('menu.activo = TRUE')
             ->andWhere('usuarios.id = :usuario_id')
-            ->setParameter('usuario_id', $usuario_id)//->orderBy('padre.peso', 'ASC')
+            ->setParameter('usuario_id', $usuario_id)// ->orderBy('padre.peso', 'ASC')
         ;
 
         $this->security->configQuery($queryBuilder);

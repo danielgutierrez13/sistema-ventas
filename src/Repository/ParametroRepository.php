@@ -7,13 +7,14 @@
 
 namespace Pidia\Apps\Demo\Repository;
 
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use CarlosChininin\App\Infrastructure\Repository\BaseRepository;
+use CarlosChininin\Util\Http\ParamFetcher;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
+use function is_array;
 use Pidia\Apps\Demo\Entity\Parametro;
 use Pidia\Apps\Demo\Util\Paginator;
-use function is_array;
 
 /**
  * @method Parametro|null find($id, $lockMode = null, $lockVersion = null)
@@ -21,7 +22,7 @@ use function is_array;
  * @method Parametro[]    findAll()
  * @method Parametro[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class ParametroRepository extends ServiceEntityRepository implements BaseRepository
+class ParametroRepository extends BaseRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
@@ -35,9 +36,9 @@ class ParametroRepository extends ServiceEntityRepository implements BaseReposit
         return Paginator::create($queryBuilder, $params);
     }
 
-    public function filter(array $params, bool $inArray = true): array
+    public function filter(array|ParamFetcher $params, bool $inArray = true, array $permissions = []): array
     {
-        $queryBuilder = $this->filterQuery($params, true);
+        $queryBuilder = $this->filterQuery($params, $permissions);
 
         if (true === $inArray) {
             return $queryBuilder->getQuery()->getArrayResult();
@@ -46,7 +47,7 @@ class ParametroRepository extends ServiceEntityRepository implements BaseReposit
         return $queryBuilder->getQuery()->getResult();
     }
 
-    private function filterQuery(array $params, bool $all = false): QueryBuilder
+    public function filterQuery(array|ParamFetcher $params, array $permissions = []): QueryBuilder
     {
         $queryBuilder = $this->createQueryBuilder('parametro')
             ->select(['parametro', 'padre'])
@@ -69,8 +70,8 @@ class ParametroRepository extends ServiceEntityRepository implements BaseReposit
             ->select(['parametro', 'padre'])
             ->leftJoin('parametro.padre', 'padre')
             ->where('parametro.activo = true')
-            //->setParameter('val', $value)
-            //->orderBy('a.id', 'ASC')
+            // ->setParameter('val', $value)
+            // ->orderBy('a.id', 'ASC')
         ;
 
         if (null !== $length) {
@@ -128,7 +129,7 @@ class ParametroRepository extends ServiceEntityRepository implements BaseReposit
      */
     public function findOneByPadreAndAlias(string $padre_alias, string $alias): ?Parametro
     {
-        //try{
+        // try{
         return $this->createQueryBuilder('parametro')
                 ->join('parametro.padre', 'padre')
                 ->where('parametro.activo = TRUE')
@@ -187,5 +188,13 @@ class ParametroRepository extends ServiceEntityRepository implements BaseReposit
         }
 
         return $query->getQuery()->getOneOrNullResult();
+    }
+
+    public function allQuery(): QueryBuilder
+    {
+        return $this->createQueryBuilder('parametro')
+            ->select(['parametro', 'padre'])
+            ->leftJoin('parametro.padre', 'padre')
+            ;
     }
 }

@@ -7,7 +7,8 @@
 
 namespace Pidia\Apps\Demo\Repository;
 
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use CarlosChininin\App\Infrastructure\Repository\BaseRepository;
+use CarlosChininin\Util\Http\ParamFetcher;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
@@ -23,7 +24,7 @@ use Pidia\Apps\Demo\Util\Paginator;
  * @method Usuario[]    findAll()
  * @method Usuario[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class UsuarioRepository extends ServiceEntityRepository implements BaseRepository
+class UsuarioRepository extends BaseRepository
 {
     public function __construct(ManagerRegistry $registry, private Security $security)
     {
@@ -37,9 +38,9 @@ class UsuarioRepository extends ServiceEntityRepository implements BaseRepositor
         return Paginator::create($queryBuilder, $params);
     }
 
-    public function filter(array $params, bool $inArray = true): array
+    public function filter(array|ParamFetcher $params, bool $inArray = true, array $permissions = []): array
     {
-        $queryBuilder = $this->filterQuery($params);
+        $queryBuilder = $this->filterQuery($params, $permissions);
 
         if (true === $inArray) {
             return $queryBuilder->getQuery()->getArrayResult();
@@ -48,7 +49,7 @@ class UsuarioRepository extends ServiceEntityRepository implements BaseRepositor
         return $queryBuilder->getQuery()->getResult();
     }
 
-    private function filterQuery(array $params): QueryBuilder
+    public function filterQuery(array|ParamFetcher $params, array $permissions = []): QueryBuilder
     {
         $queryBuilder = $this->createQueryBuilder('usuario')
             ->select(['usuario', 'config', 'usuarioRoles'])
@@ -83,5 +84,14 @@ class UsuarioRepository extends ServiceEntityRepository implements BaseRepositor
         }
 
         return [];
+    }
+
+    public function allQuery(): QueryBuilder
+    {
+        return $this->createQueryBuilder('usuario')
+            ->select(['usuario', 'config', 'usuarioRoles'])
+            ->leftJoin('usuario.config', 'config')
+            ->leftJoin('usuario.usuarioRoles', 'usuarioRoles')
+            ;
     }
 }

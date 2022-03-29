@@ -7,26 +7,32 @@
 
 namespace Pidia\Apps\Demo\Controller;
 
+use CarlosChininin\App\Infrastructure\Controller\WebAuthController;
+use CarlosChininin\App\Infrastructure\Security\Permission;
+use CarlosChininin\Util\Http\ParamFetcher;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\EntityManagerInterface;
 use Pidia\Apps\Demo\Cache\MenuCache;
 use Pidia\Apps\Demo\Entity\UsuarioRol;
 use Pidia\Apps\Demo\Form\UsuarioRolType;
 use Pidia\Apps\Demo\Manager\UsuarioRolManager;
-use Pidia\Apps\Demo\Security\Access;
 use Pidia\Apps\Demo\Util\Generator;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route(path: '/admin/usuario_rol')]
-class UsuarioRolController extends BaseController
+class UsuarioRolController extends WebAuthController
 {
+    public const BASE_ROUTE = 'usuario_rol_index';
+
     #[Route(path: '/', name: 'usuario_rol_index', defaults: ['page' => '1'], methods: ['GET'])]
     #[Route(path: '/page/{page<[1-9]\d*>}', name: 'usuario_rol_index_paginated', methods: ['GET'])]
     public function index(Request $request, int $page, UsuarioRolManager $manager): Response
     {
-        $this->denyAccess(Access::LIST, 'usuario_rol_index');
-        $paginator = $manager->list($request->query->all(), $page);
+        $this->denyAccess([Permission::LIST]);
+
+        $paginator = $manager->paginate($page, ParamFetcher::fromRequestQuery($request));
 
         return $this->render(
             'usuario_rol/index.html.twig',
@@ -39,26 +45,30 @@ class UsuarioRolController extends BaseController
     #[Route(path: '/export', name: 'usuario_rol_export', methods: ['GET'])]
     public function export(Request $request, UsuarioRolManager $manager): Response
     {
-        $this->denyAccess(Access::EXPORT, 'usuario_rol_index');
+        $this->denyAccess([Permission::EXPORT]);
+
         $headers = [
             'nombre' => 'Nombre',
             'rol' => 'Alias',
             'activo' => 'Activo',
         ];
 
-        return $manager->exportOfQuery($request->query->all(), $headers, 'Reporte');
+        $items = $manager->dataExport(ParamFetcher::fromRequestQuery($request), true);
+
+        return $manager->export($items, $headers, 'usuario_rol');
     }
 
     #[Route(path: '/new', name: 'usuario_rol_new', methods: ['GET', 'POST'])]
     public function new(Request $request, UsuarioRolManager $manager, MenuCache $menuCache): Response
     {
-        $this->denyAccess(Access::NEW, 'usuario_rol_index');
+        $this->denyAccess([Permission::NEW]);
+
         $rol = new UsuarioRol();
         $form = $this->createForm(UsuarioRolType::class, $rol);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $rol->setPropietario($this->getUser());
-            $configId = $this->getUser()->config()->getId();
+            $configId = $this->getUser()->config()?->getId();
             if (null === $rol->getRol()) {
                 $rol->setRol(Generator::createRol($rol->getNombre(), $configId));
             }
@@ -84,15 +94,16 @@ class UsuarioRolController extends BaseController
     #[Route(path: '/{id}', name: 'usuario_rol_show', methods: ['GET'])]
     public function show(UsuarioRol $rol): Response
     {
-        $this->denyAccess(Access::VIEW, 'usuario_rol_index');
+        $this->denyAccess([Permission::SHOW], $rol);
 
         return $this->render('usuario_rol/show.html.twig', ['usuario_rol' => $rol]);
     }
 
     #[Route(path: '/{id}/edit', name: 'usuario_rol_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, UsuarioRol $rol, UsuarioRolManager $manager, MenuCache $menuCache): Response
+    public function edit(Request $request, UsuarioRol $rol, UsuarioRolManager $manager, MenuCache $menuCache, EntityManagerInterface $entityManager): Response
     {
-        $this->denyAccess(Access::EDIT, 'usuario_rol_index');
+        $this->denyAccess([Permission::EDIT], $rol);
+
         $originalPermisos = new ArrayCollection();
         foreach ($rol->getPermisos() as $permiso) {
             $originalPermisos->add($permiso);
@@ -100,10 +111,9 @@ class UsuarioRolController extends BaseController
         $form = $this->createForm(UsuarioRolType::class, $rol);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->entityManager;
             foreach ($originalPermisos as $permiso) {
                 if (false === $rol->getPermisos()->contains($permiso)) {
-                    $em->remove($permiso);
+                    $entityManager->remove($permiso);
                 }
             }
 
@@ -127,9 +137,10 @@ class UsuarioRolController extends BaseController
     }
 
     #[Route(path: '/{id}', name: 'usuario_rol_delete', methods: ['POST'])]
-    public function delete(Request $request, UsuarioRol $rol, UsuarioRolManager $manager): Response
+    public function state(Request $request, UsuarioRol $rol, UsuarioRolManager $manager): Response
     {
-        $this->denyAccess(Access::DELETE, 'usuario_rol_index');
+        $this->denyAccess([Permission::ENABLE, Permission::DISABLE], $rol);
+
         if ($this->isCsrfTokenValid('delete'.$rol->getId(), $request->request->get('_token'))) {
             $rol->changeActivo();
             if ($manager->save($rol)) {
@@ -145,7 +156,8 @@ class UsuarioRolController extends BaseController
     #[Route(path: '/{id}/delete', name: 'usuario_rol_delete_forever', methods: ['POST'])]
     public function deleteForever(Request $request, UsuarioRol $rol, UsuarioRolManager $manager): Response
     {
-        $this->denyAccess(Access::MASTER, 'usuario_rol_index', $rol);
+        $this->denyAccess([Permission::DELETE], $rol);
+
         if ($this->isCsrfTokenValid('delete_forever'.$rol->getId(), $request->request->get('_token'))) {
             if ($manager->remove($rol)) {
                 $this->addFlash('warning', 'Registro eliminado');

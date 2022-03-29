@@ -30,6 +30,14 @@
     ) }}
 
     {{ action.frm_column(
+        action.frm_column_field_collection(form.permissions, '', '', '', 2),
+        null,
+        null,
+        null,
+        1
+    ) }}
+
+    {{ action.frm_column(
         action.frm_column_btn(button_label|default('Guardar')),
         null,
         null,

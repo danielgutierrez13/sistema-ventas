@@ -2,10 +2,11 @@
 
 namespace Pidia\Apps\Demo\Repository;
 
+use CarlosChininin\App\Infrastructure\Repository\BaseRepository;
+use CarlosChininin\Util\Http\ParamFetcher;
 use Pidia\Apps\Demo\Entity\Config;
 use Pidia\Apps\Demo\Entity\Menu;
 use Pidia\Apps\Demo\Util\Paginator;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -15,7 +16,7 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method Config[]    findAll()
  * @method Config[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class ConfigRepository extends ServiceEntityRepository implements BaseRepository
+class ConfigRepository extends BaseRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
@@ -29,9 +30,9 @@ class ConfigRepository extends ServiceEntityRepository implements BaseRepository
         return Paginator::create($queryBuilder, $params);
     }
 
-    public function filter(array $params, bool $inArray = true): array
+    public function filter(array|ParamFetcher $params, bool $inArray = true, array $permissions = []): array
     {
-        $queryBuilder = $this->filterQuery($params);
+        $queryBuilder = $this->filterQuery($params, $permissions);
 
         if (true === $inArray) {
             return $queryBuilder->getQuery()->getArrayResult();
@@ -40,7 +41,7 @@ class ConfigRepository extends ServiceEntityRepository implements BaseRepository
         return $queryBuilder->getQuery()->getResult();
     }
 
-    private function filterQuery(array $params): QueryBuilder
+    public function filterQuery(array|ParamFetcher $params, array $permissions = []): QueryBuilder
     {
         $queryBuilder = $this->createQueryBuilder('config')
             ->select('config')
@@ -75,6 +76,13 @@ class ConfigRepository extends ServiceEntityRepository implements BaseRepository
             ->orderBy('menus.name', 'ASC')
             ->getQuery()
             ->getArrayResult()
+            ;
+    }
+
+    public function allQuery(): QueryBuilder
+    {
+        return $this->createQueryBuilder('config')
+            ->select('config')
             ;
     }
 }
