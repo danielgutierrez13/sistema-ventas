@@ -10,18 +10,13 @@ namespace Pidia\Apps\Demo\Controller;
 use CarlosChininin\App\Infrastructure\Controller\WebAuthController;
 use CarlosChininin\App\Infrastructure\Security\Permission;
 use CarlosChininin\Util\Http\ParamFetcher;
-use Doctrine\ORM\EntityManagerInterface;
 use Pidia\Apps\Demo\Cache\MenuCache;
 use Pidia\Apps\Demo\Entity\Menu;
-use Pidia\Apps\Demo\Entity\UsuarioPermiso;
 use Pidia\Apps\Demo\Form\MenuType;
 use Pidia\Apps\Demo\Manager\MenuManager;
-use Pidia\Apps\Demo\Repository\MenuRepository;
-use Pidia\Apps\Demo\Repository\UsuarioRolRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 #[Route(path: '/admin/menu')]
 class MenuController extends WebAuthController
@@ -50,11 +45,11 @@ class MenuController extends WebAuthController
         $this->denyAccess([Permission::EXPORT]);
 
         $headers = [
-            'padre.nombre' => 'Padre',
-            'nombre' => 'Nombre',
-            'ruta' => 'Ruta',
-            'icono' => 'Icono',
-            'orden' => 'Orden',
+            'parent.name' => 'Padre',
+            'name' => 'Nombre',
+            'route' => 'Ruta',
+            'icon' => 'Icono',
+            'rank' => 'Orden',
             'activo' => 'Activo',
         ];
 

@@ -42,9 +42,9 @@
                     <td class="d-none d-sm-table-cell">{{ usuario_rol.rol }}</td>
                 {% endif %}
                 <td class="d-none d-sm-table-cell">
-                    {% for permiso in usuario_rol.permisos %}
-                        <span class="badge badge-{% if permiso.maestro %}success{% else %}secondary{% endif %}">{{ permiso.menu }}</span>
-                    {% endfor %}
+{#                    {% for permiso in usuario_rol.permisos %}#}
+{#                        <span class="badge badge-{% if permiso.maestro %}success{% else %}secondary{% endif %}">{{ permiso.menu }}</span>#}
+{#                    {% endfor %}#}
                 </td>
                 {% include 'security/_config_table_td.html.twig' with {'entity': usuario_rol} %}
                 <td class="d-none d-sm-table-cell">{{ usuario_rol.activo | yesnocustom | raw }}</td>

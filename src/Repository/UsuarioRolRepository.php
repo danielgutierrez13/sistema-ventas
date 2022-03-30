@@ -62,11 +62,9 @@ class UsuarioRolRepository extends BaseRepository
     public function allQuery(): QueryBuilder
     {
         return $this->createQueryBuilder('usuarioRol')
-            ->select(['usuarioRol', 'usuarios', 'config', 'permisos', 'menu', 'owner'])
+            ->select(['usuarioRol', 'usuarios', 'config', 'owner'])
             ->leftJoin('usuarioRol.usuarios', 'usuarios')
             ->leftJoin('usuarioRol.config', 'config')
-            ->leftJoin('usuarioRol.permisos', 'permisos')
-            ->leftJoin('permisos.menu', 'menu')
             ->leftJoin('usuarioRol.propietario', 'owner')
             ->andWhere('usuarioRol.rol <> :roleSuperAdmin OR :isSuperAdmin = true')
             ->setParameter('roleSuperAdmin', Security::ROLE_SUPER_ADMIN)

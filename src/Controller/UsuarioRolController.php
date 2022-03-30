@@ -10,7 +10,6 @@ namespace Pidia\Apps\Demo\Controller;
 use CarlosChininin\App\Infrastructure\Controller\WebAuthController;
 use CarlosChininin\App\Infrastructure\Security\Permission;
 use CarlosChininin\Util\Http\ParamFetcher;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
 use Pidia\Apps\Demo\Cache\MenuCache;
 use Pidia\Apps\Demo\Entity\UsuarioRol;
@@ -67,9 +66,8 @@ class UsuarioRolController extends WebAuthController
         $form = $this->createForm(UsuarioRolType::class, $rol);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $rol->setPropietario($this->getUser());
-            $configId = $this->getUser()->config()?->getId();
             if (null === $rol->getRol()) {
+                $configId = $this->getUser()->config()?->getId() ?? rand(1, 10);
                 $rol->setRol(Generator::createRol($rol->getNombre(), $configId));
             }
             if ($manager->save($rol)) {
@@ -104,19 +102,9 @@ class UsuarioRolController extends WebAuthController
     {
         $this->denyAccess([Permission::EDIT], $rol);
 
-        $originalPermisos = new ArrayCollection();
-        foreach ($rol->getPermisos() as $permiso) {
-            $originalPermisos->add($permiso);
-        }
         $form = $this->createForm(UsuarioRolType::class, $rol);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            foreach ($originalPermisos as $permiso) {
-                if (false === $rol->getPermisos()->contains($permiso)) {
-                    $entityManager->remove($permiso);
-                }
-            }
-
             if ($manager->save($rol)) {
                 $this->addFlash('success', 'Registro actualizado!!!');
             } else {

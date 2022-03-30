@@ -62,7 +62,7 @@ class ConfigRepository extends BaseRepository
             ->join('xmenu.config', 'xconfig')
             ->where('xmenu.activo = true')
             ->andWhere('xconfig.id = :config_id')
-            ->andWhere('xmenu.ruta = menus.route')
+            ->andWhere('xmenu.route = menus.route')
         ;
 
         return $this->createQueryBuilder('config')

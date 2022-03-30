@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Pidia\Apps\Demo\Service;
 
-use CarlosChininin\App\Domain\Model\Menu\MenuServiceInterface;
+use CarlosChininin\App\Domain\Model\AuthMenu\MenuServiceInterface;
 use Pidia\Apps\Demo\Repository\MenuRepository;
 
 final class MenuService implements MenuServiceInterface
@@ -18,8 +18,8 @@ final class MenuService implements MenuServiceInterface
         $menus = $this->menuRepository->allForMenus();
         $data = [];
         foreach ($menus as $menu) {
-            $name = mb_strtoupper($menu['padre_nombre'].' - '.$menu['nombre']);
-            $data[$name] = $menu['ruta'];
+            $name = mb_strtoupper($menu['parentName'].' - '.$menu['name']);
+            $data[$name] = $menu['route'];
         }
 
         return $data;

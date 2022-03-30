@@ -35,7 +35,7 @@
                 </td>
                 <td class="text-center">{{ config.activo | yesnocustom | raw }}</td>
                 <td>
-                    {% if access.has('view') %}
+                    {% if access.has('show') %}
                         {{ action.btn_show_link2_ico(path('config_show', {'id': config.id})) }}
                     {% endif %}
                     {% if access.has('edit', config) %}

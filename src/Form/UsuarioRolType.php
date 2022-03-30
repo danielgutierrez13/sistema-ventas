@@ -32,16 +32,6 @@ class UsuarioRolType extends AbstractType
     {
         $builder
             ->add('nombre')
-            ->add('permisos', CollectionType::class, [
-                'required' => false,
-                'entry_type' => UsuarioPermisoType::class,
-                'allow_add' => true,
-                'allow_delete' => true,
-                'by_reference' => false,
-                'entry_options' => [
-                    'attr' => ['class' => '_permiso'],
-                ],
-            ])
             ->add('permissions', CollectionType::class, [
                 'required' => false,
                 'label' => 'Permisoss',

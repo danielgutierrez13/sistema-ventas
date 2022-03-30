@@ -39,15 +39,11 @@ class UsuarioRol extends AuthRole
     #[ManyToMany(targetEntity: Usuario::class, mappedBy: 'usuarioRoles')]
     private Collection $usuarios;
 
-    #[ManyToMany(targetEntity: UsuarioPermiso::class, mappedBy: 'roles', cascade: ['persist', 'remove'])]
-    private Collection $permisos;
-
     #[Column(type: 'menu_permission_json', nullable: true)]
     private ?array $permissions = [];
 
     public function __construct()
     {
-        $this->permisos = new ArrayCollection();
         $this->usuarios = new ArrayCollection();
     }
 
@@ -106,33 +102,6 @@ class UsuarioRol extends AuthRole
         return $this;
     }
 
-    /**
-     * @return Collection|UsuarioPermiso[]
-     */
-    public function getPermisos(): Collection|array
-    {
-        return $this->permisos;
-    }
-
-    public function addPermiso(UsuarioPermiso $permiso): self
-    {
-        if (!$this->permisos->contains($permiso)) {
-            $permiso->addRole($this);
-            $this->permisos[] = $permiso;
-        }
-
-        return $this;
-    }
-
-    public function removePermiso(UsuarioPermiso $permiso): self
-    {
-        if ($this->permisos->contains($permiso)) {
-            $this->permisos->removeElement($permiso);
-        }
-
-        return $this;
-    }
-
     public function getPermissions(): ?array
     {
         return $this->permissions;
@@ -143,11 +112,6 @@ class UsuarioRol extends AuthRole
         $this->permissions = $permissions;
 
         return $this;
-    }
-
-    public function __toString(): string
-    {
-        return $this->getNombre();
     }
 
     public function permissions(): array
@@ -163,5 +127,10 @@ class UsuarioRol extends AuthRole
     public function owner(): ?Usuario
     {
         return $this->propietario();
+    }
+
+    public function __toString(): string
+    {
+        return $this->getNombre();
     }
 }

@@ -51,7 +51,7 @@
                 {% include 'security/_config_table_td.html.twig' with {'entity': usuario} %}
                 <td class="d-none d-sm-table-cell">{{ usuario.activo | yesnocustom | raw }}</td>
                 <td>
-                    {% if access.has('view') %}
+                    {% if access.has('show') %}
                         {{ action.btn_show_link2_ico(path('usuario_show', {'id': usuario.id})) }}
                     {% endif %}
                     {% if access.has('edit', usuario) %}

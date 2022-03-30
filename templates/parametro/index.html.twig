@@ -33,7 +33,7 @@
                 <td>{{ parametro.valor }}</td>
                 <td class="text-center">{{ parametro.activo | yesnocustom | raw }}</td>
                 <td>
-                    {% if access.has('view') %}
+                    {% if access.has('show') %}
                         {{ action.btn_show_link2_ico(path('parametro_show', {'id': parametro.id})) }}
                     {% endif %}
                     {% if access.has('edit', parametro) %}

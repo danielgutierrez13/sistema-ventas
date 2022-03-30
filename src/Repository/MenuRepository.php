@@ -50,14 +50,14 @@ class MenuRepository extends BaseRepository
     public function filterQuery(array|ParamFetcher $params, array $permissions = []): QueryBuilder
     {
         $queryBuilder = $this->createQueryBuilder('menu')
-            ->select(['menu', 'padre'])
+            ->select(['menu', 'parent'])
             ->join('menu.config', 'config')
-            ->leftJoin('menu.padre', 'padre')
+            ->leftJoin('menu.parent', 'parent')
         ;
 
         $this->security->configQuery($queryBuilder, true);
 
-        DoctrineValueSearch::apply($queryBuilder, $params->getNullableString('b'), ['menu.nombre', 'padre.nombre']);
+        DoctrineValueSearch::apply($queryBuilder, $params->getNullableString('b'), ['menu.name', 'parent.name']);
 
         return $queryBuilder;
     }
@@ -65,17 +65,17 @@ class MenuRepository extends BaseRepository
     public function findAllActivo(): array
     {
         $queryBuilder = $this->createQueryBuilder('menu')
-            ->select('padre.nombre as padre_nombre')
+            ->select('parent.name as parent_name')
             ->addSelect('menu.id as menuId')
-            ->addSelect('menu.nombre as nombre')
-            ->addSelect('menu.ruta as ruta')
+            ->addSelect('menu.name as name')
+            ->addSelect('menu.route as route')
             ->addSelect('menu.icono as icono')
             ->join('menu.config', 'config')
-            ->leftJoin('menu.padre', 'padre')
+            ->leftJoin('menu.parent', 'parent')
             ->where('menu.activo = TRUE')
-            ->orderBy('padre.orden', 'ASC')
-            ->addOrderBy('menu.orden', 'ASC')
-            ->addOrderBy('menu.nombre', 'ASC')
+            ->orderBy('parent.rank', 'ASC')
+            ->addOrderBy('menu.rank', 'ASC')
+            ->addOrderBy('menu.name', 'ASC')
             ;
 
         $this->security->configQuery($queryBuilder, true);
@@ -86,16 +86,16 @@ class MenuRepository extends BaseRepository
     public function allForMenus(): array
     {
         $queryBuilder = $this->createQueryBuilder('menu')
-            ->select('padre.nombre as padre_nombre')
-            ->addSelect('menu.nombre as nombre')
-            ->addSelect('menu.ruta as ruta')
-            ->leftJoin('menu.padre', 'padre')
+            ->select('parent.name as parentName')
+            ->addSelect('menu.name as name')
+            ->addSelect('menu.route as route')
+            ->leftJoin('menu.parent', 'parent')
             ->leftJoin('menu.config', 'config')
             ->where('menu.activo = TRUE')
-            ->andWhere('menu.padre IS NOT NULL')
-            ->orderBy('padre.orden', 'ASC')
-            ->addOrderBy('menu.orden', 'ASC')
-            ->addOrderBy('menu.nombre', 'ASC')
+            ->andWhere('menu.parent IS NOT NULL')
+            ->orderBy('parent.rank', 'ASC')
+            ->addOrderBy('menu.rank', 'ASC')
+            ->addOrderBy('menu.name', 'ASC')
         ;
 
         $this->security->configQuery($queryBuilder, true);
@@ -106,9 +106,9 @@ class MenuRepository extends BaseRepository
     public function allQuery(): QueryBuilder
     {
         return $this->createQueryBuilder('menu')
-            ->select(['menu', 'padre'])
+            ->select(['menu', 'parent'])
             ->join('menu.config', 'config')
-            ->leftJoin('menu.padre', 'padre')
+            ->leftJoin('menu.parent', 'parent')
             ;
     }
 
@@ -117,9 +117,9 @@ class MenuRepository extends BaseRepository
     {
         return $this->allQuery()
             ->where('menu.activo = true')
-            ->orderBy('padre.orden')
-            ->addOrderBy('menu.orden')
-            ->addOrderBy('menu.nombre', 'ASC')
+            ->orderBy('parent.rank')
+            ->addOrderBy('menu.rank')
+            ->addOrderBy('menu.name', 'ASC')
             ->getQuery()
             ->getResult();
     }

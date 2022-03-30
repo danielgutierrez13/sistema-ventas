@@ -12,23 +12,6 @@
 
 {% form_theme form _self %}
 
-{% block _usuario_rol_permisos_label%}
-{% endblock %}
-
-{% block _usuario_rol_permisos_entry_widget %}
-    {% import 'macro/action.html.twig' as actions %}
-    {{ actions.frm_field_select_widget(form.menu) }}
-    {{ actions.frm_field_checkbox(form.listar) }}
-    {{ actions.frm_field_checkbox(form.mostrar) }}
-    {{ actions.frm_field_checkbox(form.crear) }}
-    {{ actions.frm_field_checkbox(form.editar) }}
-    {{ actions.frm_field_checkbox(form.eliminar) }}
-    {{ actions.frm_field_checkbox(form.imprimir) }}
-    {{ actions.frm_field_checkbox(form.exportar) }}
-    {{ actions.frm_field_checkbox(form.importar) }}
-    {{ actions.frm_field_checkbox(form.maestro) }}
-{% endblock %}
-
 {% block _usuario_rol_permissions_entry_attributes_entry_label %}
 {% endblock %}
 
@@ -63,7 +46,6 @@
     <script src="{{ asset('js/collection.js') }}" type="text/javascript"></script>
     <script>
         jQuery(document).ready(function() {
-            Collection.init('#usuario_rol_permisos');
             Collection.init('#usuario_rol_permissions');
         });
     </script>

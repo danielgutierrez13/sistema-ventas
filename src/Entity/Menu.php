@@ -7,6 +7,7 @@
 
 namespace Pidia\Apps\Demo\Entity;
 
+use CarlosChininin\App\Domain\Model\AuthMenu\AuthMenu;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
@@ -18,7 +19,7 @@ use Pidia\Apps\Demo\Repository\MenuRepository;
 
 #[Entity(repositoryClass: MenuRepository::class)]
 #[HasLifecycleCallbacks]
-class Menu
+class Menu extends AuthMenu
 {
     use EntityTrait;
 
@@ -28,23 +29,26 @@ class Menu
     private ?int $id = null;
 
     #[Column(type: 'string', length: 50)]
-    private ?string $nombre;
+    private ?string $name;
 
     #[Column(type: 'string', length: 50, nullable: true)]
-    private ?string $ruta = null;
+    private ?string $route = null;
 
     #[Column(type: 'string', length: 50, nullable: true)]
-    private ?string $icono = null;
+    private ?string $icon = null;
 
     #[Column(type: 'smallint')]
-    private int $orden;
+    private int $rank;
 
     #[ManyToOne(targetEntity: Menu::class)]
-    private ?Menu $padre = null;
+    private ?Menu $parent = null;
+
+    #[Column(type: 'string', length: 15, nullable: true)]
+    private ?string $badge = null;
 
     public function __construct()
     {
-        $this->orden = 0;
+        $this->rank = 0;
     }
 
     public function getId(): ?int
@@ -52,80 +56,80 @@ class Menu
         return $this->id;
     }
 
-    public function getNombre(): ?string
+    public function getName(): ?string
     {
-        return $this->nombre;
+        return $this->name;
     }
 
-    public function setNombre(string $nombre): self
+    public function setName(string $name): self
     {
-        $this->nombre = $nombre;
+        $this->name = $name;
 
         return $this;
     }
 
-    public function getRuta(): ?string
+    public function getRoute(): ?string
     {
-        return $this->ruta;
+        return $this->route;
     }
 
-    public function setRuta(?string $ruta): self
+    public function setRoute(?string $route): self
     {
-        $this->ruta = $ruta;
+        $this->route = $route;
 
         return $this;
     }
 
-    public function getIcono(): ?string
+    public function getIcon(): ?string
     {
-        return $this->icono;
+        return $this->icon;
     }
 
-    public function setIcono(?string $icono): self
+    public function setIcon(?string $icon): self
     {
-        $this->icono = $icono;
+        $this->icon = $icon;
 
         return $this;
     }
 
-    public function getOrden(): ?int
+    public function getRank(): ?int
     {
-        return $this->orden;
+        return $this->rank;
     }
 
-    public function setOrden(int $orden): self
+    public function setRank(int $rank): self
     {
-        $this->orden = $orden;
+        $this->rank = $rank;
 
         return $this;
     }
 
-    public function getPadre(): ?self
+    public function getParent(): ?self
     {
-        return $this->padre;
+        return $this->parent;
     }
 
-    public function setPadre(?self $padre): self
+    public function setParent(?self $parent): self
     {
-        $this->padre = $padre;
+        $this->parent = $parent;
+
+        return $this;
+    }
+
+    public function getBadge(): ?string
+    {
+        return $this->badge;
+    }
+
+    public function setBadge(?string $badge): self
+    {
+        $this->badge = $badge;
 
         return $this;
     }
 
     public function __toString(): string
     {
-        return $this->getNombre();
-    }
-
-    public function toArray(): array
-    {
-        return [
-            'id' => $this->getId(),
-            'nombre' => $this->getNombre(),
-            'ruta' => $this->getRuta(),
-            'icono' => $this->getIcono(),
-            'orden' => $this->getOrden(),
-//            'insignia' => $this->getInsignia(),
-        ];
+        return $this->getName();
     }
 }

@@ -29,14 +29,15 @@ class MenuType extends AbstractType
     {
         $menuActual = $builder->getData();
         $builder
-            ->add('padre')
-            ->add('nombre')
-            ->add('ruta', ChoiceType::class, [
+            ->add('parent')
+            ->add('name')
+            ->add('route', ChoiceType::class, [
                 'choices' => $this->items($menuActual),
                 'required' => false,
             ])
-            ->add('icono')
-            ->add('orden')
+            ->add('icon')
+            ->add('rank')
+            ->add('badge')
         ;
     }
 
@@ -54,7 +55,7 @@ class MenuType extends AbstractType
             $items = $this->security->repository(Config::class)->findMenusByConfigId($config['id']);
             $data = [];
             if (null !== $menuActual) {
-                $data[$menuActual->getNombre()] = $menuActual->getRuta();
+                $data[$menuActual->getName()] = $menuActual->getRoute();
             }
             foreach ($items as $item) {
                 $data[$item['name']] = $item['route'];

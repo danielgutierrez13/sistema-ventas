@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/carloschininin/app.git",
-                "reference": "ec4682e011d281593854acbe9582f3ee016f895d"
+                "reference": "af00682548ac67674f53e76b31ecfdd6166d6fad"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/carloschininin/app/zipball/ec4682e011d281593854acbe9582f3ee016f895d",
-                "reference": "ec4682e011d281593854acbe9582f3ee016f895d",
+                "url": "https://api.github.com/repos/carloschininin/app/zipball/af00682548ac67674f53e76b31ecfdd6166d6fad",
+                "reference": "af00682548ac67674f53e76b31ecfdd6166d6fad",
                 "shasum": ""
             },
             "require": {
@@ -59,7 +59,7 @@
                 "issues": "https://github.com/carloschininin/app/issues",
                 "source": "https://github.com/carloschininin/app/tree/main"
             },
-            "time": "2022-03-29T18:23:55+00:00"
+            "time": "2022-03-30T17:29:46+00:00"
         },
         {
             "name": "carloschininin/data",
@@ -654,16 +654,16 @@
         },
         {
             "name": "doctrine/doctrine-bundle",
-            "version": "2.5.7",
+            "version": "2.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/DoctrineBundle.git",
-                "reference": "1e0d1d7a5982eeebc37dcb4d77bb1a5c5961d96d"
+                "reference": "eca20633225fde77d042ecdac222bc9a5cb20f6a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/DoctrineBundle/zipball/1e0d1d7a5982eeebc37dcb4d77bb1a5c5961d96d",
-                "reference": "1e0d1d7a5982eeebc37dcb4d77bb1a5c5961d96d",
+                "url": "https://api.github.com/repos/doctrine/DoctrineBundle/zipball/eca20633225fde77d042ecdac222bc9a5cb20f6a",
+                "reference": "eca20633225fde77d042ecdac222bc9a5cb20f6a",
                 "shasum": ""
             },
             "require": {
@@ -683,12 +683,12 @@
                 "symfony/service-contracts": "^1.1.1|^2.0|^3"
             },
             "conflict": {
-                "doctrine/orm": "<2.9|>=3.0",
+                "doctrine/orm": "<2.10|>=3.0",
                 "twig/twig": "<1.34|>=2.0,<2.4"
             },
             "require-dev": {
                 "doctrine/coding-standard": "^9.0",
-                "doctrine/orm": "^2.9 || ^3.0",
+                "doctrine/orm": "^2.10 || ^3.0",
                 "friendsofphp/proxy-manager-lts": "^1.0",
                 "phpunit/phpunit": "^7.5 || ^8.0 || ^9.3 || ^10.0",
                 "psalm/plugin-phpunit": "^0.16.1",
@@ -747,7 +747,7 @@
             ],
             "support": {
                 "issues": "https://github.com/doctrine/DoctrineBundle/issues",
-                "source": "https://github.com/doctrine/DoctrineBundle/tree/2.5.7"
+                "source": "https://github.com/doctrine/DoctrineBundle/tree/2.6.0"
             },
             "funding": [
                 {
@@ -763,7 +763,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-03-05T10:29:13+00:00"
+            "time": "2022-03-05T10:43:39+00:00"
         },
         {
             "name": "doctrine/doctrine-migrations-bundle",
@@ -2610,16 +2610,16 @@
         },
         {
             "name": "phpstan/phpdoc-parser",
-            "version": "1.4.1",
+            "version": "1.4.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpdoc-parser.git",
-                "reference": "05333065c88f9518e08b094bdd10a4a9e538b2d4"
+                "reference": "4cb3021a4e10ffe3d5f94a4c34cf4b3f6de2fa3d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpdoc-parser/zipball/05333065c88f9518e08b094bdd10a4a9e538b2d4",
-                "reference": "05333065c88f9518e08b094bdd10a4a9e538b2d4",
+                "url": "https://api.github.com/repos/phpstan/phpdoc-parser/zipball/4cb3021a4e10ffe3d5f94a4c34cf4b3f6de2fa3d",
+                "reference": "4cb3021a4e10ffe3d5f94a4c34cf4b3f6de2fa3d",
                 "shasum": ""
             },
             "require": {
@@ -2648,9 +2648,9 @@
             "description": "PHPDoc parser with support for nullable, intersection and generic types",
             "support": {
                 "issues": "https://github.com/phpstan/phpdoc-parser/issues",
-                "source": "https://github.com/phpstan/phpdoc-parser/tree/1.4.1"
+                "source": "https://github.com/phpstan/phpdoc-parser/tree/1.4.2"
             },
-            "time": "2022-03-29T09:28:16+00:00"
+            "time": "2022-03-30T13:33:37+00:00"
         },
         {
             "name": "psr/cache",

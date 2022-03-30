@@ -20,6 +20,7 @@
             {{ action.th('Nombre', true) }}
             {{ action.th('Ruta', true) }}
             {{ action.th('Icono', true) }}
+            {{ action.th('Insignia', true) }}
             {{ action.th('Orden', true) }}
             {{ action.th('Activo', true, 'text-center') }}
             <th></th>
@@ -28,11 +29,12 @@
         {{ action.tbody_start() }}
         {% for menu in paginator.results %}
             <tr>
-                <td>{{ menu.padre}}</td>
-                <td>{{ menu.nombre }}</td>
-                <td>{{ menu.ruta }}</td>
-                <td><i class="{{ menu.icono }}"></i> {{ menu.icono }}</td>
-                <td>{{ menu.orden }}</td>
+                <td>{{ menu.parent}}</td>
+                <td>{{ menu.name }}</td>
+                <td>{{ menu.route }}</td>
+                <td><i class="{{ menu.icon }}"></i> {{ menu.icon }}</td>
+                <td>{{ menu.badge }}</td>
+                <td>{{ menu.rank }}</td>
                 <td class="text-center">{{ menu.activo | yesnocustom | raw }}</td>
                 <td>
                     {% if access.has('show', menu) %}

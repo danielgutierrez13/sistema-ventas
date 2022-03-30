@@ -2,19 +2,26 @@
 
 {{ action.frm_start(form) }}
     {{ action.frm_column(
-        action.frm_column_field_select(form.padre),
+        action.frm_column_field_select(form.parent),
         null,
         null,
         null,
         2
     ) }}
     {{ action.frm_column(
-        action.frm_column_field(form.nombre),
-        action.frm_column_field_select(form.ruta)
+        action.frm_column_field(form.name),
+        action.frm_column_field_select(form.route)
     ) }}
     {{ action.frm_column(
-        action.frm_column_field(form.orden),
-        action.frm_column_field(form.icono)
+        action.frm_column_field(form.rank),
+        action.frm_column_field(form.icon)
+    ) }}
+    {{ action.frm_column(
+        action.frm_column_field(form.badge),
+        null,
+        null,
+        null,
+        2
     ) }}
     {{ action.frm_column(
         action.frm_column_btn(button_label|default('Guardar')),

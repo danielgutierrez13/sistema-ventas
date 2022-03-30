@@ -12,11 +12,11 @@
 
 {% block _main %}
     {{ action.tbl_start() }}
-        {{ action.tbl_tr('Padre',menu.padre) }}
-        {{ action.tbl_tr('Nombre',menu.nombre) }}
-        {{ action.tbl_tr('Ruta',menu.ruta) }}
-        {{ action.tbl_tr('Icono',menu.icono) }}
-        {{ action.tbl_tr('Orden',menu.orden) }}
+        {{ action.tbl_tr('Padre',menu.parent) }}
+        {{ action.tbl_tr('Nombre',menu.name) }}
+        {{ action.tbl_tr('Ruta',menu.route) }}
+        {{ action.tbl_tr('Icono',menu.icon) }}
+        {{ action.tbl_tr('Orden',menu.rank) }}
         {% include 'crud/_show_info.html.twig' with {'entity': menu} %}
     {{ action.tbl_end() }}
 

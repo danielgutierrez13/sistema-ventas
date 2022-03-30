@@ -49,7 +49,7 @@ let Collection = function () {
     };
 
     let addBlockFormDeleteLink = function($formLi) {
-        let $removeFormA = $('<a href="#" class="btn btn-sm btn-light-danger btn-icon"><i class="fa fa-times"></i></a>');
+        let $removeFormA = $('<a href="#" class="btn btn-sm btn-light-danger btn-icon" style="position: absolute; top: 0; right: 0;"><i class="fa fa-times"></i></a>');
         $formLi.append($removeFormA);
         $removeFormA.on('click', function(e) {
             e.preventDefault();
