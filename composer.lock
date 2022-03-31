@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/carloschininin/app.git",
-                "reference": "c128bc81bc2121074c508bf75fb4a977d105c2b1"
+                "reference": "71f27a4a5fce2e61badbaba739f958a2215f34e8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/carloschininin/app/zipball/c128bc81bc2121074c508bf75fb4a977d105c2b1",
-                "reference": "c128bc81bc2121074c508bf75fb4a977d105c2b1",
+                "url": "https://api.github.com/repos/carloschininin/app/zipball/71f27a4a5fce2e61badbaba739f958a2215f34e8",
+                "reference": "71f27a4a5fce2e61badbaba739f958a2215f34e8",
                 "shasum": ""
             },
             "require": {
@@ -63,7 +63,7 @@
                 "issues": "https://github.com/carloschininin/app/issues",
                 "source": "https://github.com/carloschininin/app/tree/main"
             },
-            "time": "2022-03-31T06:14:37+00:00"
+            "time": "2022-03-31T07:50:55+00:00"
         },
         {
             "name": "carloschininin/data",

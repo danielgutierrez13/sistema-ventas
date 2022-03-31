@@ -27,7 +27,6 @@
 <!--end::Head-->
 {% block _body %}
     <!--begin::Body-->
-    <!--begin::Body-->
     <body id="kt_body" class="header-tablet-and-mobile-fixed aside-enabled">
     <!--begin::Main-->
     <!--begin::Root-->
@@ -104,12 +103,46 @@
                                         <!--end::Menu separator-->
                                         <!--begin::Menu item-->
                                         <div class="menu-item px-5">
-                                            <a href="#" class="menu-link px-5">Perfil</a>
+                                            <a href="#" class="menu-link px-5">{{ 'Perfil'|gtrans }}</a>
                                         </div>
                                         <!--end::Menu item-->
                                         <!--begin::Menu item-->
                                         <div class="menu-item px-5 my-1">
-                                            <a href="#" class="menu-link px-5">Configuración</a>
+                                            <a href="#" class="menu-link px-5">{{ 'Configuración'|gtrans }}</a>
+                                        </div>
+                                        <!--end::Menu item-->
+                                        <!--begin::Menu separator-->
+                                        <div class="separator my-2"></div>
+                                        <!--end::Menu separator-->
+                                        <!--begin::Menu item-->
+                                        {% set flags = {'es': 'spain.svg', 'en': 'united-states.svg'} %}
+                                        <div class="menu-item px-5" data-kt-menu-trigger="hover" data-kt-menu-placement="right-start">
+                                            <a href="#" class="menu-link px-5">
+													<span class="menu-title position-relative">{{ 'Idioma'|gtrans }}
+                                                        {% for locale in locales() %}
+                                                            {% if app.request.locale == locale.code %}
+                                                                <span class="fs-8 rounded bg-light px-3 py-2 position-absolute translate-middle-y top-50 end-0">{{ locale.name|capitalize }}
+                                                                    <img class="w-15px h-15px rounded-1 ms-2" src="{{ asset(_theme ~ 'media/flags/'~attribute(flags, locale.code[0:2])) }}" alt="{{ locale.name|capitalize }}" />
+                                                                </span>
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                    </span>
+                                            </a>
+                                            <!--begin::Menu sub-->
+                                            <div class="menu-sub menu-sub-dropdown w-175px py-4">
+                                                {% for locale in locales() %}
+                                                    <!--begin::Menu item-->
+                                                    <div class="menu-item px-3">
+                                                        <a href="{{ path(app.request.get('_route', 'homepage'), app.request.get('_route_params', [])|merge({_locale: locale.code})) }}"
+                                                           class="menu-link d-flex px-5 {% if app.request.locale == locale.code %}active{% endif %}">
+														<span class="symbol symbol-20px me-4">
+															<img class="rounded-1" src="{{ asset(_theme ~ 'media/flags/'~attribute(flags, locale.code[0:2])) }}" alt="" />
+														</span>{{ locale.name|capitalize }}</a>
+                                                    </div>
+                                                    <!--end::Menu item-->
+                                                {% endfor %}
+                                            </div>
+                                            <!--end::Menu sub-->
                                         </div>
                                         <!--end::Menu item-->
                                         <!--begin::Menu separator-->
@@ -118,7 +151,7 @@
 
                                         <!--begin::Menu item-->
                                         <div class="menu-item px-5">
-                                            <a href="{{ path('security_logout') }}" class="menu-link px-5">Cerrar Sesión</a>
+                                            <a href="{{ path('security_logout') }}" class="menu-link px-5">{{ 'Cerrar Sesión'|gtrans }}</a>
                                         </div>
                                         <!--end::Menu item-->
                                     </div>
@@ -195,7 +228,7 @@
                             <!--begin::Page title-->
                             <div class="page-title d-flex flex-column me-5">
                                 <!--begin::Title-->
-                                <h1 class="d-flex flex-column text-dark fw-bolder fs-3 mb-0">{{ _title | upper }}</h1>
+                                <h1 class="d-flex flex-column text-dark fw-bolder fs-3 mb-0">{{ _title | gtrans | upper }}</h1>
                                 <!--end::Title-->
                                 <!--begin::Breadcrumb-->
                                 {% block _breadcrumb %}{% endblock %}
@@ -207,7 +240,7 @@
                                 <!--begin::Action wrapper-->
                                 <div class="d-flex align-items-center">
                                     <!--begin::Label-->
-                                    <span class="fs-7 text-gray-700 fw-bolder pe-3 d-none d-xxl-block">Enlaces:</span>
+                                    <span class="fs-7 text-gray-700 fw-bolder pe-3 d-none d-xxl-block">{{ 'Enlaces'|gtrans }}:</span>
                                     <!--end::Label-->
                                     <!--begin::Actions-->
                                     {% block _body_tools %}{% endblock %}

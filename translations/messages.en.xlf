@@ -95,6 +95,16 @@
                             <source>record_failed</source>
                             <target>Record failed</target>
                         </trans-unit>
+
+                        <trans-unit id="Actualizar">
+                            <source>Actualizar</source>
+                            <target>Update</target>
+                        </trans-unit>
+
+                        <trans-unit id="Inicio">
+                            <source>Inicio</source>
+                            <target>Home</target>
+                        </trans-unit>
         </body>
     </file>
 </xliff>

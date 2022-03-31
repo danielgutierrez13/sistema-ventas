@@ -1,7 +1,7 @@
 {% macro show(title) %}
     <nav class="breadcrumb push d-print-none">
         <a class="breadcrumb-item" href="{{ path('homepage') }}"> {{ 'Inicio' | gtrans }}</a>
-        <span class="breadcrumb-item active">{{ title }}</span>
+        <span class="breadcrumb-item active">{{ title | gtrans }}</span>
     </nav>
 {% endmacro %}
 

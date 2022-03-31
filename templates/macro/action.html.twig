@@ -5,7 +5,7 @@
     <button class="btn btn-{{ btn_class }}" {{ attributes }}>
         {% if title %}<span>{% endif %}
             {% if icon %}<i class="{{ icon }}"></i>{% endif %}
-            {% if title %}<span>{{ title|trans }}</span>{% endif %}
+            {% if title %}<span>{{ title|gtrans }}</span>{% endif %}
             {% if title %}</span>{% endif %}
     </button>
 {%- endmacro %}
@@ -103,21 +103,21 @@
 {% endmacro %}
 
 {% macro btn_delete_form(link, token) %}
-    <form method="post" action="{{ link }}" onsubmit="return confirm('Seguro de eliminar este registro?');"
+    <form method="post" action="{{ link }}" onsubmit="return confirm('Seguro de inhabilitar este registro?');"
           style="display: inline">
         <input type="hidden" name="_method" value="DELETE">
         <input type="hidden" name="_token" value="{{ token }}">
         <button class="js-swal-confirm btn btn-sm btn-light-danger">
                 <span>
                     <i class="fa fa-ban"></i>
-                    <span>{{ 'lbl.disable'|trans }}</span>
+                    <span>{{ 'inhabilitar'|gtrans|capitalize }}</span>
                 </span>
         </button>
     </form>
 {% endmacro %}
 
 {% macro btn_delete_form_ico(link, token) %}
-    <form method="post" action="{{ link }}" onsubmit="return confirm('Seguro de eliminar este registro?');"
+    <form method="post" action="{{ link }}" onsubmit="return confirm({{ 'Seguro de eliminar este registro?'|gtrans }});"
           style="display: inline">
         <input type="hidden" name="_method" value="DELETE">
         <input type="hidden" name="_token" value="{{ token }}">
@@ -135,7 +135,7 @@
         <button class="btn btn-sm btn-light-info">
                 <span>
                     <i class="fa fa-redo"></i>
-                    <span>{{ 'lbl.restore'|trans }}</span>
+                    <span>{{ 'habilitar'|gtrans|capitalize }}</span>
                 </span>
         </button>
     </form>

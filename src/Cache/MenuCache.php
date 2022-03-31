@@ -9,16 +9,20 @@ declare(strict_types=1);
 
 namespace Pidia\Apps\Demo\Cache;
 
+use function call_user_func;
 use CarlosChininin\App\Infrastructure\Cache\BaseCache;
 use CarlosChininin\App\Infrastructure\Security\Security;
-use function call_user_func;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class MenuCache
 {
     public const NAME = '__MENUXX__';
 
-    public function __construct(private BaseCache $cache, private Security $security)
-    {
+    public function __construct(
+        private BaseCache $cache,
+        private Security $security,
+        private TranslatorInterface $translator
+    ) {
     }
 
     public function menus(string $menuSelect, callable $callback)
@@ -37,7 +41,7 @@ final class MenuCache
 
     private function keyUser(): string
     {
-        return md5(self::NAME.$this->security->user()->getId());
+        return md5(self::NAME.$this->security->user()->getId()).'_'.$this->translator->getLocale().'_';
     }
 
     private function tags(): array
