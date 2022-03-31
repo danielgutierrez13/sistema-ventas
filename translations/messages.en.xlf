@@ -10,14 +10,6 @@
                             <source>user_disabled</source>
                             <target>User disabled</target>
                         </trans-unit>
-                        <trans-unit id="lbl.yes">
-                            <source>lbl.yes</source>
-                            <target>Yes</target>
-                        </trans-unit>
-                        <trans-unit id="lbl.no">
-                            <source>lbl.no</source>
-                            <target>No</target>
-                        </trans-unit>
                         <trans-unit id="lbl.list">
                             <source>lbl.list</source>
                             <target>List</target>

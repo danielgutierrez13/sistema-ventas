@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3aa99ff7d2dd2c29a0f68fc9044259f1",
+    "content-hash": "0f2d709a375962a283c49db9bf78021f",
     "packages": [
         {
             "name": "carloschininin/app",
@@ -12,26 +12,30 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/carloschininin/app.git",
-                "reference": "af00682548ac67674f53e76b31ecfdd6166d6fad"
+                "reference": "c128bc81bc2121074c508bf75fb4a977d105c2b1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/carloschininin/app/zipball/af00682548ac67674f53e76b31ecfdd6166d6fad",
-                "reference": "af00682548ac67674f53e76b31ecfdd6166d6fad",
+                "url": "https://api.github.com/repos/carloschininin/app/zipball/c128bc81bc2121074c508bf75fb4a977d105c2b1",
+                "reference": "c128bc81bc2121074c508bf75fb4a977d105c2b1",
                 "shasum": ""
             },
             "require": {
                 "carloschininin/data": "dev-master",
                 "carloschininin/util": "dev-master",
+                "doctrine/dbal": "^3.3",
                 "doctrine/doctrine-bundle": "^2.5",
                 "doctrine/orm": "^2.10",
                 "php": "^8.1",
-                "symfony/cache": "^5.4|^6.0",
+                "statickidz/php-google-translate-free": "^1.2",
+                "symfony/cache-contracts": "^3.0",
                 "symfony/config": "^5.4|^6.0",
                 "symfony/dependency-injection": "^5.4|^6.0",
                 "symfony/form": "^5.4|^6.0",
                 "symfony/http-kernel": "^5.4|^6.0",
+                "symfony/intl": "^5.4|^6.0",
                 "symfony/security-core": "^5.4|^6.0",
+                "symfony/translation-contracts": "^3.0",
                 "twig/twig": "^3.0"
             },
             "require-dev": {
@@ -59,7 +63,7 @@
                 "issues": "https://github.com/carloschininin/app/issues",
                 "source": "https://github.com/carloschininin/app/tree/main"
             },
-            "time": "2022-03-30T17:29:46+00:00"
+            "time": "2022-03-31T06:14:37+00:00"
         },
         {
             "name": "carloschininin/data",
@@ -122,12 +126,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/carloschininin/util.git",
-                "reference": "e21aa077648de738a8d1c6158e92b016995acdf4"
+                "reference": "41b0180074659fca41efb9c7bae364695ccfc35b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/carloschininin/util/zipball/e21aa077648de738a8d1c6158e92b016995acdf4",
-                "reference": "e21aa077648de738a8d1c6158e92b016995acdf4",
+                "url": "https://api.github.com/repos/carloschininin/util/zipball/41b0180074659fca41efb9c7bae364695ccfc35b",
+                "reference": "41b0180074659fca41efb9c7bae364695ccfc35b",
                 "shasum": ""
             },
             "require": {
@@ -166,7 +170,7 @@
                 "issues": "https://github.com/carloschininin/util/issues",
                 "source": "https://github.com/carloschininin/util/tree/master"
             },
-            "time": "2022-03-24T18:22:30+00:00"
+            "time": "2022-03-31T03:55:54+00:00"
         },
         {
             "name": "doctrine/annotations",
@@ -3198,6 +3202,75 @@
                 "source": "https://github.com/sensiolabs/SensioFrameworkExtraBundle/tree/v6.2.6"
             },
             "time": "2022-01-14T11:51:13+00:00"
+        },
+        {
+            "name": "statickidz/php-google-translate-free",
+            "version": "1.2.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/statickidz/php-google-translate-free.git",
+                "reference": "29dc0b0110fcb78ba51fc2d983d638dbdd7fa439"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/statickidz/php-google-translate-free/zipball/29dc0b0110fcb78ba51fc2d983d638dbdd7fa439",
+                "reference": "29dc0b0110fcb78ba51fc2d983d638dbdd7fa439",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4"
+            },
+            "require-dev": {
+                "phpdocumentor/phpdocumentor": "2.*",
+                "phpunit/phpunit": ">=4.8",
+                "squizlabs/php_codesniffer": "^2.3"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Statickidz\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-3.0+"
+            ],
+            "authors": [
+                {
+                    "name": "Adrián Barrio Andrés",
+                    "email": "statickidz@gmail.com",
+                    "homepage": "https://statickidz.com",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Paris Niarfe Baltazar Salguero",
+                    "email": "sieg.sb@gmail.com",
+                    "homepage": "http://www.pbaltazar.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Google Translate Free library for PHP",
+            "homepage": "https://github.com/statickidz/php-google-translate-free/",
+            "keywords": [
+                "api",
+                "free",
+                "google",
+                "siegsb",
+                "statickidz",
+                "translate",
+                "translator"
+            ],
+            "support": {
+                "issues": "https://github.com/statickidz/php-google-translate-free/issues",
+                "source": "https://github.com/statickidz/php-google-translate-free/releases"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/statickidz",
+                    "type": "github"
+                }
+            ],
+            "time": "2021-04-12T14:59:49+00:00"
         },
         {
             "name": "symfony/asset",
@@ -9488,8 +9561,8 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
-        "carloschininin/data": 20,
         "carloschininin/app": 20,
+        "carloschininin/data": 20,
         "liip/imagine-bundle": 20
     },
     "prefer-stable": true,

@@ -29,7 +29,7 @@ class Menu extends AuthMenu
     private ?int $id = null;
 
     #[Column(type: 'string', length: 50)]
-    private ?string $name;
+    private ?string $name = null;
 
     #[Column(type: 'string', length: 50, nullable: true)]
     private ?string $route = null;
@@ -38,7 +38,7 @@ class Menu extends AuthMenu
     private ?string $icon = null;
 
     #[Column(type: 'smallint')]
-    private int $rank;
+    private ?int $ranking;
 
     #[ManyToOne(targetEntity: Menu::class)]
     private ?Menu $parent = null;
@@ -48,7 +48,7 @@ class Menu extends AuthMenu
 
     public function __construct()
     {
-        $this->rank = 0;
+        $this->ranking = 0;
     }
 
     public function getId(): ?int
@@ -92,14 +92,14 @@ class Menu extends AuthMenu
         return $this;
     }
 
-    public function getRank(): ?int
+    public function getRanking(): ?int
     {
-        return $this->rank;
+        return $this->ranking;
     }
 
-    public function setRank(int $rank): self
+    public function setRanking(?int $ranking): self
     {
-        $this->rank = $rank;
+        $this->ranking = $ranking;
 
         return $this;
     }

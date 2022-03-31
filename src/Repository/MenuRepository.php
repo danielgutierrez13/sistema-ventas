@@ -8,13 +8,14 @@
 namespace Pidia\Apps\Demo\Repository;
 
 use CarlosChininin\App\Infrastructure\Repository\BaseRepository;
+use CarlosChininin\App\Infrastructure\Security\Security;
 use CarlosChininin\Util\Filter\DoctrineValueSearch;
 use CarlosChininin\Util\Http\ParamFetcher;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
+use Pidia\Apps\Demo\Controller\ConfigController;
+use Pidia\Apps\Demo\Controller\MenuController;
 use Pidia\Apps\Demo\Entity\Menu;
-use Pidia\Apps\Demo\Security\Security;
-use Pidia\Apps\Demo\Util\Paginator;
 
 /**
  * @method Menu|null find($id, $lockMode = null, $lockVersion = null)
@@ -27,13 +28,6 @@ class MenuRepository extends BaseRepository
     public function __construct(ManagerRegistry $registry, private Security $security)
     {
         parent::__construct($registry, Menu::class);
-    }
-
-    public function findLatest(array $params): Paginator
-    {
-        $queryBuilder = $this->filterQuery($params);
-
-        return Paginator::create($queryBuilder, $params);
     }
 
     public function filter(array|ParamFetcher $params, bool $inArray = true, array $permissions = []): array
@@ -55,7 +49,7 @@ class MenuRepository extends BaseRepository
             ->leftJoin('menu.parent', 'parent')
         ;
 
-        $this->security->configQuery($queryBuilder, true);
+        $this->security->filterQuery($queryBuilder, ConfigController::BASE_ROUTE, $permissions);
 
         DoctrineValueSearch::apply($queryBuilder, $params->getNullableString('b'), ['menu.name', 'parent.name']);
 
@@ -73,12 +67,12 @@ class MenuRepository extends BaseRepository
             ->join('menu.config', 'config')
             ->leftJoin('menu.parent', 'parent')
             ->where('menu.activo = TRUE')
-            ->orderBy('parent.rank', 'ASC')
-            ->addOrderBy('menu.rank', 'ASC')
+            ->orderBy('parent.ranking', 'ASC')
+            ->addOrderBy('menu.ranking', 'ASC')
             ->addOrderBy('menu.name', 'ASC')
             ;
 
-        $this->security->configQuery($queryBuilder, true);
+        $this->security->filterQuery($queryBuilder, MenuController::BASE_ROUTE);
 
         return $queryBuilder->getQuery()->getArrayResult();
     }
@@ -93,12 +87,12 @@ class MenuRepository extends BaseRepository
             ->leftJoin('menu.config', 'config')
             ->where('menu.activo = TRUE')
             ->andWhere('menu.parent IS NOT NULL')
-            ->orderBy('parent.rank', 'ASC')
-            ->addOrderBy('menu.rank', 'ASC')
+            ->orderBy('parent.ranking', 'ASC')
+            ->addOrderBy('menu.ranking', 'ASC')
             ->addOrderBy('menu.name', 'ASC')
         ;
 
-        $this->security->configQuery($queryBuilder, true);
+        $this->security->filterQuery($queryBuilder, MenuController::BASE_ROUTE);
 
         return $queryBuilder->getQuery()->getArrayResult();
     }
@@ -117,8 +111,8 @@ class MenuRepository extends BaseRepository
     {
         return $this->allQuery()
             ->where('menu.activo = true')
-            ->orderBy('parent.rank')
-            ->addOrderBy('menu.rank')
+            ->orderBy('parent.ranking')
+            ->addOrderBy('menu.ranking')
             ->addOrderBy('menu.name', 'ASC')
             ->getQuery()
             ->getResult();

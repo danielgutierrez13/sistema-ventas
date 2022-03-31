@@ -70,11 +70,11 @@ class MenuController extends WebAuthController
             if ($manager->save($menu)) {
                 $cache->update();
                 $this->messageSuccess('Registro creado!!!');
-            } else {
-                $this->addErrors($manager->errors());
+
+                return $this->redirectToRoute('menu_index');
             }
 
-            return $this->redirectToRoute('menu_index');
+            $this->addErrors($manager->errors());
         }
 
         return $this->renderForm(

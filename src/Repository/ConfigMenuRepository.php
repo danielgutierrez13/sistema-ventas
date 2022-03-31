@@ -8,11 +8,11 @@
 namespace Pidia\Apps\Demo\Repository;
 
 use CarlosChininin\App\Infrastructure\Repository\BaseRepository;
+use CarlosChininin\Util\Filter\DoctrineValueSearch;
 use CarlosChininin\Util\Http\ParamFetcher;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 use Pidia\Apps\Demo\Entity\ConfigMenu;
-use Pidia\Apps\Demo\Util\Paginator;
 
 /**
  * @method ConfigMenu|null find($id, $lockMode = null, $lockVersion = null)
@@ -25,13 +25,6 @@ class ConfigMenuRepository extends BaseRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, ConfigMenu::class);
-    }
-
-    public function findLatest(array $params): Paginator
-    {
-        $queryBuilder = $this->filterQuery($params);
-
-        return Paginator::create($queryBuilder, $params);
     }
 
     public function filter(array|ParamFetcher $params, bool $inArray = true, array $permissions = []): array
@@ -52,7 +45,7 @@ class ConfigMenuRepository extends BaseRepository
             ->orderBy('configMenu.name', 'ASC')
         ;
 
-        Paginator::queryTexts($queryBuilder, $params, ['configMenu.name']);
+        DoctrineValueSearch::apply($queryBuilder, $params->getNullableString('b'), ['configMenu.name']);
 
         return $queryBuilder;
     }

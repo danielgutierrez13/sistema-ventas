@@ -7,22 +7,25 @@
 
 namespace Pidia\Apps\Demo\Controller;
 
+use CarlosChininin\App\Infrastructure\Controller\WebAuthController;
+use CarlosChininin\App\Infrastructure\Security\Permission;
 use Pidia\Apps\Demo\Entity\Config;
 use Pidia\Apps\Demo\Form\ConfigType;
 use Pidia\Apps\Demo\Manager\ConfigManager;
-use Pidia\Apps\Demo\Security\Access;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route(path: '/admin/config')]
-final class ConfigController extends BaseController
+final class ConfigController extends WebAuthController
 {
+    public const BASE_ROUTE = 'config_index';
+
     #[Route(path: '/', name: 'config_index', defaults: ['page' => '1'], methods: ['GET'])]
     #[Route(path: '/page/{page<[1-9]\d*>}', name: 'config_index_paginated', methods: ['GET'])]
     public function index(Request $request, int $page, ConfigManager $manager): Response
     {
-        $this->denyAccess(Access::LIST, 'config_index');
+        $this->denyAccess([Permission::LIST]);
         $paginator = $manager->list($request->query->all(), $page);
 
         return $this->render(
@@ -36,7 +39,7 @@ final class ConfigController extends BaseController
     #[Route(path: '/export', name: 'config_export', methods: ['GET'])]
     public function export(Request $request, ConfigManager $manager): Response
     {
-        $this->denyAccess(Access::EXPORT, 'config_index');
+        $this->denyAccess([Permission::EXPORT]);
         $headers = [
             'nombre' => 'Nombre',
             'alias' => 'Alias',
@@ -50,7 +53,7 @@ final class ConfigController extends BaseController
     #[Route(path: '/new', name: 'config_new', methods: ['GET', 'POST'])]
     public function new(Request $request, ConfigManager $manager): Response
     {
-        $this->denyAccess(Access::NEW, 'config_index');
+        $this->denyAccess([Permission::NEW]);
         $config = new Config();
         $form = $this->createForm(ConfigType::class, $config);
         $form->handleRequest($request);
@@ -76,7 +79,7 @@ final class ConfigController extends BaseController
     #[Route(path: '/{id}', name: 'config_show', methods: ['GET'])]
     public function show(Config $config): Response
     {
-        $this->denyAccess(Access::VIEW, 'config_index');
+        $this->denyAccess([Permission::SHOW], $config);
 
         return $this->render('config/show.html.twig', ['config' => $config]);
     }
@@ -84,7 +87,8 @@ final class ConfigController extends BaseController
     #[Route(path: '/{id}/edit', name: 'config_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Config $config, ConfigManager $manager): Response
     {
-        $this->denyAccess(Access::EDIT, 'config_index');
+        $this->denyAccess([Permission::EDIT], $config);
+
         $form = $this->createForm(ConfigType::class, $config);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -109,7 +113,8 @@ final class ConfigController extends BaseController
     #[Route(path: '/{id}', name: 'config_delete', methods: ['POST'])]
     public function delete(Request $request, Config $config, ConfigManager $manager): Response
     {
-        $this->denyAccess(Access::DELETE, 'config_index');
+        $this->denyAccess([Permission::ENABLE, Permission::DISABLE], $config);
+
         if ($this->isCsrfTokenValid('delete'.$config->getId(), $request->request->get('_token'))) {
             $config->changeActivo();
             if ($manager->save($config)) {
@@ -125,7 +130,8 @@ final class ConfigController extends BaseController
     #[Route(path: '/{id}/delete', name: 'config_delete_forever', methods: ['POST'])]
     public function deleteForever(Request $request, Config $config, ConfigManager $manager): Response
     {
-        $this->denyAccess(Access::MASTER, 'config_index', $config);
+        $this->denyAccess([Permission::DELETE], $config);
+
         if ($this->isCsrfTokenValid('delete_forever'.$config->getId(), $request->request->get('_token'))) {
             if ($manager->remove($config)) {
                 $this->addFlash('warning', 'Registro eliminado');

@@ -35,7 +35,7 @@
                 <td class="d-block d-sm-none font-size-xs">
                     {{ usuario_rol.nombre }}<br>
                     {{ usuario_rol.rol }}<br>
-                    {{ usuario_rol.activo | yesnocustom | raw }}
+                    {{ usuario_rol.activo | yesno_custom | raw }}
                 </td>
                 <td class="d-none d-sm-table-cell">{{ usuario_rol.nombre}}</td>
                 {% if access.isSuperAdmin -%}
@@ -47,7 +47,7 @@
 {#                    {% endfor %}#}
                 </td>
                 {% include 'security/_config_table_td.html.twig' with {'entity': usuario_rol} %}
-                <td class="d-none d-sm-table-cell">{{ usuario_rol.activo | yesnocustom | raw }}</td>
+                <td class="d-none d-sm-table-cell">{{ usuario_rol.activo | yesno_custom | raw }}</td>
                 <td>
                     {% if access.has('show', usuario_rol) %}
                         {{ action.btn_show_link2_ico(path('usuario_rol_show', {'id': usuario_rol.id})) }}

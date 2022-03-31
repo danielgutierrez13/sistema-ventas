@@ -3,10 +3,10 @@
 namespace Pidia\Apps\Demo\Repository;
 
 use CarlosChininin\App\Infrastructure\Repository\BaseRepository;
+use CarlosChininin\Util\Filter\DoctrineValueSearch;
 use CarlosChininin\Util\Http\ParamFetcher;
 use Pidia\Apps\Demo\Entity\Config;
 use Pidia\Apps\Demo\Entity\Menu;
-use Pidia\Apps\Demo\Util\Paginator;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -21,13 +21,6 @@ class ConfigRepository extends BaseRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Config::class);
-    }
-
-    public function findLatest(array $params): Paginator
-    {
-        $queryBuilder = $this->filterQuery($params);
-
-        return Paginator::create($queryBuilder, $params);
     }
 
     public function filter(array|ParamFetcher $params, bool $inArray = true, array $permissions = []): array
@@ -47,7 +40,7 @@ class ConfigRepository extends BaseRepository
             ->select('config')
         ;
 
-        Paginator::queryTexts($queryBuilder, $params, ['config.nombre']);
+        DoctrineValueSearch::apply($queryBuilder, $params->getNullableString('b'), ['config.nombre']);
 
         return $queryBuilder;
     }

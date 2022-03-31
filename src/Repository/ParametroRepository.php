@@ -8,13 +8,13 @@
 namespace Pidia\Apps\Demo\Repository;
 
 use CarlosChininin\App\Infrastructure\Repository\BaseRepository;
+use CarlosChininin\Util\Filter\DoctrineValueSearch;
 use CarlosChininin\Util\Http\ParamFetcher;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 use function is_array;
 use Pidia\Apps\Demo\Entity\Parametro;
-use Pidia\Apps\Demo\Util\Paginator;
 
 /**
  * @method Parametro|null find($id, $lockMode = null, $lockVersion = null)
@@ -27,13 +27,6 @@ class ParametroRepository extends BaseRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Parametro::class);
-    }
-
-    public function findLatest(array $params): Paginator
-    {
-        $queryBuilder = $this->filterQuery($params);
-
-        return Paginator::create($queryBuilder, $params);
     }
 
     public function filter(array|ParamFetcher $params, bool $inArray = true, array $permissions = []): array
@@ -54,7 +47,7 @@ class ParametroRepository extends BaseRepository
             ->leftJoin('parametro.padre', 'padre')
         ;
 
-        Paginator::queryTexts($queryBuilder, $params, ['parametro.nombre', 'padre.nombre']);
+        DoctrineValueSearch::apply($queryBuilder, $params->getNullableString('b'), ['parametro.nombre', 'padre.nombre']);
 
         return $queryBuilder;
     }

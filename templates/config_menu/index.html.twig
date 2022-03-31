@@ -31,11 +31,11 @@
                 <td class="d-block d-sm-none font-size-xs">
                     {{ config_menu.name }}<br>
                     {{ config_menu.route }}<br>
-                    {{ config_menu.activo | yesnocustom | raw }}
+                    {{ config_menu.activo | yesno_custom | raw }}
                 </td>
                 <td class="d-none d-sm-table-cell">{{ config_menu.name}}</td>
                 <td class="d-none d-sm-table-cell">{{ config_menu.route }}</td>
-                <td class="d-none d-sm-table-cell">{{ config_menu.activo | yesnocustom | raw }}</td>
+                <td class="d-none d-sm-table-cell">{{ config_menu.activo | yesno_custom | raw }}</td>
                 <td>
                     {% if access.has('show') %}
                         {{ action.btn_show_link2_ico(path('config_menu_show', {'id': config_menu.id})) }}

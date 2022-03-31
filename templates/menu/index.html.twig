@@ -34,8 +34,8 @@
                 <td>{{ menu.route }}</td>
                 <td><i class="{{ menu.icon }}"></i> {{ menu.icon }}</td>
                 <td>{{ menu.badge }}</td>
-                <td>{{ menu.rank }}</td>
-                <td class="text-center">{{ menu.activo | yesnocustom | raw }}</td>
+                <td>{{ menu.ranking }}</td>
+                <td class="text-center">{{ menu.activo | yesno_custom | raw }}</td>
                 <td>
                     {% if access.has('show', menu) %}
                         {{ action.btn_show_link2_ico(path('menu_show', {'id': menu.id})) }}

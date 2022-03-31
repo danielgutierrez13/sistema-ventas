@@ -15,7 +15,6 @@ use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 use Pidia\Apps\Demo\Controller\UsuarioRolController;
 use Pidia\Apps\Demo\Entity\UsuarioRol;
-use Pidia\Apps\Demo\Util\Paginator;
 
 /**
  * @method UsuarioRol|null find($id, $lockMode = null, $lockVersion = null)
@@ -28,13 +27,6 @@ class UsuarioRolRepository extends BaseRepository
     public function __construct(ManagerRegistry $registry, private Security $security)
     {
         parent::__construct($registry, UsuarioRol::class);
-    }
-
-    public function findLatest(array $params): Paginator
-    {
-        $queryBuilder = $this->filterQuery($params);
-
-        return Paginator::create($queryBuilder, $params);
     }
 
     public function filter(array|ParamFetcher $params, bool $inArray = true, array $permissions = []): array

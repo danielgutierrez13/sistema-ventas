@@ -230,6 +230,9 @@
             "./config/packages/sensio_framework_extra.yaml"
         ]
     },
+    "statickidz/php-google-translate-free": {
+        "version": "1.2.1"
+    },
     "symfony/asset": {
         "version": "v6.0.1"
     },

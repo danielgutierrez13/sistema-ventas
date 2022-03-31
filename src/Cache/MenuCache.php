@@ -9,64 +9,39 @@ declare(strict_types=1);
 
 namespace Pidia\Apps\Demo\Cache;
 
-use Pidia\Apps\Demo\Security\Security;
+use CarlosChininin\App\Infrastructure\Cache\BaseCache;
+use CarlosChininin\App\Infrastructure\Security\Security;
 use function call_user_func;
 
 final class MenuCache
 {
-    private $cache;
-    private $security;
+    public const NAME = '__MENUXX__';
 
-    public function __construct(AppCache $cache, Security $security)
+    public function __construct(private BaseCache $cache, private Security $security)
     {
-        $this->cache = $cache;
-        $this->security = $security;
     }
 
-    public function permisos(callable $callback)
+    public function menus(string $menuSelect, callable $callback)
     {
-        $cache_key = $this->prefix().$this->permisosKey();
-        $cache_tags = $this->tags();
+        $cache_key = $this->keyUser().$menuSelect;
 
         return $this->cache->get($cache_key, function () use ($callback) {
             return call_user_func($callback);
-        }, $cache_tags, AppCache::CACHE_TIME_SHORT);
-    }
-
-    public function menus(callable $callback)
-    {
-        $cache_key = $this->prefix().$this->menusKey();
-        $cache_tags = $this->tags();
-
-        return $this->cache->get($cache_key, function () use ($callback) {
-            return call_user_func($callback);
-        }, $cache_tags, AppCache::CACHE_TIME_SHORT);
+        }, $this->tags(), BaseCache::CACHE_TIME);
     }
 
     public function update(): bool
     {
-        $cache_tags = [$this->prefix()];
-
-        return $this->cache->deleteTags($cache_tags);
+        return $this->cache->deleteTags($this->tags());
     }
 
-    public function permisosKey(): string
+    private function keyUser(): string
     {
-        return 'permisos_';
-    }
-
-    public function menusKey(): string
-    {
-        return 'menus_';
-    }
-
-    private function prefix(): string
-    {
-        return $this->security->keyCache().'_MENU__';
+        return md5(self::NAME.$this->security->user()->getId());
     }
 
     private function tags(): array
     {
-        return [$this->prefix(), $this->security->tagConfig()];
+        return [self::NAME];
     }
 }

@@ -31,7 +31,7 @@
                 <td>{{ parametro.nombre }}</td>
                 <td>{{ parametro.alias}}</td>
                 <td>{{ parametro.valor }}</td>
-                <td class="text-center">{{ parametro.activo | yesnocustom | raw }}</td>
+                <td class="text-center">{{ parametro.activo | yesno_custom | raw }}</td>
                 <td>
                     {% if access.has('show') %}
                         {{ action.btn_show_link2_ico(path('parametro_show', {'id': parametro.id})) }}

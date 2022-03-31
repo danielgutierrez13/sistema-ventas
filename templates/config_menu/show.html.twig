@@ -14,7 +14,7 @@
     {{ action.tbl_start() }}
     {{ action.tbl_tr('Nombre',config_menu.name) }}
     {{ action.tbl_tr('Ruta',config_menu.route) }}
-    {{ action.tbl_tr('Activo',config_menu.activo | yesnocustom) }}
+    {{ action.tbl_tr('Activo',config_menu.activo | yesno_custom) }}
     {{ action.tbl_end() }}
 {% endblock %}
 

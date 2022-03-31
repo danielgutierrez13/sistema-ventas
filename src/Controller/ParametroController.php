@@ -7,24 +7,28 @@
 
 namespace Pidia\Apps\Demo\Controller;
 
+use CarlosChininin\App\Infrastructure\Controller\WebAuthController;
+use CarlosChininin\App\Infrastructure\Security\Permission;
+use CarlosChininin\Util\Http\ParamFetcher;
 use Pidia\Apps\Demo\Entity\Parametro;
 use Pidia\Apps\Demo\Form\ParametroType;
 use Pidia\Apps\Demo\Manager\ParametroManager;
-use Pidia\Apps\Demo\Security\Access;
-use Pidia\Apps\Demo\Util\Paginator;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route(path: '/admin/parametro')]
-class ParametroController extends BaseController
+class ParametroController extends WebAuthController
 {
-    #[Route(path: '/', defaults: ['page' => '1'], methods: ['GET'], name: 'parametro_index')]
-    #[Route(path: '/page/{page<[1-9]\d*>}', methods: ['GET'], name: 'parametro_index_paginated')]
+    public const BASE_ROUTE = 'parametro_index';
+
+    #[Route(path: '/', name: 'parametro_index', defaults: ['page' => '1'], methods: ['GET'])]
+    #[Route(path: '/page/{page<[1-9]\d*>}', name: 'parametro_index_paginated', methods: ['GET'])]
     public function index(Request $request, int $page, ParametroManager $manager): Response
     {
-        $this->denyAccess(Access::LIST, 'parametro_index');
-        $paginator = $manager->list($request->query->all(), $page);
+        $this->denyAccess([Permission::LIST]);
+
+        $paginator = $manager->paginate($page, ParamFetcher::fromRequestQuery($request));
 
         return $this->render(
             'parametro/index.html.twig',
@@ -34,40 +38,31 @@ class ParametroController extends BaseController
         );
     }
 
-    #[Route(path: '/export', methods: ['GET'], name: 'parametro_export')]
+    #[Route(path: '/export', name: 'parametro_export', methods: ['GET'])]
     public function export(Request $request, ParametroManager $manager): Response
     {
-        $this->denyAccess(Access::EXPORT, 'parametro_index');
+        $this->denyAccess([Permission::EXPORT]);
+
         $headers = [
             'nombre' => 'Nombre',
-            'codigo' => 'Codigo',
+            'alias' => 'Alias',
             'activo' => 'Activo',
         ];
-        $params = Paginator::params($request->query->all());
-        $objetos = $manager->repositorio()->filter($params, false);
-        $data = [];
-        /** @var Parametro $objeto */
-        foreach ($objetos as $objeto) {
-            $item = [];
-            $item['nombre'] = $objeto->getNombreCompleto();
-            $item['codigo'] = $objeto->getCodigo();
-            $item['activo'] = $objeto->activo();
-            $data[] = $item;
-            unset($item);
-        }
 
-        return $manager->export($data, $headers, 'Reporte', 'parametro');
+        $items = $manager->dataExport(ParamFetcher::fromRequestQuery($request), true);
+
+        return $manager->export($items, $headers, 'parametro');
     }
 
     #[Route(path: '/new', name: 'parametro_new', methods: ['GET', 'POST'])]
     public function new(Request $request, ParametroManager $manager): Response
     {
-        $this->denyAccess(Access::NEW, 'parametro_index');
+        $this->denyAccess([Permission::NEW]);
+
         $parametro = new Parametro();
         $form = $this->createForm(ParametroType::class, $parametro);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $parametro->setPropietario($this->getUser());
             if ($manager->save($parametro)) {
                 $this->addFlash('success', 'Registro creado!!!');
             } else {
@@ -89,7 +84,7 @@ class ParametroController extends BaseController
     #[Route(path: '/{id}', name: 'parametro_show', methods: ['GET'])]
     public function show(Parametro $parametro): Response
     {
-        $this->denyAccess(Access::VIEW, 'parametro_index');
+        $this->denyAccess([Permission::SHOW], $parametro);
 
         return $this->render('parametro/show.html.twig', ['parametro' => $parametro]);
     }
@@ -97,7 +92,8 @@ class ParametroController extends BaseController
     #[Route(path: '/{id}/edit', name: 'parametro_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Parametro $parametro, ParametroManager $manager): Response
     {
-        $this->denyAccess(Access::EDIT, 'parametro_index');
+        $this->denyAccess([Permission::EDIT], $parametro);
+
         $form = $this->createForm(ParametroType::class, $parametro);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -122,7 +118,8 @@ class ParametroController extends BaseController
     #[Route(path: '/{id}', name: 'parametro_delete', methods: ['POST'])]
     public function delete(Request $request, Parametro $parametro, ParametroManager $manager): Response
     {
-        $this->denyAccess(Access::DELETE, 'parametro_index');
+        $this->denyAccess([Permission::ENABLE, Permission::DISABLE], $parametro);
+
         if ($this->isCsrfTokenValid('delete'.$parametro->getId(), $request->request->get('_token'))) {
             $parametro->changeActivo();
             if ($manager->save($parametro)) {
@@ -138,7 +135,8 @@ class ParametroController extends BaseController
     #[Route(path: '/{id}/delete', name: 'parametro_delete_forever', methods: ['POST'])]
     public function deleteForever(Request $request, Parametro $parametro, ParametroManager $manager): Response
     {
-        $this->denyAccess(Access::MASTER, 'parametro_index', $parametro);
+        $this->denyAccess([Permission::DELETE], $parametro);
+
         if ($this->isCsrfTokenValid('delete_forever'.$parametro->getId(), $request->request->get('_token'))) {
             if ($manager->remove($parametro)) {
                 $this->addFlash('warning', 'Registro eliminado');

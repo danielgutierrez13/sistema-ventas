@@ -22,6 +22,7 @@ use Symfony\Component\Validator\Constraints\Length;
 class Parametro
 {
     use EntityTrait;
+
     #[Id]
     #[GeneratedValue]
     #[Column(type: 'integer')]

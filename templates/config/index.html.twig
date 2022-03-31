@@ -33,7 +33,7 @@
                         <span class="badge badge-secondary">{{ menu }}</span>
                     {% endfor %}
                 </td>
-                <td class="text-center">{{ config.activo | yesnocustom | raw }}</td>
+                <td class="text-center">{{ config.activo | yesno_custom | raw }}</td>
                 <td>
                     {% if access.has('show') %}
                         {{ action.btn_show_link2_ico(path('config_show', {'id': config.id})) }}

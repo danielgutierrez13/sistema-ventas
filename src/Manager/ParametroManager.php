@@ -9,13 +9,14 @@ declare(strict_types=1);
 
 namespace Pidia\Apps\Demo\Manager;
 
-use Pidia\Apps\Demo\Entity\Parametro;
-use CarlosChininin\App\Infrastructure\Repository\BaseRepository;
+use CarlosChininin\App\Infrastructure\Manager\CRUDManager;
+use Pidia\Apps\Demo\Repository\ParametroRepository;
+use Symfony\Component\Security\Core\Security;
 
-final class ParametroManager extends BaseManager
+final class ParametroManager extends CRUDManager
 {
-    public function repositorio(): BaseRepository
+    public function __construct(ParametroRepository $repository, Security $security)
     {
-        return $this->manager()->getRepository(Parametro::class);
+        parent::__construct($repository, $security);
     }
 }
