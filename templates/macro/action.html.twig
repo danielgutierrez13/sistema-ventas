@@ -682,7 +682,7 @@
     <div class="form-group row mb-1 p-1 {{ class }} {{ actions.frm_errors_class(value) }}">
         {{ actions.frm_label(value,'col-sm-' ~ col ~ ' col-4') }}
         <div class="col-sm-{{ 12-col }} col-8">
-            {{ form_widget(value, {attr: {class: 'js-select2 form-control ' ~ class_widget ~ actions.frm_errors_class(value), 'data-placeholder': placeholder | gtrans} }) }}
+            {{ form_widget(value, {attr: {class: 'js-select2 form-control form-select' ~ class_widget ~ actions.frm_errors_class(value), 'data-placeholder': placeholder | gtrans} }) }}
             {{ actions.frm_help(value) }}
             {{ actions.frm_errors(value) }}
         </div>
