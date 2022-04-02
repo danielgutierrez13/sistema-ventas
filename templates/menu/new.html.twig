@@ -1,6 +1,5 @@
 {% extends 'base.html.twig' %}
-{% import 'macro/breadcrumb.html.twig' as breadcrumb %}
-{% import 'macro/action.html.twig' as action %}
+{% import '@App/theme1/breadcrumb.html.twig' as breadcrumb %}
 
 {% set _title = 'Menu' %}
 {% set _main_title = 'Nuevo' %}
@@ -36,7 +35,7 @@
 {% block _javascripts %}
     <script src="{{ asset('js/select2.js') }}"></script>
     <script>
-        jQuery(document).ready(function() {
+        $(document).ready(function() {
             Select2();
         });
     </script>

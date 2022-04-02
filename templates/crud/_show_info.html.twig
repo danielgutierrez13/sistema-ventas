@@ -1,8 +1,8 @@
-{% import 'macro/action.html.twig' as action %}
+{% import '@App/theme1/table.html.twig' as table %}
 
-{{ action.tbl_tr('Activo'| gtrans,entity.activo | yesno_custom) }}
+{{ table.tbl_tr('Activo'| gtrans,entity.activo | yesno_custom) }}
 {% if access.master %}
-    {{ action.tbl_tr('Propietario'| gtrans,entity.propietario) }}
-    {{ action.tbl_tr('Creado'| gtrans,entity.createdAt | fecha_hora_larga) }}
-    {{ action.tbl_tr('Actualizado'| gtrans,entity.updatedAt | fecha_hora_larga) }}
+    {{ table.tbl_tr('Propietario'| gtrans,entity.propietario) }}
+    {{ table.tbl_tr('Creado'| gtrans,entity.createdAt | fecha_hora_larga) }}
+    {{ table.tbl_tr('Actualizado'| gtrans,entity.updatedAt | fecha_hora_larga) }}
 {% endif %}

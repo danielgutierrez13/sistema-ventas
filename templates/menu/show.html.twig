@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
-{% import 'macro/breadcrumb.html.twig' as breadcrumb %}
-{% import 'macro/action.html.twig' as action %}
+{% import '@App/theme1/breadcrumb.html.twig' as breadcrumb %}
+{% import '@App/theme1/table.html.twig' as table %}
 
 {% set _title = 'Menu' %}
 {% set _main_title = 'Mostrar' %}
@@ -11,14 +11,14 @@
 {% endblock %}
 
 {% block _main %}
-    {{ action.tbl_start() }}
-        {{ action.tbl_tr('Padre',menu.parent) }}
-        {{ action.tbl_tr('Nombre',menu.name) }}
-        {{ action.tbl_tr('Ruta',menu.route) }}
-        {{ action.tbl_tr('Icono',menu.icon) }}
-        {{ action.tbl_tr('Orden',menu.ranking) }}
+    {{ table.tbl_start() }}
+        {{ table.tbl_tr('Padre',menu.parent) }}
+        {{ table.tbl_tr('Nombre',menu.name) }}
+        {{ table.tbl_tr('Ruta',menu.route) }}
+        {{ table.tbl_tr('Icono',menu.icon) }}
+        {{ table.tbl_tr('Orden',menu.ranking) }}
         {% include 'crud/_show_info.html.twig' with {'entity': menu} %}
-    {{ action.tbl_end() }}
+    {{ table.tbl_end() }}
 
 {% endblock %}
 

@@ -1,7 +1,6 @@
 {% extends 'base.html.twig' %}
-{% import 'macro/breadcrumb.html.twig' as breadcrumb %}
-{% import 'macro/action.html.twig' as action %}
-{% import 'macro/pagination.html.twig' as pagination %}
+{% import '@App/theme1/breadcrumb.html.twig' as breadcrumb %}
+{% import '@App/theme1/pagination.html.twig' as pagination %}
 
 {% set _title = 'Menu' %}
 {% set _main_title = 'Listado' %}
@@ -16,20 +15,24 @@
     {% embed 'macro/_table.html.twig' %}
         {% block table_head %}
             {% import 'macro/action.html.twig' as action %}
+            {% import '@App/theme1/table.html.twig' as table %}
+
             <tr>
-                {{ action.th('#') }}
-                {{ action.th('Padre', true) }}
-                {{ action.th('Nombre', true) }}
-                {{ action.th('Ruta', true) }}
-                {{ action.th('Icono', true) }}
-                {{ action.th('Insignia', true) }}
-                {{ action.th('Orden', true) }}
-                {{ action.th('Activo', true, 'text-center') }}
+                {{ table.th('#') }}
+                {{ table.th('Padre', true) }}
+                {{ table.th('Nombre', true) }}
+                {{ table.th('Ruta', true) }}
+                {{ table.th('Icono', true) }}
+                {{ table.th('Insignia', true) }}
+                {{ table.th('Orden', true) }}
+                {{ table.th('Activo', true, 'text-center') }}
                 <th></th>
             </tr>
         {% endblock %}
         {% block table_body %}
             {% import 'macro/action.html.twig' as action %}
+            {% import '@App/theme1/table.html.twig' as table %}
+
             {% for menu in paginator.results %}
                 <tr>
                     <td>{{ loop.index | index (paginator)}}</td>

@@ -1,33 +1,34 @@
-{% import 'macro/action.html.twig' as action %}
+{% import '@App/theme1/form.html.twig' as frm %}
+{#{% import 'macro/action.html.twig' as frm %}#}
 
-{{ action.frm_start(form) }}
-    {{ action.frm_column(
-        action.frm_column_field_select(form.parent),
+{{ frm.frm_start(form) }}
+    {{ frm.frm_column(
+        frm.frm_column_field_select(form.parent),
         null,
         null,
         null,
         2
     ) }}
-    {{ action.frm_column(
-        action.frm_column_field(form.name),
-        action.frm_column_field_select(form.route)
+    {{ frm.frm_column(
+        frm.frm_column_field(form.name),
+        frm.frm_column_field_select(form.route)
     ) }}
-    {{ action.frm_column(
-        action.frm_column_field(form.ranking),
-        action.frm_column_field(form.icon)
+    {{ frm.frm_column(
+        frm.frm_column_field(form.ranking),
+        frm.frm_column_field(form.icon)
     ) }}
-    {{ action.frm_column(
-        action.frm_column_field(form.badge),
+    {{ frm.frm_column(
+        frm.frm_column_field(form.badge),
         null,
         null,
         null,
         2
     ) }}
-    {{ action.frm_column(
-        action.frm_column_btn(button_label|default('Guardar')),
+    {{ frm.frm_column(
+        frm.frm_column_btn(button_label|default('Guardar')),
         null,
         null,
         null,
         2
     ) }}
-{{ action.frm_end(form) }}
+{{ frm.frm_end(form) }}
