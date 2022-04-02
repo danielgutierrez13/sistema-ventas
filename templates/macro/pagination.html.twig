@@ -1,89 +1,95 @@
 {% macro show(paginator, route, info = true) -%}
-    {% if paginator is not null %}
+    {% if paginator is not null and paginator.hasToPaginate %}
         <div class="row">
-            <div class="col-sm-6">
-                <nav aria-label="Page navigation">
-                    {% if paginator.hasToPaginate %}
-                        {% set routeParams = app.request.query.all %}
-                        <ul class="pagination pagination-sm">
-                            <li class="page-item">
-                                <a class="page-link" href="{{ path(route ~ '_paginated', routeParams | merge({page: 1})) }}">
-                                    <i class="fa fa-angle-double-left kt-font-brand"></i>
-                                </a>
-                            </li>
-                            <li class="page-item">
-                                {% if paginator.hasPreviousPage %}
-                                    <a class="page-link" href="{{ path(route ~ '_paginated', routeParams | merge({page: paginator.previousPage})) }}">
-                                        <i class="fa fa-angle-left kt-font-brand"></i>
-                                    </a>
-                                {% endif %}
-                            </li>
-                            {% set start = paginator.currentPage - 3 > 0 ? paginator.currentPage - 3 : 1 %}
-                            {% set end = paginator.currentPage + 3 < paginator.lastPage ? paginator.currentPage + 3 : paginator.lastPage %}
-
-                            {% if start > 1 %}
-                                <li class="page-item disabled">
-                                    <a class="page-link" href="#">...</a>
-                                </li>
-                            {% endif %}
-
-                            {% for i in start..end %}
-                                <li class="page-item {% if i == paginator.currentPage %}active {% endif %}">
-                                    <a class="page-link" href="{{ path(route ~ '_paginated', routeParams | merge({page: i}) ) }}">{{ i }}</a>
-                                </li>
-                            {% endfor %}
-
-                            {% if end < paginator.lastPage %}
-                                <li class="page-item disabled">
-                                    <a class="page-link" href="#">...</a>
-                                </li>
-                            {% endif %}
-
-                            <li class="page-item">
-                                {% if paginator.hasNextPage %}
-                                    <a class="page-link" href="{{ path(route ~ '_paginated', routeParams | merge({page: paginator.nextPage})) }}">
-                                        <i class="fa fa-angle-right kt-font-brand"></i>
-                                    </a>
-                                {% endif %}
-                            </li>
-                            <li class="page-item">
-                                <a class="page-link" href="{{ path(route ~ '_paginated', routeParams | merge({page: paginator.lastPage})) }}">
-                                    <i class="fa fa-angle-double-right kt-font-brand"></i>
-                                </a>
-                            </li>
-                        </ul>
-                    {% endif %}
-                </nav>
-            </div>
-
             {% if info %}
-                <div class="col-sm-6 text-right">
-                <span class="">
-                    {% set total = (paginator.currentPage-1) * paginator.pageSize + 1 %}
-                    Mostrar de {{ total }} a {{ ( total - 1 ) + (paginator.results | length) }} de {{ paginator.numResults }} registros
-                </span>
+                <div class="col-sm-auto">
+                    <span class="">
+                        {% set total = (paginator.currentPage-1) * paginator.pageSize + 1 %}
+                        Mostrar de {{ total }} a {{ ( total - 1 ) + (paginator.results | length) }} de {{ paginator.numResults }} registros
+                    </span>
                 </div>
             {% endif %}
+            <div class="col">
+                {% set routeParams = app.request.query.all %}
+                <ul class="pagination pagination-sm float-sm-end">
+                    <li class="page-item">
+                        <a class="page-link" href="{{ path(route ~ '_paginated', routeParams | merge({page: 1})) }}">
+                            <i class="fa fa-angle-double-left kt-font-brand"></i>
+                        </a>
+                    </li>
+                    <li class="page-item">
+                        {% if paginator.hasPreviousPage %}
+                            <a class="page-link" href="{{ path(route ~ '_paginated', routeParams | merge({page: paginator.previousPage})) }}">
+                                <i class="fa fa-angle-left kt-font-brand"></i>
+                            </a>
+                        {% endif %}
+                    </li>
+                    {% set start = paginator.currentPage - 3 > 0 ? paginator.currentPage - 3 : 1 %}
+                    {% set end = paginator.currentPage + 3 < paginator.lastPage ? paginator.currentPage + 3 : paginator.lastPage %}
+
+                    {% if start > 1 %}
+                        <li class="page-item disabled">
+                            <a class="page-link" href="#">...</a>
+                        </li>
+                    {% endif %}
+
+                    {% for i in start..end %}
+                        <li class="page-item {% if i == paginator.currentPage %}active {% endif %}">
+                            <a class="page-link" href="{{ path(route ~ '_paginated', routeParams | merge({page: i}) ) }}">{{ i }}</a>
+                        </li>
+                    {% endfor %}
+
+                    {% if end < paginator.lastPage %}
+                        <li class="page-item disabled">
+                            <a class="page-link" href="#">...</a>
+                        </li>
+                    {% endif %}
+
+                    <li class="page-item">
+                        {% if paginator.hasNextPage %}
+                            <a class="page-link" href="{{ path(route ~ '_paginated', routeParams | merge({page: paginator.nextPage})) }}">
+                                <i class="fa fa-angle-right kt-font-brand"></i>
+                            </a>
+                        {% endif %}
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="{{ path(route ~ '_paginated', routeParams | merge({page: paginator.lastPage})) }}">
+                            <i class="fa fa-angle-double-right kt-font-brand"></i>
+                        </a>
+                    </li>
+                </ul>
+            </div>
         </div>
     {% endif %}
 {%- endmacro %}
 
-{% macro pager(items, route) -%}
+{% macro pager(paginator, route, hasSearch = true) -%}
     {% import _self as paginations %}
-    <div class="row pb-2">
-        <div class="col-lg-2 col-sm-4">
-            {% if default_results_per_page is defined %}
-                <select id="filter_size" class="form-control" name="n">
-                    {% for key,value in default_results_per_page %}
-                        <option value="{{ value }}" {% if app.request.get('n') == value %} selected {% endif %}>{{key}} {{ 'records' | trans }}</option>
-                    {% endfor %}
-                </select>
+        <div class="row pb-2">
+            <div class="col-sm-auto">
+                {% if default_results_per_page is defined %}
+                    <label for="filter_size" class="d-none"></label>
+                    <select id="filter_size" class="form-control form-select form-select-sm" name="n">
+                        {% for key,value in default_results_per_page %}
+                            <option value="{{ value }}" {% if app.request.get('n') == value %} selected {% endif %}>{{key}} {{ 'registros' | gtrans }}</option>
+                        {% endfor %}
+                    </select>
+                {% endif %}
+            </div>
+            {% if hasSearch %}
+                <div class="col-sm-auto">
+                    <div class="input-group input-group-sm">
+                        <input type="text" class="form-control" placeholder="Buscar"
+                               aria-label="Recipient's username" aria-describedby="basic-addon2"
+                               name="b" id="filter_text" value="{{ app.request.get('b') }}"/>
+                        <span class="input-group-text" id="filter_text_icon">
+                        <i class="fas fa-search fs-4"></i>
+                    </span>
+                    </div>
+                </div>
             {% endif %}
-        </div>
-        <div class="col-lg-10 col-sm-8">
-            <div class="float-right">
-                {{ paginations.show(items,route, false) }}
+            <div class="col">
+                {{ paginations.show(paginator,route, false) }}
             </div>
         </div>
-    </div>
 {%- endmacro %}

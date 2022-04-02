@@ -1,0 +1,14 @@
+<!--begin::Label-->
+{#<span class="fs-7 fw-bolder text-gray-700 pe-4 text-nowrap d-none d-xxl-block">Buscar:</span>#}
+<!--end::Label-->
+<!--begin::Input group-->
+<div class="input-group input-group-sm">
+    <input type="text" class="form-control" placeholder="Buscar"
+           aria-label="Recipient's username" aria-describedby="basic-addon2"
+           name="b" id="filter_text" value="{{ app.request.get('b') }}"/>
+    <span class="input-group-text" id="filter_text_icon">
+        <i class="fas fa-search fs-4"></i>
+    </span>
+</div>
+<div class="bullet bg-secondary h-35px w-1px mx-5"></div>
+<!--end::Input group-->

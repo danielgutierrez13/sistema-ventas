@@ -1083,7 +1083,7 @@
 {%- endblock attributes -%}
 
 {# ########## DISPLAY ################# #}
-{% macro tbl_start(class='table-striped',attributes='') %}
+{% macro tbl_start(class='table-striped table-sm align-middle',attributes='') %}
 <table class="table {{ class }} table-vcenter" {{ attributes }}>
     {% endmacro %}
 
@@ -1091,12 +1091,12 @@
 </table>
 {% endmacro %}
 
-{% macro thead_start(class='',attributes='') %}
-<thead class="thead-light {{ class }}" {{ attributes }}>
+{% macro thead_start(class='table-light text-uppercase fw-bolder fs-6 text-gray-800',attributes='') %}
+<thead class="{{ class }}" {{ attributes }}>
     {% endmacro %}
 
-    {% macro thead_end() %}
-</thead>
+{% macro thead_end() %}
+    </thead>
 {% endmacro %}
 
 {% macro tbody_start(class='',attributes='') %}

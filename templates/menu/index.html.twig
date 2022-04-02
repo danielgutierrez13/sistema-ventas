@@ -12,47 +12,50 @@
 {% endblock %}
 
 {% block _main %}
-    <div class="table-responsive">
-        {{ action.tbl_start() }}
-        {{ action.thead_start() }}
-        <tr>
-            {{ action.th('Padre', true) }}
-            {{ action.th('Nombre', true) }}
-            {{ action.th('Ruta', true) }}
-            {{ action.th('Icono', true) }}
-            {{ action.th('Insignia', true) }}
-            {{ action.th('Orden', true) }}
-            {{ action.th('Activo', true, 'text-center') }}
-            <th></th>
-        </tr>
-        {{ action.thead_end() }}
-        {{ action.tbody_start() }}
-        {% for menu in paginator.results %}
+    {{ pagination.pager(paginator, _section) }}
+    {% embed 'macro/_table.html.twig' %}
+        {% block table_head %}
+            {% import 'macro/action.html.twig' as action %}
             <tr>
-                <td>{{ menu.parent}}</td>
-                <td>{{ menu.name }}</td>
-                <td>{{ menu.route }}</td>
-                <td><i class="{{ menu.icon }}"></i> {{ menu.icon }}</td>
-                <td>{{ menu.badge }}</td>
-                <td>{{ menu.ranking }}</td>
-                <td class="text-center">{{ menu.activo | yesno_custom | raw }}</td>
-                <td>
-                    {% if access.has('show', menu) %}
-                        {{ action.btn_show_link2_ico(path('menu_show', {'id': menu.id})) }}
-                    {% endif %}
-                    {% if access.has('edit', menu) %}
-                        {{ action.btn_edit_link2_ico(path('menu_edit', {'id': menu.id})) }}
-                    {% endif %}
-                </td>
+                {{ action.th('#') }}
+                {{ action.th('Padre', true) }}
+                {{ action.th('Nombre', true) }}
+                {{ action.th('Ruta', true) }}
+                {{ action.th('Icono', true) }}
+                {{ action.th('Insignia', true) }}
+                {{ action.th('Orden', true) }}
+                {{ action.th('Activo', true, 'text-center') }}
+                <th></th>
             </tr>
-        {% else %}
-            <tr>
-                <td colspan="4">No hay registros</td>
-            </tr>
-        {% endfor %}
-        {{ action.tbody_end() }}
-        {{ action.tbl_end() }}
-    </div>
+        {% endblock %}
+        {% block table_body %}
+            {% import 'macro/action.html.twig' as action %}
+            {% for menu in paginator.results %}
+                <tr>
+                    <td>{{ loop.index | index (paginator)}}</td>
+                    <td>{{ menu.parent}}</td>
+                    <td>{{ menu.name }}</td>
+                    <td>{{ menu.route }}</td>
+                    <td><i class="{{ menu.icon }}"></i> {{ menu.icon }}</td>
+                    <td>{{ menu.badge }}</td>
+                    <td class="text-center">{{ menu.ranking }}</td>
+                    <td class="text-center">{{ menu.activo | yesno_custom | raw }}</td>
+                    <td class="float-end">
+                        {% if access.has('show', menu) %}
+                            {{ action.btn_show_link2_ico(path('menu_show', {'id': menu.id})) }}
+                        {% endif %}
+                        {% if access.has('edit', menu) %}
+                            {{ action.btn_edit_link2_ico(path('menu_edit', {'id': menu.id})) }}
+                        {% endif %}
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="4">No hay registros</td>
+                </tr>
+            {% endfor %}
+        {% endblock %}
+    {% endembed %}
 
     {{ pagination.show(paginator, _section) }}
 {% endblock %}
@@ -62,7 +65,7 @@
 {% endblock%}
 
 {% block _main_options %}
-    {% include 'crud/_index_filter.html.twig' %}
+{#    {% include 'crud/_index_filter.html.twig' %}#}
 {% endblock %}
 
 {% block _main_tools %}
@@ -77,17 +80,35 @@
     {% include 'crud/_index_links_ico.html.twig' with {'route_base': 'menu'}  %}
 {% endblock %}
 
+{#{% block _body_toolbar %}#}
+{#    {% include 'macro/_search.html.Twig' %}#}
+{#{% endblock %}#}
+
 {% block _stylesheets %}
 {% endblock %}
 
 {% block _javascripts %}
     <script>
+        function route()
+        {
+            let route = '{{ path('menu_index') }}';
+            route = route + "?" + 'n=' + $('#filter_size option:selected').val();
+            route = route + "&" + 'b=' + $('#filter_text').val();
+
+            return route
+        }
+
         jQuery(document).ready(function () {
             $(document).on('change', '#filter_size', function () {
-                let route = '{{ path('menu_index') }}';
-                route = route + "?" + 'n=' + $('#filter_size option:selected').val();
-                route = route + "&" + 'b=' + $('#filter_text').val();
-                window.location = route;
+                window.location = route();
+            });
+
+            $(document).on('keyup', '#filter_text', function (e) {
+                let code = e.key; // recommended to use e.key, it's normalized across devices and languages
+                if(code==="Enter") e.preventDefault();
+                if(code===" " || code==="Enter" || code===","|| code===";"){
+                    window.location = route();
+                } // missing closing if brace
             });
 
             $(document).on('click', '.btn-send', function () {

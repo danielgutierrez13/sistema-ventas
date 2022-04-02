@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/carloschininin/app.git",
-                "reference": "71f27a4a5fce2e61badbaba739f958a2215f34e8"
+                "reference": "0a8385621aacb7729ae2a0f691190d644a167f16"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/carloschininin/app/zipball/71f27a4a5fce2e61badbaba739f958a2215f34e8",
-                "reference": "71f27a4a5fce2e61badbaba739f958a2215f34e8",
+                "url": "https://api.github.com/repos/carloschininin/app/zipball/0a8385621aacb7729ae2a0f691190d644a167f16",
+                "reference": "0a8385621aacb7729ae2a0f691190d644a167f16",
                 "shasum": ""
             },
             "require": {
@@ -28,14 +28,14 @@
                 "doctrine/orm": "^2.10",
                 "php": "^8.1",
                 "statickidz/php-google-translate-free": "^1.2",
-                "symfony/cache-contracts": "^3.0",
+                "symfony/cache-contracts": "^2.5|^3.0",
                 "symfony/config": "^5.4|^6.0",
                 "symfony/dependency-injection": "^5.4|^6.0",
                 "symfony/form": "^5.4|^6.0",
                 "symfony/http-kernel": "^5.4|^6.0",
                 "symfony/intl": "^5.4|^6.0",
                 "symfony/security-core": "^5.4|^6.0",
-                "symfony/translation-contracts": "^3.0",
+                "symfony/translation-contracts": "^2.5|^3.0",
                 "twig/twig": "^3.0"
             },
             "require-dev": {
@@ -63,7 +63,7 @@
                 "issues": "https://github.com/carloschininin/app/issues",
                 "source": "https://github.com/carloschininin/app/tree/main"
             },
-            "time": "2022-03-31T07:50:55+00:00"
+            "time": "2022-04-01T04:45:23+00:00"
         },
         {
             "name": "carloschininin/data",
@@ -126,12 +126,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/carloschininin/util.git",
-                "reference": "41b0180074659fca41efb9c7bae364695ccfc35b"
+                "reference": "4ebc0b9046cf4aede9a7b5a1fc4c0e3dcb3f5c2e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/carloschininin/util/zipball/41b0180074659fca41efb9c7bae364695ccfc35b",
-                "reference": "41b0180074659fca41efb9c7bae364695ccfc35b",
+                "url": "https://api.github.com/repos/carloschininin/util/zipball/4ebc0b9046cf4aede9a7b5a1fc4c0e3dcb3f5c2e",
+                "reference": "4ebc0b9046cf4aede9a7b5a1fc4c0e3dcb3f5c2e",
                 "shasum": ""
             },
             "require": {
@@ -170,7 +170,7 @@
                 "issues": "https://github.com/carloschininin/util/issues",
                 "source": "https://github.com/carloschininin/util/tree/master"
             },
-            "time": "2022-03-31T03:55:54+00:00"
+            "time": "2022-03-31T18:08:43+00:00"
         },
         {
             "name": "doctrine/annotations",
@@ -1732,16 +1732,16 @@
         },
         {
             "name": "imagine/imagine",
-            "version": "1.3.1",
+            "version": "1.3.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-imagine/Imagine.git",
-                "reference": "fc3e477a15907e8f2a11c32f1aecb07101c0bd31"
+                "reference": "ae864f26afbf8859ebd2e2b9df92d77ee175dc13"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-imagine/Imagine/zipball/fc3e477a15907e8f2a11c32f1aecb07101c0bd31",
-                "reference": "fc3e477a15907e8f2a11c32f1aecb07101c0bd31",
+                "url": "https://api.github.com/repos/php-imagine/Imagine/zipball/ae864f26afbf8859ebd2e2b9df92d77ee175dc13",
+                "reference": "ae864f26afbf8859ebd2e2b9df92d77ee175dc13",
                 "shasum": ""
             },
             "require": {
@@ -1788,9 +1788,9 @@
             ],
             "support": {
                 "issues": "https://github.com/php-imagine/Imagine/issues",
-                "source": "https://github.com/php-imagine/Imagine/tree/1.3.1"
+                "source": "https://github.com/php-imagine/Imagine/tree/1.3.2"
             },
-            "time": "2022-03-15T15:19:48+00:00"
+            "time": "2022-04-01T11:58:30+00:00"
         },
         {
             "name": "lambdish/phunctional",
@@ -8805,16 +8805,16 @@
         },
         {
             "name": "composer/semver",
-            "version": "3.3.1",
+            "version": "3.3.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer/semver.git",
-                "reference": "5d8e574bb0e69188786b8ef77d43341222a41a71"
+                "reference": "3953f23262f2bff1919fc82183ad9acb13ff62c9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer/semver/zipball/5d8e574bb0e69188786b8ef77d43341222a41a71",
-                "reference": "5d8e574bb0e69188786b8ef77d43341222a41a71",
+                "url": "https://api.github.com/repos/composer/semver/zipball/3953f23262f2bff1919fc82183ad9acb13ff62c9",
+                "reference": "3953f23262f2bff1919fc82183ad9acb13ff62c9",
                 "shasum": ""
             },
             "require": {
@@ -8866,7 +8866,7 @@
             "support": {
                 "irc": "irc://irc.freenode.org/composer",
                 "issues": "https://github.com/composer/semver/issues",
-                "source": "https://github.com/composer/semver/tree/3.3.1"
+                "source": "https://github.com/composer/semver/tree/3.3.2"
             },
             "funding": [
                 {
@@ -8882,7 +8882,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-03-16T11:22:07+00:00"
+            "time": "2022-04-01T19:23:25+00:00"
         },
         {
             "name": "composer/xdebug-handler",

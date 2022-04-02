@@ -237,6 +237,10 @@
                             <!--end::Page title-->
                             <!--begin::Action group-->
                             <div class="d-flex align-items-center overflow-auto pt-3 pt-lg-0">
+                                <div class="d-flex align-items-center">
+                                    {% block _body_toolbar %}
+                                    {% endblock %}
+                                </div>
                                 <!--begin::Action wrapper-->
                                 <div class="d-flex align-items-center">
                                     <!--begin::Label-->
@@ -275,7 +279,7 @@
 {#                                    </div>#}
 {#                                    <!--end::Header-->#}
                                     <!--begin::Body-->
-                                    <div class="card-body py-0">
+                                    <div class="card-body pt-0 ">
                                         {% block _main_header %}{% endblock %}
                                         {% block _main_options %}{% endblock %}
                                     </div>
