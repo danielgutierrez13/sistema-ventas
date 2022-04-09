@@ -15,7 +15,6 @@ use Pidia\Apps\Demo\Cache\MenuCache;
 use Pidia\Apps\Demo\Entity\UsuarioRol;
 use Pidia\Apps\Demo\Form\UsuarioRolType;
 use Pidia\Apps\Demo\Manager\UsuarioRolManager;
-use Pidia\Apps\Demo\Util\Generator;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -66,10 +65,6 @@ class UsuarioRolController extends WebAuthController
         $form = $this->createForm(UsuarioRolType::class, $rol);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            if (null === $rol->getRol()) {
-                $configId = $this->getUser()->config()?->getId() ?? rand(1, 10);
-                $rol->setRol(Generator::createRol($rol->getNombre(), $configId));
-            }
             if ($manager->save($rol)) {
                 $this->addFlash('success', 'Registro creado!!!');
             } else {
