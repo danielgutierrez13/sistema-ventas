@@ -9,6 +9,7 @@ namespace Pidia\Apps\Demo\Controller;
 
 use CarlosChininin\App\Infrastructure\Controller\WebAuthController;
 use CarlosChininin\App\Infrastructure\Security\Permission;
+use CarlosChininin\Util\Http\ParamFetcher;
 use Pidia\Apps\Demo\Entity\ConfigMenu;
 use Pidia\Apps\Demo\Form\ConfigMenuType;
 use Pidia\Apps\Demo\Manager\ConfigMenuManager;
@@ -27,7 +28,7 @@ final class ConfigMenuController extends WebAuthController
     {
         $this->denyAccess([Permission::LIST]);
 
-        $paginator = $manager->list($request->query->all(), $page);
+        $paginator = $manager->paginate($page, ParamFetcher::fromRequestQuery($request));
 
         return $this->render(
             'config_menu/index.html.twig',
@@ -48,7 +49,9 @@ final class ConfigMenuController extends WebAuthController
             'activo' => 'Activo',
         ];
 
-        return $manager->exportOfQuery($request->query->all(), $headers, 'config_menu');
+        $items = $manager->dataExport(ParamFetcher::fromRequestQuery($request), true);
+
+        return $manager->export($items, $headers, 'menu_config');
     }
 
     #[Route(path: '/new', name: 'config_menu_new', methods: ['GET', 'POST'])]

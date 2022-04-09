@@ -9,14 +9,14 @@ declare(strict_types=1);
 
 namespace Pidia\Apps\Demo\Manager;
 
-use Doctrine\ORM\EntityRepository;
-use Pidia\Apps\Demo\Entity\Config;
-use CarlosChininin\App\Infrastructure\Repository\BaseRepository;
+use CarlosChininin\App\Infrastructure\Manager\CRUDManager;
+use Pidia\Apps\Demo\Repository\ConfigRepository;
+use Symfony\Component\Security\Core\Security;
 
-final class ConfigManager extends BaseManager
+final class ConfigManager extends CRUDManager
 {
-    public function repositorio(): BaseRepository|EntityRepository
+    public function __construct(ConfigRepository $repository, Security $security)
     {
-        return $this->manager()->getRepository(Config::class);
+        parent::__construct($repository, $security);
     }
 }

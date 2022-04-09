@@ -9,6 +9,7 @@ namespace Pidia\Apps\Demo\Controller;
 
 use CarlosChininin\App\Infrastructure\Controller\WebAuthController;
 use CarlosChininin\App\Infrastructure\Security\Permission;
+use CarlosChininin\Util\Http\ParamFetcher;
 use Pidia\Apps\Demo\Entity\Config;
 use Pidia\Apps\Demo\Form\ConfigType;
 use Pidia\Apps\Demo\Manager\ConfigManager;
@@ -26,7 +27,7 @@ final class ConfigController extends WebAuthController
     public function index(Request $request, int $page, ConfigManager $manager): Response
     {
         $this->denyAccess([Permission::LIST]);
-        $paginator = $manager->list($request->query->all(), $page);
+        $paginator = $manager->paginate($page, ParamFetcher::fromRequestQuery($request));
 
         return $this->render(
             'config/index.html.twig',
@@ -47,7 +48,9 @@ final class ConfigController extends WebAuthController
             'activo' => 'Activo',
         ];
 
-        return $manager->exportOfQuery($request->query->all(), $headers, 'Reporte', 'config');
+        $items = $manager->dataExport(ParamFetcher::fromRequestQuery($request), true);
+
+        return $manager->export($items, $headers, 'export_config');
     }
 
     #[Route(path: '/new', name: 'config_new', methods: ['GET', 'POST'])]

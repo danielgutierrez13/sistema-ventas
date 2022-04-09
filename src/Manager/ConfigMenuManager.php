@@ -9,21 +9,14 @@ declare(strict_types=1);
 
 namespace Pidia\Apps\Demo\Manager;
 
-use Pidia\Apps\Demo\Entity\ConfigMenu;
-use CarlosChininin\App\Infrastructure\Repository\BaseRepository;
+use CarlosChininin\App\Infrastructure\Manager\CRUDManager;
+use Pidia\Apps\Demo\Repository\ConfigMenuRepository;
+use Symfony\Component\Security\Core\Security;
 
-final class ConfigMenuManager extends BaseManager
+final class ConfigMenuManager extends CRUDManager
 {
-    public function repositorio(): BaseRepository
+    public function __construct(ConfigMenuRepository $repository, Security $security)
     {
-        return $this->manager()->getRepository(ConfigMenu::class);
-    }
-
-    public function save(object $entity): bool
-    {
-        $this->manager()->persist($entity);
-        $this->manager()->flush();
-
-        return true;
+        parent::__construct($repository, $security);
     }
 }
