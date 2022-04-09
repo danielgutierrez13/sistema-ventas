@@ -61,8 +61,7 @@ class Parametro
 
     public function setAlias(string $alias): self
     {
-        $this->alias = $alias; //Generator::withoutWhiteSpaces($alias);
-
+        $this->alias = $alias; // Generator::withoutWhiteSpaces($alias);
         return $this;
     }
 

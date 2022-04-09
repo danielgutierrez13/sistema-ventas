@@ -1,10 +1,5 @@
 <?php
 
-/*
- * This file is part of the PIDIA.
- * (c) Carlos Chininin <cio@pidia.pe>
- */
-
 namespace Pidia\Apps\Demo\Form;
 
 use Doctrine\ORM\EntityRepository;
@@ -25,7 +20,6 @@ class ParametroType extends AbstractType
                 'placeholder' => 'Seleccione ...',
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('parametro')
-                        //->leftJoin('estado.padre', 'padre')
                         ->where('parametro.activo = TRUE')
                         ->orderBy('parametro.id', 'DESC');
                 },

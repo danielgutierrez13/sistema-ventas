@@ -8,11 +8,6 @@
 
 {% block _breadcrumb %}
     {{ breadcrumb.show2('Roles','usuario_rol_index','Nuevo') }}
-    <script>
-        setTimeout(function() {
-            Select2();
-        }, 1000);
-    </script>
 {% endblock %}
 
 {% form_theme form _self %}
@@ -33,11 +28,6 @@
 {% block _main %}
 
     {{ include('usuario_rol/_form.html.twig') }}
-    <script>
-        setTimeout(function() {
-            Select2();
-        }, 1000);
-    </script>
 
 {% endblock %}
 
