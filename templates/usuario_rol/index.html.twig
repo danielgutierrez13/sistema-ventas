@@ -16,7 +16,6 @@
         {{ action.tbl_start('table-sm') }}
         {{ action.thead_start() }}
         <tr>
-            {{ action.th('#', false, 'text-center') }}
             {{ action.th('Datos', false, 'd-block d-sm-none') }}
             {{ action.th('Nombre', true, 'd-none d-sm-table-cell') }}
             {% if access.isSuperAdmin -%}
@@ -24,14 +23,13 @@
             {% endif %}
             {{ action.th('Permisos', true, 'd-none d-sm-table-cell') }}
             {% include 'security/_config_table_th.html.twig' %}
-            {{ action.th('Activo', true, 'text-center d-none d-sm-table-cell') }}
+            {{ action.th('Activo', true, 'd-none d-sm-table-cell') }}
             <th></th>
         </tr>
         {{ action.thead_end() }}
         {{ action.tbody_start() }}
         {% for usuario_rol in paginator.results %}
             <tr>
-                <td class="text-center">{{ loop.index }}</td>
                 <td class="d-block d-sm-none font-size-xs">
                     {{ usuario_rol.nombre }}<br>
                     {{ usuario_rol.rol }}<br>

@@ -8,6 +8,11 @@
 
 {% block _breadcrumb %}
     {{ breadcrumb.show2('Roles','usuario_rol_index','Nuevo') }}
+    <script>
+        setTimeout(function() {
+            Select2();
+        }, 1000);
+    </script>
 {% endblock %}
 
 {% form_theme form _self %}
@@ -18,11 +23,21 @@
 {% block _usuario_rol_permissions_entry_attributes_entry_widget %}
     {% import 'macro/action.html.twig' as actions %}
     {{ actions.frm_field_checkbox(form) }}
+    <script>
+        setTimeout(function() {
+            Select2();
+        }, 1000);
+    </script>
 {% endblock %}
 
 {% block _main %}
 
     {{ include('usuario_rol/_form.html.twig') }}
+    <script>
+        setTimeout(function() {
+            Select2();
+        }, 1000);
+    </script>
 
 {% endblock %}
 
@@ -37,8 +52,10 @@
 {% block _javascripts %}
     {{ parent() }}
     <script src="{{ asset('js/collection.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('js/select2.js') }}" type="text/javascript"></script>
     <script>
         jQuery(document).ready(function() {
+            Select2();
             Collection.init('#usuario_rol_permissions');
         });
     </script>

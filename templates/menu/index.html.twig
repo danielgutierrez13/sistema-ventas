@@ -18,14 +18,13 @@
             {% import '@App/theme1/table.html.twig' as table %}
 
             <tr>
-                {{ table.th('#') }}
-                {{ table.th('Padre', true) }}
-                {{ table.th('Nombre', true) }}
-                {{ table.th('Ruta', true) }}
-                {{ table.th('Icono', true) }}
-                {{ table.th('Insignia', true) }}
-                {{ table.th('Orden', true) }}
-                {{ table.th('Activo', true, 'text-center') }}
+                {{ table.th('Padre', true, 'd-none d-sm-table-cell') }}
+                {{ table.th('Nombre', true, 'd-none d-sm-table-cell') }}
+                {{ table.th('Ruta', true, 'd-none d-sm-table-cell') }}
+                {{ table.th('Icono', true, 'd-none d-sm-table-cell') }}
+                {{ table.th('Insignia', true, 'd-none d-sm-table-cell') }}
+                {{ table.th('Orden', true, 'd-none d-sm-table-cell') }}
+                {{ table.th('Activo', true, 'd-none d-sm-table-cell') }}
                 <th></th>
             </tr>
         {% endblock %}
@@ -35,15 +34,14 @@
 
             {% for menu in paginator.results %}
                 <tr>
-                    <td>{{ loop.index | index (paginator)}}</td>
-                    <td>{{ menu.parent}}</td>
-                    <td>{{ menu.name }}</td>
-                    <td>{{ menu.route }}</td>
-                    <td><i class="{{ menu.icon }}"></i> {{ menu.icon }}</td>
-                    <td>{{ menu.badge }}</td>
-                    <td class="text-center">{{ menu.ranking }}</td>
-                    <td class="text-center">{{ menu.activo | yesno_custom | raw }}</td>
-                    <td class="float-end">
+                    <td class="d-none d-sm-table-cell">{{ menu.parent}}</td>
+                    <td class="d-none d-sm-table-cell">{{ menu.name }}</td>
+                    <td class="d-none d-sm-table-cell">{{ menu.route }}</td>
+                    <td class="d-none d-sm-table-cell"> <i class="{{ menu.icon }}"></i> {{ menu.icon }}</td>
+                    <td class="d-none d-sm-table-cell">{{ menu.badge }}</td>
+                    <td class="d-none d-sm-table-cell">{{ menu.ranking }}</td>
+                    <td class="d-none d-sm-table-cell">{{ menu.activo | yesno_custom | raw }}</td>
+                    <td class="d-none d-sm-table-cell">
                         {% if access.has('show', menu) %}
                             {{ action.btn_show_link2_ico(path('menu_show', {'id': menu.id})) }}
                         {% endif %}
