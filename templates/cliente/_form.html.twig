@@ -1,0 +1,43 @@
+{% import '@App/theme1/form.html.twig' as frm %}
+{{ frm.frm_start(form) }}
+    {{ frm.frm_column(
+        frm.frm_column_field_select(form.tipoPersona,'','',2),
+        null,
+        null,
+        null,
+        1
+    ) }}
+    {{ frm.frm_column(
+        frm.frm_column_field_select(form.tipoDocumento),
+        frm.frm_column_field(form.documento),
+    ) }}
+    {{ frm.frm_column(
+        frm.frm_column_field(form.nombre,'','',2),
+        null,
+        null,
+        null,
+        1
+    ) }}
+    {{ frm.frm_column(
+        frm.frm_column_field(form.direccion,'','',2),
+        null,
+        null,
+        null,
+        1
+    ) }}
+    {{ frm.frm_column(
+        frm.frm_column_field(form.telefono,'','',2),
+        null,
+        null,
+        null,
+        1
+    ) }}
+
+    {{ frm.frm_column(
+        frm.frm_column_btn(button_label|default('Guardar')),
+        null,
+        null,
+        null,
+        2
+    ) }}
+{{ frm.frm_end(form) }}

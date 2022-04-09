@@ -4,7 +4,7 @@
 
 {% set _title = 'Tipo Persona' %}
 {% set _main_title = 'Mostrar' %}
-{% set _section =  'tipo_persona_index'%}
+{% set _section =  'tipo_documento_index'%}
 
 {% block _breadcrumb %}
     {{ breadcrumb.show2(_title, _section, 'Mostrar') }}
@@ -12,14 +12,14 @@
 
 {% block _main %}
     {{ table.tbl_start() }}
-    {{ table.tbl_tr('Descripcion',tipo_persona.descripcion) }}
-    {% include 'crud/_show_info.html.twig' with {'entity': tipo_persona} %}
+    {{ table.tbl_tr('Descripcion',tipo_documento.descripcion) }}
+    {% include 'crud/_show_info.html.twig' with {'entity': tipo_documento} %}
     {{ table.tbl_end() }}
 
 {% endblock %}
 
 {% block _main_footer %}
-    {% include 'crud/_show_links.html.twig' with {'route_base':'tipo_persona','entity': tipo_persona} %}
+    {% include 'crud/_show_links.html.twig' with {'route_base':'tipo_documento','entity': tipo_documento} %}
 {% endblock %}
 
 {% block _main_tools %}
@@ -27,9 +27,9 @@
 {% endblock %}
 
 {% block _body_tools %}
-    {% include 'crud/_show_links_ico.html.twig' with {'route_base':'tipo_persona','entity': tipo_persona} %}
+    {% include 'crud/_show_links_ico.html.twig' with {'route_base':'tipo_documento','entity': tipo_documento} %}
 {% endblock %}
 
 {% block _body_tools_ico %}
-    {% include 'crud/_show_links_tool.html.twig' with {'route_base':'tipo_persona','entity': tipo_persona} %}
+    {% include 'crud/_show_links_tool.html.twig' with {'route_base':'tipo_documento','entity': tipo_documento} %}
 {% endblock %}

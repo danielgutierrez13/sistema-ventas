@@ -2,16 +2,16 @@
 {% import 'macro/breadcrumb.html.twig' as breadcrumb %}
 {% import 'macro/action.html.twig' as action %}
 
-{% set _title = 'Tipo Persona' %}
+{% set _title = 'Tipo Documento' %}
 {% set _main_title = 'Nuevo' %}
-{% set _section =  'tipo_persona_index'%}
+{% set _section =  'tipo_documento_index'%}
 
 {% block _breadcrumb %}
     {{ breadcrumb.show2(_title,_section,'Nuevo') }}
 {% endblock %}
 
 {% block _main %}
-    {{ include('tipo_persona/_form.html.twig') }}
+    {{ include('tipo_documento/_form.html.twig') }}
 {% endblock %}
 
 {% block _main_tools %}
@@ -19,15 +19,15 @@
 {% endblock %}
 
 {% block _body_tools %}
-    {% include 'crud/_new_links_ico.html.twig' with {'route_base':'tipo_persona'} %}
+    {% include 'crud/_new_links_ico.html.twig' with {'route_base':'tipo_documento'} %}
 {% endblock %}
 
 {% block _body_tools_ico %}
-    {% include 'crud/_new_links_tool.html.twig' with {'route_base': 'tipo_persona'}  %}
+    {% include 'crud/_new_links_tool.html.twig' with {'route_base': 'tipo_documento'}  %}
 {% endblock %}
 
 {% block _main_footer %}
-    {% include 'crud/_new_links.html.twig' with {'route_base':'tipo_persona'} %}
+    {% include 'crud/_new_links.html.twig' with {'route_base':'tipo_documento'} %}
 {% endblock %}
 
 {% block _javascripts %}

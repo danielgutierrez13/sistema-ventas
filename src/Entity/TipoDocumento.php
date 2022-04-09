@@ -9,9 +9,9 @@ use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 
-#[Entity(repositoryClass: 'Pidia\Apps\Demo\Repository\TipoPersonaRepository')]
+#[Entity(repositoryClass: 'Pidia\Apps\Demo\Repository\TipoDocumentoRepository')]
 #[HasLifecycleCallbacks]
-class TipoPersona
+class TipoDocumento
 {
     use EntityTrait;
 

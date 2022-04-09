@@ -13,6 +13,11 @@
 {% form_theme form _self %}
 
 {% block _usuario_rol_permissions_entry_attributes_entry_label %}
+    <script>
+        setTimeout(function() {
+            Select2();
+        }, 1000);
+    </script>
 {% endblock %}
 
 {% block _usuario_rol_permissions_entry_attributes_entry_widget %}
@@ -28,7 +33,11 @@
 {% block _main %}
 
     {{ include('usuario_rol/_form.html.twig') }}
-
+    <script>
+        setTimeout(function() {
+            Select2();
+        }, 1000);
+    </script>
 {% endblock %}
 
 {% block _main_tools %}
@@ -37,6 +46,11 @@
             {{ action.btn_list_link_ico(path('usuario_rol_index')) }}
         </li>
     </ul>
+    <script>
+        setTimeout(function() {
+            Select2();
+        }, 1000);
+    </script>
 {% endblock %}
 
 {% block _javascripts %}
