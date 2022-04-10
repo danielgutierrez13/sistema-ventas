@@ -1,0 +1,27 @@
+{% import '@App/theme1/form.html.twig' as frm %}
+{{ frm.frm_start(form) }}
+    {{ frm.frm_column(
+        frm.frm_column_field_select(form.categoria),
+        frm.frm_column_field_select(form.marca)
+    ) }}
+    {{ frm.frm_column(
+        frm.frm_column_field(form.codigo),
+        frm.frm_column_field_select(form.unidadMedida)
+    ) }}
+    {{ frm.frm_column(
+        frm.frm_column_field(form.descripcion),
+        frm.frm_column_field(form.stock)
+    ) }}
+    {{ frm.frm_column(
+        frm.frm_column_field(form.precio),
+        frm.frm_column_field(form.precioVenta)
+    ) }}
+
+    {{ frm.frm_column(
+        frm.frm_column_btn(button_label|default('Guardar')),
+        null,
+        null,
+        null,
+        2
+    ) }}
+{{ frm.frm_end(form) }}
