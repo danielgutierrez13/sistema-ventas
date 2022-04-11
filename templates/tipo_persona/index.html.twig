@@ -25,6 +25,7 @@
         {% for tipo_persona in paginator.results %}
             <tr>
                 <td class="d-none d-sm-table-cell">{{ tipo_persona.descripcion}}</td>
+
                 <td class="d-none d-sm-table-cell">{{ tipo_persona.activo | yesno_custom | raw }}</td>
                 <td>
                     {% if access.has('show') %}

@@ -2,12 +2,12 @@
 
 namespace Pidia\Apps\Demo\Form;
 
+use Pidia\Apps\Demo\Entity\TipoDocumento;
 use Pidia\Apps\Demo\Entity\TipoPersona;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-
-
 
 class TipoPersonaType extends AbstractType
 {

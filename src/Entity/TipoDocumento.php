@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
 use Pidia\Apps\Demo\Entity\Traits\EntityTrait;
 use Doctrine\ORM\Mapping\Column;
+use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 
@@ -22,6 +23,14 @@ class TipoDocumento
 
     #[Column(type: 'string', length: 100)]
     private $descripcion;
+
+    #[ManyToOne(targetEntity: TipoPersona::class)]
+    private $tipoPersona;
+
+
+    public function __construct()
+    {
+    }
 
     public function getId(): ?int
     {
@@ -44,4 +53,18 @@ class TipoDocumento
     {
         return $this->getDescripcion();
     }
+
+    public function getTipoPersona(): ?TipoPersona
+    {
+        return $this->tipoPersona;
+    }
+
+    public function setTipoPersona(?TipoPersona $tipoPersona): self
+    {
+        $this->tipoPersona = $tipoPersona;
+
+        return $this;
+    }
+
+    
 }

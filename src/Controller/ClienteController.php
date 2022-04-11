@@ -7,6 +7,7 @@ use CarlosChininin\App\Infrastructure\Security\Permission;
 use CarlosChininin\Util\Http\ParamFetcher;
 use Pidia\Apps\Demo\Entity\Cliente;
 use Pidia\Apps\Demo\Form\ClienteType;
+use Pidia\Apps\Demo\Manager\BusquedaApiManager;
 use Pidia\Apps\Demo\Manager\ClienteManager;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -144,5 +145,25 @@ class ClienteController extends WebAuthController
         }
 
         return $this->redirectToRoute('cliente_index');
+    }
+
+    #[Route('/busqueda/dni', name: 'cliente_busqueda_api_dni')]
+    public function busquedaPorDni(Request $request, BusquedaApiManager $apiManager): Response
+    {
+        $dni = $request->request->get('dni');
+
+        $result = $apiManager->dni($dni);
+
+        return $this->json($result);
+    }
+
+    #[Route('/busqueda/ruc', name: 'cliente_busqueda_api_ruc')]
+    public function busquedaPorRuc(Request $request, BusquedaApiManager $apiManager): Response
+    {
+        $ruc = $request->request->get('ruc');
+
+        $result = $apiManager->ruc($ruc);
+
+        return $this->json($result);
     }
 }

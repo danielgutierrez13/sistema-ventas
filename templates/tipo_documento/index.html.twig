@@ -17,6 +17,7 @@
         {{ action.thead_start() }}
         <tr>
             {{ action.th('Descripcion', true, 'd-none d-sm-table-cell') }}
+            {{ action.th('Tipo Persona', true, 'd-none d-sm-table-cell') }}
             {{ action.th('Activo', true, 'd-none d-sm-table-cell') }}
             <th></th>
         </tr>
@@ -25,6 +26,7 @@
         {% for tipo_documento in paginator.results %}
             <tr>
                 <td class="d-none d-sm-table-cell">{{ tipo_documento.descripcion}}</td>
+                <td class="d-none d-sm-table-cell">{{ tipo_documento.tipoPersona }}</td>
                 <td class="d-none d-sm-table-cell">{{ tipo_documento.activo | yesno_custom | raw }}</td>
                 <td>
                     {% if access.has('show') %}

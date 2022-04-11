@@ -43,7 +43,7 @@
                 <td class="d-none d-sm-table-cell">{{ usuario.email }}</td>
                 <td class="d-none d-sm-table-cell">
                     {% for rol in usuario.usuarioRoles %}
-                        {{ rol }},
+                        <span class="badge badge-secondary">{{ rol }}</span>
                     {% endfor %}
                 </td>
                 {% include 'security/_config_table_td.html.twig' with {'entity': usuario} %}

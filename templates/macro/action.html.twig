@@ -276,7 +276,7 @@
 {# ########## FORMULARIOS ################# #}
 
 {% macro frm_start(form, form_class='kt-form kt-form--fit kt-form--label-right') -%}
-    {{ form_start(form, {attr: {class: form_class, id: form.vars.id, autocomplete: 'off'}}) }}
+    {{ form_start(form, {attr: {class: form_class, id: form.vars.id, autocomplete: "off"}}) }}
 {%- endmacro %}
 
 {% macro frm_end(form) -%}
@@ -667,10 +667,10 @@
 
 {% macro frm_column_field(value, class='', class_widget='', col=4) %}
     {% import _self as actions %}
-    <div class="form-group row mb-1 p-1 {{ class }} {{ actions.frm_errors_class(value) }}">
+    <div  class="form-group row mb-1 p-1 {{ class }} {{ actions.frm_errors_class(value)}}">
         {{ actions.frm_label(value,'col-sm-' ~ col ~ ' col-4') }}
         <div class="col-sm-{{ 12-col }} col-8">
-            {{ form_widget(value, {attr: {class: 'form-control ' ~ class_widget ~ actions.frm_errors_class(value)} }) }}
+            {{ form_widget(value, {attr: {class: 'form-control ' ~ class_widget ~ actions.frm_errors_class(value) , 'autocomplete':'off'} }) }}
             {{ actions.frm_help(value) }}
             {{ actions.frm_errors(value) }}
         </div>
@@ -700,7 +700,7 @@
                          alt="{{ value.vars.value.nombre }}" title="{{ value.vars.value.nombre }}" />
                 </figure>
             {% endif %}
-            {{ form_widget(value, {attr: {class: 'form-control m-input ' ~ class_widget ~ actions.frm_errors_class(value)} }) }}
+            {{ form_widget(value, {attr: {class: 'form-control m-input ' ~ class_widget ~ actions.frm_errors_class(value)}  }) }}
 {#            <label id="{{ value.vars.id }}-label" class="custom-file-label" for="{{ value.vars.id }}" style="text-align: left;">Seleccione ...</label>#}
             {{ actions.frm_help(value) }}
             {{ actions.frm_errors(value) }}

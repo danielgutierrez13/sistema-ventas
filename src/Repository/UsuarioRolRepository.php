@@ -62,4 +62,18 @@ class UsuarioRolRepository extends BaseRepository
             ->setParameter('roleSuperAdmin', Security::ROLE_SUPER_ADMIN)
             ->setParameter('isSuperAdmin', $this->security->isSuperAdmin());
     }
+
+    public function UsuarioRolId(int $id): ?UsuarioRol
+    {
+        try {
+            return $this->createQueryBuilder('usuarioRol')
+                ->where('usuarioRol.id = :usuarioRolId')
+                ->setParameter('usuarioRolId', $id)
+                ->getQuery()
+                ->getOneOrNullResult();
+        } catch (NonUniqueResultException) {
+        }
+
+        return null;
+    }
 }

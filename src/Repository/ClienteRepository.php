@@ -8,8 +8,9 @@ use CarlosChininin\Util\Filter\DoctrineValueSearch;
 use CarlosChininin\Util\Http\ParamFetcher;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
-use Pidia\Apps\Demo\Controller\TipoPersonaController;
+use Pidia\Apps\Demo\Controller\ClienteController;
 use Pidia\Apps\Demo\Entity\Cliente;
+
 
 /**
  * @method Cliente|null find($id, $lockMode = null, $lockVersion = null)
@@ -44,10 +45,9 @@ class ClienteRepository extends BaseRepository
             ->join('cliente.tipoDocumento', 'tipoDocumento')
         ;
 
-        $this->security->filterQuery($queryBuilder, TipoPersonaController::BASE_ROUTE, $permissions);
+        $this->security->filterQuery($queryBuilder, ClienteController::BASE_ROUTE, $permissions);
 
-        DoctrineValueSearch::apply($queryBuilder, $params->getNullableString('b'), ['cliente.nombre', 'cliente.documento',
-            'tipoPersona.descripcion',  'tipoDocumento.descripcion']);
+        DoctrineValueSearch::apply($queryBuilder, $params->getNullableString('b'), ['cliente.nombre', 'cliente.documento', 'tipoPersona.descripcion',  'tipoDocumento.descripcion']);
 
         return $queryBuilder;
     }
@@ -65,7 +65,7 @@ class ClienteRepository extends BaseRepository
             ->orderBy('cliente.descripcion', 'ASC')
         ;
 
-        $this->security->filterQuery($queryBuilder, MenuController::BASE_ROUTE);
+        $this->security->filterQuery($queryBuilder, ClienteController::BASE_ROUTE);
 
         return $queryBuilder->getQuery()->getArrayResult();
     }

@@ -2,13 +2,14 @@
 
 namespace Pidia\Apps\Demo\Entity;
 
-use Doctrine\ORM\Mapping\Entity;
-use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
-use Pidia\Apps\Demo\Entity\Traits\EntityTrait;
 use Doctrine\ORM\Mapping\Column;
+use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
+use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
 use Doctrine\ORM\Mapping\Id;
+use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
+use Pidia\Apps\Demo\Entity\Traits\EntityTrait;
 
 #[Entity(repositoryClass: 'Pidia\Apps\Demo\Repository\ClienteRepository')]
 #[HasLifecycleCallbacks]

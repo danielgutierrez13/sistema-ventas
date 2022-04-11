@@ -1,10 +1,5 @@
 <?php
 
-/*
- * This file is part of the PIDIA.
- * (c) Carlos Chininin <cio@pidia.pe>
- */
-
 namespace Pidia\Apps\Demo\Form;
 
 use CarlosChininin\App\Infrastructure\Security\Security;

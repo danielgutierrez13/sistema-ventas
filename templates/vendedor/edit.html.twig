@@ -1,0 +1,106 @@
+{% extends 'base.html.twig' %}
+{% import '@App/theme1/breadcrumb.html.twig' as breadcrumb %}
+
+{% set _title = 'Vendedor' %}
+{% set _main_title = 'Editar' %}
+{% set _section =  'vendedor_index'%}
+
+{% block _breadcrumb %}
+    {{ breadcrumb.show2(_title, _section, 'Editar') }}
+{% endblock %}
+
+{% block _main %}
+    {{ include('vendedor/_form.html.twig', {'button_label': 'Actualizar'}) }}
+{% endblock %}
+
+{% block _main_tools %}
+    {% include 'crud/_tools_ico.html.twig' %}
+{% endblock %}
+
+{% block _body_tools %}
+    {% include 'crud/_edit_links_ico.html.twig' with {'route_base':'vendedor','entity': vendedor} %}
+{% endblock %}
+
+{% block _body_tools_ico %}
+    {% include 'crud/_edit_links_tool.html.twig' with {'route_base':'vendedor','entity': vendedor} %}
+{% endblock %}
+
+{% block _main_footer %}
+    {% include 'crud/_edit_links.html.twig' with {'route_base':'vendedor','entity': vendedor} %}
+{% endblock %}
+
+{% block _stylesheets %}
+{% endblock %}
+
+{% block _javascripts %}
+    <script src="{{ asset('js/select2.js') }}"></script>
+    <script src="{{ asset('js/notify.js') }}"></script>
+    <script>
+        Select2()
+
+        function limpiar(){
+            nombre.val('')
+            direccion.val('')
+        }
+
+        let nombre = $('#vendedor_nombre')
+        let direccion = $('#vendedor_direccion')
+        let telefono = $('#vendedor_telefono')
+        let documento = $('#vendedor_documento')
+        let username = $('#vendedor_username')
+        let password = $('#vendedor_password')
+        let email = $('#vendedor_email')
+        let tipoDocumento = $('#vendedor_tipoDocumento')
+
+        $.ajax({
+            type: 'POST',
+            url: '{{ path('usuario_for_vendedor') }}',
+            data: {
+                documentoVendedor: documento.val(),
+            },
+            success: function (result) {
+                if (result) {
+                    console.log(result)
+                    username.val(result.data.usernameV)
+                    email.val(result.data.emailV)
+                }else {
+                    Notify.warning('No se encontro usuario para documento')
+                }
+            }
+        })
+
+        jQuery(document).ready(function() {
+            $(document).on('keyup', '#vendedor_documento', function () {
+                let $this = $(this)
+                if ($this.val().length === 8 && tipoDocumento.val() == 1 ) {
+                    $.ajax({
+                        type: 'POST',
+                        url: '{{ path('cliente_busqueda_api_dni') }}',
+                        data: {
+                            dni: $this.val(),
+                        },
+                        success: function (result) {
+                            if (result) {
+                                nombre.val(result.nombre)
+                                direccion.val(result.direccion)
+                            }else {
+                                limpiar()
+                                Notify.warning('No se encontro nombre para documento')
+                            }
+                        }
+                    })
+                }else if($this.val().length < 8 && tipoDocumento.val() == 1) {
+                    limpiar()
+                }else if($this.val().length > 8 && tipoDocumento.val() == 1) {
+                    limpiar()
+                    Notify.warning('Numero de documento Incorrecto')
+                }
+            });
+
+            $(document).on('change', '#vendedor_tipoDocumento', function () {
+                limpiar()
+                documento.val('')
+            });
+        })
+    </script>
+{% endblock %}
