@@ -1,0 +1,101 @@
+{% extends 'base.html.twig' %}
+{% import 'macro/breadcrumb.html.twig' as breadcrumb %}
+{% import 'macro/action.html.twig' as action %}
+{% import 'macro/pagination.html.twig' as pagination %}
+
+{% set _title = 'Proveedores' %}
+{% set _main_title = 'Listado' %}
+{% set _section =  'proveedor_index' %}
+
+{% block _breadcrumb %}
+    {{ breadcrumb.show('proveedors') }}
+{% endblock %}
+
+{% block _main %}
+    <div class="table-responsive">
+        {{ action.tbl_start('table-sm') }}
+        {{ action.thead_start() }}
+        <tr>
+            {{ action.th('Tipo Persona', true, 'd-none d-sm-table-cell') }}
+            {{ action.th('Nombre', true, 'd-none d-sm-table-cell') }}
+            {{ action.th('Tipo Documento', true, 'd-none d-sm-table-cell') }}
+            {{ action.th('N° Documento', true, 'd-none d-sm-table-cell') }}
+            {{ action.th('Direccion', true, 'd-none d-sm-table-cell') }}
+            {{ action.th('Telefono', true, 'd-none d-sm-table-cell') }}
+            {{ action.th('Activo', true, 'd-none d-sm-table-cell') }}
+            <th></th>
+        </tr>
+        {{ action.thead_end() }}
+        {{ action.tbody_start() }}
+        {% for proveedor in paginator.results %}
+            <tr>
+                <td class="d-none d-sm-table-cell">{{ proveedor.tipoPersona}}</td>
+                <td class="d-none d-sm-table-cell">{{ proveedor.nombre}}</td>
+                <td class="d-none d-sm-table-cell">{{ proveedor.tipoDocumento}}</td>
+                <td class="d-none d-sm-table-cell">{{ proveedor.documento}}</td>
+                <td class="d-none d-sm-table-cell">{{ proveedor.direccion}}</td>
+                <td class="d-none d-sm-table-cell">{{ proveedor.telefono}}</td>
+                <td class="d-none d-sm-table-cell">{{ proveedor.activo | yesno_custom | raw }}</td>
+                <td>
+                    {% if access.has('show') %}
+                        {{ action.btn_show_link2_ico(path('proveedor_show', {'id': proveedor.id})) }}
+                    {% endif %}
+                    {% if access.has('edit', proveedor) %}
+                        {{ action.btn_edit_link2_ico(path('proveedor_edit', {'id': proveedor.id})) }}
+                    {% endif %}
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">No hay registros</td>
+            </tr>
+        {% endfor %}
+        {{ action.tbody_end() }}
+        {{ action.tbl_end() }}
+    </div>
+    {{ pagination.show(paginator, _section) }}
+{% endblock %}
+
+{% block _main_footer %}
+    {% include 'crud/_index_links.html.twig' with {'route_base': 'proveedor'} %}
+{% endblock%}
+
+{% block _main_options %}
+    {% include 'crud/_index_filter.html.twig' %}
+{% endblock %}
+
+{% block _main_tools %}
+    {% include 'crud/_tools_ico.html.twig' %}
+{% endblock %}
+
+{% block _body_tools_ico %}
+    {% include 'crud/_index_links_tool.html.twig' with {'route_base': 'proveedor'}  %}
+{% endblock %}
+
+{% block _body_tools %}
+    {% include 'crud/_index_links_ico.html.twig' with {'route_base': 'proveedor'}  %}
+{% endblock %}
+
+{% block _stylesheets %}
+{% endblock %}
+
+{% block _javascripts %}
+    <script>
+        jQuery(document).ready(function () {
+            $(document).on('change', '#filter_size', function () {
+                let route = '{{ path('proveedor_index') }}';
+                route = route + "?" + 'n=' + $('#filter_size option:selected').val();
+                route = route + "&" + 'b=' + $('#filter_text').val();
+                window.location = route;
+            });
+
+            $(document).on('click', '.btn-send', function () {
+                window.location = '{{ path('proveedor_index') }}';
+            });
+
+            $(document).on('click', '.btn-clean', function () {
+                window.location.href = '{{ path('proveedor_index') }}';
+            });
+        });
+    </script>
+{% endblock %}

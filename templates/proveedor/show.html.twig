@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+{% import '@App/theme1/breadcrumb.html.twig' as breadcrumb %}
+{% import '@App/theme1/table.html.twig' as table %}
+
+{% set _title = 'Proveedor' %}
+{% set _main_title = 'Mostrar' %}
+{% set _section =  'proveedor_index'%}
+
+{% block _breadcrumb %}
+    {{ breadcrumb.show2(_title, _section, 'Mostrar') }}
+{% endblock %}
+
+{% block _main %}
+    {{ table.tbl_start() }}
+    {{ table.tbl_tr(proveedor.tipoPersona,proveedor.nombre) }}
+    {{ table.tbl_tr(proveedor.tipoDocumento,proveedor.documento) }}
+    {{ table.tbl_tr("Direccion",proveedor.direccion) }}
+    {{ table.tbl_tr("Telefono",proveedor.telefono) }}
+    {% include 'crud/_show_info.html.twig' with {'entity': proveedor} %}
+    {{ table.tbl_end() }}
+
+{% endblock %}
+
+{% block _main_footer %}
+    {% include 'crud/_show_links.html.twig' with {'route_base':'proveedor','entity': proveedor} %}
+{% endblock %}
+
+{% block _main_tools %}
+    {% include 'crud/_tools_ico.html.twig' %}
+{% endblock %}
+
+{% block _body_tools %}
+    {% include 'crud/_show_links_ico.html.twig' with {'route_base':'proveedor','entity': proveedor} %}
+{% endblock %}
+
+{% block _body_tools_ico %}
+    {% include 'crud/_show_links_tool.html.twig' with {'route_base':'proveedor','entity': proveedor} %}
+{% endblock %}
