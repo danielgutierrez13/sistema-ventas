@@ -34,15 +34,60 @@
     <script src="{{ asset('js/select2.js') }}"></script>
     <script src="{{ asset('js/notify.js') }}"></script>
     <script>
-        var nombre = document.getElementById("cliente_tipoPersona");
-        var nombre = document.getElementById("cliente_tipoPersona");
-        var nombre = document.getElementById("cliente_tipoPersona");
-        var nombre = document.getElementById("cliente_tipoPersona");
-        var nombre = document.getElementById("cliente_tipoPersona");
-        var nombre = document.getElementById("cliente_tipoPersona");
-        var nombre = document.getElementById("cliente_tipoPersona");
-        $(document).ready(function() {
-            Select2();
-        });
+        Select2()
+
+        function limpiar(){
+            nombre.val('')
+            direccion.val('')
+            telefono.val('')
+            email.val('')
+            password.val('')
+            username.val('')
+        }
+
+        let nombre = $('#cliente_nombre')
+        let direccion = $('#cliente_direccion')
+        let telefono = $('#cliente_telefono')
+        let documento = $('#cliente_documento')
+        let username = $('#cliente_username')
+        let password = $('#cliente_password')
+        let email = $('#cliente_email')
+        let tipoDocumento = $('#cliente_tipoDocumento')
+
+        jQuery(document).ready(function() {
+            limpiar()
+
+            $(document).on('keyup', '#cliente_documento', function () {
+                let $this = $(this)
+                if ($this.val().length === 8 && tipoDocumento.val() == 1 ) {
+                    $.ajax({
+                        type: 'POST',
+                        url: '{{ path('cliente_busqueda_api_dni') }}',
+                        data: {
+                            dni: $this.val(),
+                        },
+                        success: function (result) {
+                            if (result) {
+                                nombre.val(result.nombre)
+                                direccion.val(result.direccion)
+                            }else {
+                                limpiar()
+                                Notify.warning('No se encontro nombre para documento')
+                            }
+                        }
+                    })
+                }else if($this.val().length < 8 && tipoDocumento.val() == 1) {
+                    limpiar()
+                }else if($this.val().length > 8 && tipoDocumento.val() == 1) {
+                    limpiar()
+                    Notify.warning('Numero de documento Incorrecto')
+                }
+            });
+
+            $(document).on('change', '#cliente_tipoDocumento', function () {
+                limpiar()
+                documento.val('')
+            });
+        })
     </script>
 {% endblock %}

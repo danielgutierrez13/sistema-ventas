@@ -9,6 +9,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Pidia\Apps\Demo\Entity\Usuario;
 use Pidia\Apps\Demo\Entity\Vendedor;
 use Pidia\Apps\Demo\Form\VendedorType;
+use Pidia\Apps\Demo\Manager\UsuarioManager;
 use Pidia\Apps\Demo\Manager\VendedorManager;
 use Pidia\Apps\Demo\Repository\UsuarioRolRepository;
 use Pidia\Apps\Demo\Repository\VendedorRepository;
@@ -158,6 +159,8 @@ class VendedorController extends WebAuthController
         $this->denyAccess([Permission::ENABLE, Permission::DISABLE], $vendedor);
 
         if ($this->isCsrfTokenValid('delete'.$vendedor->getId(), $request->request->get('_token'))) {
+            $usuario = $vendedor->getUsuario();
+            $usuario->changeActivo();
             $vendedor->changeActivo();
             if ($manager->save($vendedor)) {
                 $this->messageSuccess('Estado ha sido actualizado');
@@ -170,13 +173,18 @@ class VendedorController extends WebAuthController
     }
 
     #[Route(path: '/{id}/delete', name: 'vendedor_delete_forever', methods: ['POST'])]
-    public function deleteForever(Request $request, Vendedor $vendedor, VendedorManager $manager): Response
+    public function deleteForever(Request $request, Vendedor $vendedor, VendedorManager $manager, UsuarioManager $usuarioManager): Response
     {
         $this->denyAccess([Permission::DELETE], $vendedor);
-
+        $usuario = $vendedor->getUsuario();
         if ($this->isCsrfTokenValid('delete_forever'.$vendedor->getId(), $request->request->get('_token'))) {
             if ($manager->remove($vendedor)) {
                 $this->messageWarning('Registro eliminado');
+            } else {
+                $this->addErrors($manager->errors());
+            }
+            if ($usuarioManager->remove($usuario)) {
+                $this->messageWarning('Usuario Eliminado eliminado');
             } else {
                 $this->addErrors($manager->errors());
             }
