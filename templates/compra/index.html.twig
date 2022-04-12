@@ -1,0 +1,97 @@
+{% extends 'base.html.twig' %}
+{% import 'macro/breadcrumb.html.twig' as breadcrumb %}
+{% import 'macro/action.html.twig' as action %}
+{% import 'macro/pagination.html.twig' as pagination %}
+
+{% set _title = 'compras' %}
+{% set _main_title = 'Listado' %}
+{% set _section =  'compra_index' %}
+
+{% block _breadcrumb %}
+    {{ breadcrumb.show('compras') }}
+{% endblock %}
+
+{% block _main %}
+    <div class="table-responsive">
+        {{ action.tbl_start('table-sm') }}
+        {{ action.thead_start() }}
+        <tr>
+            {{ action.th('N°', false, 'text-center') }}
+            {{ action.th('Codigo', true, 'd-none d-sm-table-cell') }}
+            {{ action.th('Proveedor', true, 'd-none d-sm-table-cell') }}
+            {{ action.th('Precio', true, 'd-none d-sm-table-cell') }}
+            {{ action.th('Activo', true, 'text-center d-none d-sm-table-cell') }}
+            <th></th>
+        </tr>
+        {{ action.thead_end() }}
+        {{ action.tbody_start() }}
+        {% for compra in paginator.results %}
+            <tr>
+                <td class="text-center">{{ loop.index | indexReverse(paginator) }}</td>
+                <td class="d-none d-sm-table-cell">{{ compra.codigo}}</td>
+                <td class="d-none d-sm-table-cell">{{ compra.proveedor}}</td>
+                <td class="d-none d-sm-table-cell">{{ compra.precio}}</td>
+                <td class="text-center">{{ compra.activo | yesno_custom | raw }}</td>
+                <td>
+                    {% if access.has('view') %}
+                        {{ action.btn_show_link2_ico(path('compra_show', {'id': compra.id})) }}
+                    {% endif %}
+                    {% if access.has('edit', compra) %}
+                        {{ action.btn_edit_link2_ico(path('compra_edit', {'id': compra.id})) }}
+                    {% endif %}
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">No hay registros</td>
+            </tr>
+        {% endfor %}
+        {{ action.tbody_end() }}
+        {{ action.tbl_end() }}
+    </div>
+    {{ pagination.show(paginator, _section) }}
+{% endblock %}
+
+{% block _main_footer %}
+    {% include 'crud/_index_links.html.twig' with {'route_base': 'compra'} %}
+{% endblock%}
+
+{% block _main_options %}
+    {% include 'crud/_index_filter.html.twig' %}
+{% endblock %}
+
+{% block _main_tools %}
+    {% include 'crud/_tools_ico.html.twig' %}
+{% endblock %}
+
+{% block _body_tools_ico %}
+    {% include 'crud/_index_links_tool.html.twig' with {'route_base': 'compra'}  %}
+{% endblock %}
+
+{% block _body_tools %}
+    {% include 'crud/_index_links_ico.html.twig' with {'route_base': 'compra'}  %}
+{% endblock %}
+
+{% block _stylesheets %}
+{% endblock %}
+
+{% block _javascripts %}
+    <script>
+        jQuery(document).ready(function () {
+            $(document).on('change', '#filter_size', function () {
+                let route = '{{ path('compra_index') }}';
+                route = route + "?" + 'n=' + $('#filter_size option:selected').val();
+                route = route + "&" + 'b=' + $('#filter_text').val();
+                window.location = route;
+            });
+
+            $(document).on('click', '.btn-send', function () {
+                window.location = '{{ path('compra_index') }}';
+            });
+
+            $(document).on('click', '.btn-clean', function () {
+                window.location.href = '{{ path('compra_index') }}';
+            });
+        });
+    </script>
+{% endblock %}
