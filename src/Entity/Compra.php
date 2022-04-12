@@ -113,4 +113,21 @@ class Compra
 
         return $this;
     }
+    public function clone(): self
+    {
+        $CompraCopia = new self();
+        $CompraCopia->setCodigo($this->getCodigo());
+        $CompraCopia->setProveedor($this->getProveedor());
+        $CompraCopia->setPrecio($this->getPrecio());
+
+        foreach ($this->getDetalleCompras() as $detalleCompra) {
+            $detalleCopia = new DetalleCompra();
+            $detalleCopia->setProducto($detalleCompra->getProducto());
+            $detalleCopia->setPrecio($detalleCompra->getPrecio());
+            $detalleCopia->setCantidad($detalleCompra->getCantidad());
+            $CompraCopia->addDetalleCompra($detalleCopia);
+        }
+
+        return $CompraCopia;
+    }
 }

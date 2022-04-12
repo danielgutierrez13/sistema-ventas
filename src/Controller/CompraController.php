@@ -5,6 +5,7 @@ namespace Pidia\Apps\Demo\Controller;
 use CarlosChininin\App\Infrastructure\Controller\WebAuthController;
 use CarlosChininin\App\Infrastructure\Security\Permission;
 use CarlosChininin\Util\Http\ParamFetcher;
+use Doctrine\ORM\EntityManagerInterface;
 use Pidia\Apps\Demo\Entity\Compra;
 use Pidia\Apps\Demo\Form\CompraType;
 use Pidia\Apps\Demo\Manager\CompraManager;
@@ -61,20 +62,32 @@ class CompraController extends WebAuthController
     }
 
     #[Route(path: '/new', name: 'compra_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, CompraManager $manager): Response
+    public function new(Request $request, CompraManager $manager,EntityManagerInterface $entityManager): Response
     {
         $this->denyAccess([Permission::NEW]);
         $compra = new Compra();
         $form = $this->createForm(CompraType::class, $compra);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            if ($manager->save($compra)) {
-                $this->messageSuccess('Registro creado!!!');
+            $compra->setPropietario($this->getUser());
 
-                return $this->redirectToRoute('compra_index');
+            foreach ($compra->getDetalleCompras() as $detalle) {
+                $producto = $detalle->getProducto();
+                $cantidad = $detalle->getCantidad();
+                $detalle->setPropietario($this->getUser());
+
+                $producto->setStock($producto->getStock() + $cantidad);
+                $entityManager->persist($producto);
+                $entityManager->flush();
             }
 
-            $this->addErrors($manager->errors());
+            if ($manager->save($compra)) {
+                $this->addFlash('success', 'Registro creado!!!');
+            } else {
+                $this->addErrors($manager->errors());
+            }
+
+            return $this->redirectToRoute('compra_index');
         }
 
         return $this->renderForm(
@@ -95,15 +108,30 @@ class CompraController extends WebAuthController
     }
 
     #[Route(path: '/{id}/edit', name: 'compra_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Compra $compra, CompraManager $manager): Response
+    public function edit(Request $request, Compra $compra, CompraManager $manager,EntityManagerInterface $entityManager): Response
     {
         $this->denyAccess([Permission::EDIT], $compra);
-
+        $CompraAnterior = $compra->clone();
         $form = $this->createForm(CompraType::class, $compra);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+
+            foreach ($CompraAnterior->getDetalleCompras() as $detallesAnterior) {
+                $producto = $detallesAnterior->getProducto();
+                $producto->setStock($producto->getStock() - $detallesAnterior->getCantidad());
+                $entityManager->persist($producto);
+                $entityManager->flush();
+            }
+
+            foreach ($compra->getDetalleCompras() as $detalle) {
+                $producto = $detalle->getProducto();
+                $producto->setStock($producto->getStock() + $detalle->getCantidad());
+                $entityManager->persist($producto);
+                $entityManager->flush();
+            }
+
             if ($manager->save($compra)) {
-                $this->messageSuccess('Registro actualizado!!!');
+                $this->addFlash('success', 'Registro actualizado!!!');
             } else {
                 $this->addErrors($manager->errors());
             }

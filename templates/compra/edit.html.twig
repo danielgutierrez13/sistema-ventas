@@ -16,7 +16,23 @@
 {% endblock %}
 
 {% block _compra_detalleCompras_entry_widget %}
-
+    {% import 'macro/action.html.twig' as actions %}
+    {{ action.frm_column(
+        action.frm_column_field_select(form.producto,'','product_select',2),
+        null,
+        null,
+        null,
+        1
+    ) }}
+    {{ action.frm_column(
+        action.frm_column_field(form.precio, '', 'precio_input'),
+        action.frm_column_field(form.cantidad, '', 'cantidad_input')
+    ) }}
+    <script>
+        jQuery(document).ready(function() {
+            Select2();
+        });
+    </script>
 {% endblock %}
 
 {% block _main %}
@@ -59,7 +75,16 @@
             $('#compra_precio').val(total)
         }
         jQuery(document).ready(function() {
+            Select2();
+            Collection.init('#compra_detalleCompras')
+            $(document).on('keyup', '.precio_input', function () {
 
+                calcularTotal()
+            });
+            $(document).on('click', '.btn_cerrar', function () {
+                calcularTotal()
+
+            });
         });
     </script>
 {% endblock %}
