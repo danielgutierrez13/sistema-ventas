@@ -1,18 +1,12 @@
 {% import '@App/theme1/form.html.twig' as frm %}
 {{ frm.frm_start(form) }}
     {{ frm.frm_column(
-        frm.frm_column_field(form.descripcion,'','',2),
-        null,
-        null,
-        null,
-        1
+        frm.frm_column_field(form.descripcion),
+        frm.frm_column_field(form.nombreCorto),
     ) }}
     {{ frm.frm_column(
-        frm.frm_column_field_select(form.tipoPersona,'','',2),
-        null,
-        null,
-        null,
-        1
+        frm.frm_column_field(form.propietarioCuenta),
+        frm.frm_column_field(form.cuenta),
     ) }}
     {{ frm.frm_column(
         frm.frm_column_btn(button_label|default('Guardar')),

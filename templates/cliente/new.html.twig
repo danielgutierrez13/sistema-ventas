@@ -57,6 +57,7 @@
                 }
             })
         }
+
         function limpiar(){
             nombre.val('')
             direccion.val('')
@@ -76,6 +77,7 @@
             limpiar()
             $(document).on('keyup', '#cliente_documento', function () {
                 let $this = $(this)
+                //verificamos DNI
                 if ($this.val().length === 8 && tipoDocumento.val() == 1 ) {
                     $.ajax({
                         type: 'POST',
@@ -87,23 +89,53 @@
                             if (result) {
                                 nombre.val(result.nombre)
                                 direccion.val(result.direccion)
-                            }else {
+                            } else {
                                 limpiar()
                                 Notify.warning('No se encontro nombre para documento')
                             }
                         }
                     })
-                }else if($this.val().length < 8 && tipoDocumento.val() == 1) {
-                    limpiar()
-                }else if($this.val().length > 8 && tipoDocumento.val() == 1) {
+                //Verificamos RUC
+                }else if($this.val().length === 11 && tipoDocumento.val() == 2){
+                    $.ajax({
+                        type: 'POST',
+                        url: '{{ path('cliente_busqueda_api_ruc') }}',
+                        data: {
+                            ruc: $this.val(),
+                        },
+                        success: function (result) {
+                            if (result) {
+                                nombre.val(result.nombre)
+                                direccion.val(result.direccion)
+                            } else {
+                                limpiar()
+                                Notify.warning('No se encontro nombre para documento')
+                            }
+                        }
+                    })
+                }else if($this.val().length > 11 && tipoDocumento.val() == 2) {
+                    $this.val('')
                     limpiar()
                     Notify.warning('Numero de documento Incorrecto')
+                }else if($this.val().length > 8 && tipoDocumento.val() == 1) {
+                    $this.val('')
+                    limpiar()
+                    Notify.warning('Numero de documento Incorrecto')
+                }else if($this.val().length < 8 && tipoDocumento.val() == 1) {
+                    limpiar()
+                }else if($this.val().length < 11 && tipoDocumento.val() == 2) {
+                    limpiar()
                 }
             });
 
             $(document).on('change', '#cliente_tipoPersona', function () {
                 limpiar()
                 tipoDocument($(this))
+                documento.val('')
+            });
+
+            $(document).on('change', '#cliente_tipoDocumento', function () {
+                limpiar()
                 documento.val('')
             });
         })

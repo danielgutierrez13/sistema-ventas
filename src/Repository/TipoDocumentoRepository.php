@@ -8,6 +8,7 @@ use CarlosChininin\Util\Filter\DoctrineValueSearch;
 use CarlosChininin\Util\Http\ParamFetcher;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
+use Pidia\Apps\Demo\Controller\TipoDocumentoController;
 use Pidia\Apps\Demo\Controller\TipoPersonaController;
 use Pidia\Apps\Demo\Entity\TipoDocumento;
 
@@ -42,7 +43,7 @@ class TipoDocumentoRepository extends BaseRepository
             ->join('tipoDocumento.config', 'config')
         ;
 
-        $this->security->filterQuery($queryBuilder, TipoPersonaController::BASE_ROUTE, $permissions);
+        $this->security->filterQuery($queryBuilder, TipoDocumentoController::BASE_ROUTE, $permissions);
 
         DoctrineValueSearch::apply($queryBuilder, $params->getNullableString('b'), ['tipoDocumento.descripcion']);
 
@@ -57,7 +58,7 @@ class TipoDocumentoRepository extends BaseRepository
             ->orderBy('tipoDocumento.descripcion', 'ASC')
         ;
 
-        $this->security->filterQuery($queryBuilder, MenuController::BASE_ROUTE);
+        $this->security->filterQuery($queryBuilder, TipoDocumentoController::BASE_ROUTE);
 
         return $queryBuilder->getQuery()->getArrayResult();
     }

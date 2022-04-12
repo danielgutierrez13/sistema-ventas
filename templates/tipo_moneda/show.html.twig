@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+{% import '@App/theme1/breadcrumb.html.twig' as breadcrumb %}
+{% import '@App/theme1/table.html.twig' as table %}
+
+{% set _title = 'Tipo Moneda' %}
+{% set _main_title = 'Mostrar' %}
+{% set _section =  'tipo_moneda_index'%}
+
+{% block _breadcrumb %}
+    {{ breadcrumb.show2(_title, _section, 'Mostrar') }}
+{% endblock %}
+
+{% block _main %}
+    {{ table.tbl_start() }}
+    {{ table.tbl_tr('Descripcion',tipo_moneda.descripcion) }}
+    {% include 'crud/_show_info.html.twig' with {'entity': tipo_moneda} %}
+    {{ table.tbl_end() }}
+
+{% endblock %}
+
+{% block _main_footer %}
+    {% include 'crud/_show_links.html.twig' with {'route_base':'tipo_moneda','entity': tipo_moneda} %}
+{% endblock %}
+
+{% block _main_tools %}
+    {% include 'crud/_tools_ico.html.twig' %}
+{% endblock %}
+
+{% block _body_tools %}
+    {% include 'crud/_show_links_ico.html.twig' with {'route_base':'tipo_moneda','entity': tipo_moneda} %}
+{% endblock %}
+
+{% block _body_tools_ico %}
+    {% include 'crud/_show_links_tool.html.twig' with {'route_base':'tipo_moneda','entity': tipo_moneda} %}
+{% endblock %}

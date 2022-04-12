@@ -1,0 +1,97 @@
+{% extends 'base.html.twig' %}
+{% import 'macro/breadcrumb.html.twig' as breadcrumb %}
+{% import 'macro/action.html.twig' as action %}
+{% import 'macro/pagination.html.twig' as pagination %}
+
+{% set _title = 'Tipo Pago' %}
+{% set _main_title = 'Listado' %}
+{% set _section =  'tipo_moneda_index' %}
+
+{% block _breadcrumb %}
+    {{ breadcrumb.show('TipPago') }}
+{% endblock %}
+
+{% block _main %}
+    <div class="table-responsive">
+        {{ action.tbl_start('table-sm') }}
+        {{ action.thead_start() }}
+        <tr>
+            {{ action.th('Descripcion', true, 'd-none d-sm-table-cell') }}
+            {{ action.th('Nombre Corto', true, 'd-none d-sm-table-cell') }}
+            {{ action.th('N° Cuenta', true, 'd-none d-sm-table-cell') }}
+            {{ action.th('Propietario Cuenta', true, 'd-none d-sm-table-cell') }}
+            {{ action.th('Activo', true, 'd-none d-sm-table-cell') }}
+            <th></th>
+        </tr>
+        {{ action.thead_end() }}
+        {{ action.tbody_start() }}
+        {% for tipo_pago in paginator.results %}
+            <tr>
+                <td class="d-none d-sm-table-cell">{{ tipo_pago.descripcion}}</td>
+                <td class="d-none d-sm-table-cell">{{ tipo_pago.nombreCorto}}</td>
+                <td class="d-none d-sm-table-cell">{{ tipo_pago.cuenta}}</td>
+                <td class="d-none d-sm-table-cell">{{ tipo_pago.propietarioCuenta}}</td>
+                <td class="d-none d-sm-table-cell">{{ tipo_pago.activo | yesno_custom | raw }}</td>
+                <td>
+                    {% if access.has('show') %}
+                        {{ action.btn_show_link2_ico(path('tipo_pago_show', {'id': tipo_pago.id})) }}
+                    {% endif %}
+                    {% if access.has('edit', tipo_pago) %}
+                        {{ action.btn_edit_link2_ico(path('tipo_pago_edit', {'id': tipo_pago.id})) }}
+                    {% endif %}
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">No hay registros</td>
+            </tr>
+        {% endfor %}
+        {{ action.tbody_end() }}
+        {{ action.tbl_end() }}
+    </div>
+    {{ pagination.show(paginator, _section) }}
+{% endblock %}
+
+{% block _main_footer %}
+    {% include 'crud/_index_links.html.twig' with {'route_base': 'tipo_pago'} %}
+{% endblock%}
+
+{% block _main_options %}
+    {% include 'crud/_index_filter.html.twig' %}
+{% endblock %}
+
+{% block _main_tools %}
+    {% include 'crud/_tools_ico.html.twig' %}
+{% endblock %}
+
+{% block _body_tools_ico %}
+    {% include 'crud/_index_links_tool.html.twig' with {'route_base': 'tipo_pago'}  %}
+{% endblock %}
+
+{% block _body_tools %}
+    {% include 'crud/_index_links_ico.html.twig' with {'route_base': 'tipo_pago'}  %}
+{% endblock %}
+
+{% block _stylesheets %}
+{% endblock %}
+
+{% block _javascripts %}
+    <script>
+        jQuery(document).ready(function () {
+            $(document).on('change', '#filter_size', function () {
+                let route = '{{ path('tipo_pago_index') }}';
+                route = route + "?" + 'n=' + $('#filter_size option:selected').val();
+                route = route + "&" + 'b=' + $('#filter_text').val();
+                window.location = route;
+            });
+
+            $(document).on('click', '.btn-send', function () {
+                window.location = '{{ path('tipo_pago_index') }}';
+            });
+
+            $(document).on('click', '.btn-clean', function () {
+                window.location.href = '{{ path('tipo_pago_index') }}';
+            });
+        });
+    </script>
+{% endblock %}

@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+{% import '@App/theme1/breadcrumb.html.twig' as breadcrumb %}
+{% import '@App/theme1/table.html.twig' as table %}
+
+{% set _title = 'Tipo Pago' %}
+{% set _main_title = 'Mostrar' %}
+{% set _section =  'tipo_pago_index'%}
+
+{% block _breadcrumb %}
+    {{ breadcrumb.show2(_title, _section, 'Mostrar') }}
+{% endblock %}
+
+{% block _main %}
+    {{ table.tbl_start() }}
+    {{ table.tbl_tr('Descripcion',tipo_pago.descripcion) }}
+    {{ table.tbl_tr('Nombre Corto',tipo_pago.nombreCorto) }}
+    {{ table.tbl_tr('N° Cuenta',tipo_pago.cuenta) }}
+    {{ table.tbl_tr('Propietario Cuenta',tipo_pago.propietarioCuenta) }}
+    {% include 'crud/_show_info.html.twig' with {'entity': tipo_pago} %}
+    {{ table.tbl_end() }}
+
+{% endblock %}
+
+{% block _main_footer %}
+    {% include 'crud/_show_links.html.twig' with {'route_base':'tipo_pago','entity': tipo_pago} %}
+{% endblock %}
+
+{% block _main_tools %}
+    {% include 'crud/_tools_ico.html.twig' %}
+{% endblock %}
+
+{% block _body_tools %}
+    {% include 'crud/_show_links_ico.html.twig' with {'route_base':'tipo_pago','entity': tipo_pago} %}
+{% endblock %}
+
+{% block _body_tools_ico %}
+    {% include 'crud/_show_links_tool.html.twig' with {'route_base':'tipo_pago','entity': tipo_pago} %}
+{% endblock %}

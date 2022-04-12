@@ -34,15 +34,110 @@
     <script src="{{ asset('js/select2.js') }}"></script>
     <script src="{{ asset('js/notify.js') }}"></script>
     <script>
-        var nombre = document.getElementById("proveedor_tipoPersona");
-        var nombre = document.getElementById("proveedor_tipoPersona");
-        var nombre = document.getElementById("proveedor_tipoPersona");
-        var nombre = document.getElementById("proveedor_tipoPersona");
-        var nombre = document.getElementById("proveedor_tipoPersona");
-        var nombre = document.getElementById("proveedor_tipoPersona");
-        var nombre = document.getElementById("proveedor_tipoPersona");
-        $(document).ready(function() {
-            Select2();
-        });
+        Select2()
+        function tipoDocument( $tipoPersona){
+            $.ajax({
+                type: 'POST',
+                url: '{{ path('documento_for_tipo_persona') }}',
+                data: {
+                    idTipoPersona: $tipoPersona.val(),
+                },
+                success: function (result) {
+                    if (result) {
+                        tipoDocumento.empty();
+                        $.each(result.data, function(k, v) {
+                            const option = document.createElement('option');
+                            option.value = result.data[k].id;
+                            option.text = result.data[k].descripcion;
+                            tipoDocumento.append(option);
+                        });
+                    }else {
+                        Notify.warning('Error Base de Datos')
+                    }
+                }
+            })
+        }
+
+        function limpiar(){
+            nombre.val('')
+            direccion.val('')
+            telefono.val('')
+        }
+
+        let nombre = $('#proveedor_nombre')
+        let direccion = $('#proveedor_direccion')
+        let telefono = $('#proveedor_telefono')
+        let documento = $('#proveedor_documento')
+        let tipoDocumento = $('#proveedor_tipoDocumento')
+        let tipoPersona = $('#proveedor_tipoPersona')
+
+        tipoDocument(tipoPersona)
+
+        jQuery(document).ready(function() {
+            limpiar()
+            $(document).on('keyup', '#proveedor_documento', function () {
+                let $this = $(this)
+                //verificamos DNI
+                if ($this.val().length === 8 && tipoDocumento.val() == 1 ) {
+                    $.ajax({
+                        type: 'POST',
+                        url: '{{ path('cliente_busqueda_api_dni') }}',
+                        data: {
+                            dni: $this.val(),
+                        },
+                        success: function (result) {
+                            if (result) {
+                                nombre.val(result.nombre)
+                                direccion.val(result.direccion)
+                            } else {
+                                limpiar()
+                                Notify.warning('No se encontro nombre para documento')
+                            }
+                        }
+                    })
+                    //Verificamos RUC
+                }else if($this.val().length === 11 && tipoDocumento.val() == 2){
+                    $.ajax({
+                        type: 'POST',
+                        url: '{{ path('cliente_busqueda_api_ruc') }}',
+                        data: {
+                            ruc: $this.val(),
+                        },
+                        success: function (result) {
+                            if (result) {
+                                nombre.val(result.nombre)
+                                direccion.val(result.direccion)
+                            } else {
+                                limpiar()
+                                Notify.warning('No se encontro nombre para documento')
+                            }
+                        }
+                    })
+                }else if($this.val().length > 11 && tipoDocumento.val() == 2) {
+                    $this.val('')
+                    limpiar()
+                    Notify.warning('Numero de documento Incorrecto')
+                }else if($this.val().length > 8 && tipoDocumento.val() == 1) {
+                    $this.val('')
+                    limpiar()
+                    Notify.warning('Numero de documento Incorrecto')
+                }else if($this.val().length < 8 && tipoDocumento.val() == 1) {
+                    limpiar()
+                }else if($this.val().length < 11 && tipoDocumento.val() == 2) {
+                    limpiar()
+                }
+            });
+
+            $(document).on('change', '#proveedor_tipoPersona', function () {
+                limpiar()
+                tipoDocument($(this))
+                documento.val('')
+            });
+
+            $(document).on('change', '#proveedor_tipoDocumento', function () {
+                limpiar()
+                documento.val('')
+            });
+        })
     </script>
 {% endblock %}
