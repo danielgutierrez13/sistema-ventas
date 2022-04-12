@@ -1,0 +1,94 @@
+{% extends 'base.html.twig' %}
+{% import 'macro/breadcrumb.html.twig' as breadcrumb %}
+{% import 'macro/action.html.twig' as action %}
+
+{% set _title = 'compra' %}
+{% set _main_title = 'Nuevo' %}
+{% set _section =  'compra_index'%}
+
+{% block _breadcrumb %}
+    {{ breadcrumb.show2('compra',_section,'Nuevo') }}
+{% endblock %}
+
+{% form_theme form _self %}
+
+{% block _compra_detalleCompras_label %}
+{% endblock %}
+
+{% block _compra_detalleCompras_entry_widget %}
+    {% import 'macro/action.html.twig' as actions %}
+    {{ action.frm_column(
+        action.frm_column_field_select(form.producto,'','product_select',2),
+        null,
+        null,
+        null,
+        1
+    ) }}
+    {{ action.frm_column(
+        action.frm_column_field(form.precio, '', 'precio_input'),
+        action.frm_column_field(form.cantidad, '', 'cantidad_input')
+    ) }}
+    <script>
+        jQuery(document).ready(function() {
+            Select2();
+        });
+    </script>
+{% endblock %}
+
+
+{% block _main %}
+
+    {{ include('compra/_form.html.twig') }}
+
+{% endblock %}
+
+{% block _main_tools %}
+    {% include 'crud/_tools_ico.html.twig' %}
+{% endblock %}
+
+{% block _body_tools %}
+    {% include 'crud/_new_links_ico.html.twig' with {'route_base':'compra'} %}
+{% endblock %}
+
+{% block _body_tools_ico %}
+    {% include 'crud/_new_links_tool.html.twig' with {'route_base': 'compra'}  %}
+{% endblock %}
+
+{% block _main_footer %}
+    {% include 'crud/_new_links.html.twig' with {'route_base':'compra'} %}
+
+{% endblock %}
+
+{% block _stylesheets %}
+{% endblock %}
+
+{% block _javascripts %}
+    <script src="{{ asset('js/select2.js') }}"></script>
+    <script src="{{ asset('js/collection.js') }}"></script>
+    <script>
+        function calcularTotal()
+        {
+            let total = 0.00
+            $('.precio_input').each(function() {
+                if($(this).val().length == 0){
+                    total += parseFloat(0)
+                }else{
+                    total += parseFloat($(this).val())
+                }
+            });
+            $('#compra_precio').val(total)
+        }
+        jQuery(document).ready(function() {
+            Select2();
+            Collection.init('#compra_detalleCompras')
+            let date = new Date();
+            $('#compra_codigo').val(date.getDate().toString() + date.getMonth().toString() + date.getFullYear().toString() + date.getHours().toString() + date.getMinutes().toString() + date.getSeconds())
+            $(document).on('keyup', '.precio_input', function () {
+                calcularTotal()
+            });
+            $(document).on('click', '.btn_cerrar', function () {
+                calcularTotal()
+            });
+        });
+    </script>
+{% endblock %}

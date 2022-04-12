@@ -1,0 +1,65 @@
+{% extends 'base.html.twig' %}
+{% import 'macro/breadcrumb.html.twig' as breadcrumb %}
+{% import 'macro/action.html.twig' as action %}
+
+{% set _title = 'compra' %}
+{% set _main_title = 'Editar' %}
+{% set _section = 'compra_index' %}
+
+{% block _breadcrumb %}
+    {{ breadcrumb.show2('compra',_section,'Editar') }}
+{% endblock %}
+
+{% form_theme form _self %}
+
+{% block _compra_detalleCompras_label %}
+{% endblock %}
+
+{% block _compra_detalleCompras_entry_widget %}
+
+{% endblock %}
+
+{% block _main %}
+    {{ include('compra/_form.html.twig', {'button_label': 'Actualizar'}) }}
+{% endblock %}
+
+{% block _main_tools %}
+    {% include 'crud/_tools_ico.html.twig' %}
+{% endblock %}
+
+{% block _body_tools %}
+    {% include 'crud/_edit_links_ico.html.twig' with {'route_base':'compra','entity': compra} %}
+{% endblock %}
+
+{% block _body_tools_ico %}
+    {% include 'crud/_edit_links_tool.html.twig' with {'route_base':'compra','entity': compra} %}
+{% endblock %}
+
+{% block _main_footer %}
+    {% include 'crud/_edit_links.html.twig' with {'route_base':'compra','entity': compra} %}
+{% endblock %}
+
+{% block _stylesheets %}
+{% endblock %}
+
+{% block _javascripts %}
+    <script src="{{ asset('js/select2.js') }}"></script>
+    <script src="{{ asset('js/collection.js') }}"></script>
+    <script>
+        function calcularTotal()
+        {
+            let total = 0.00
+            $('.precio_input').each(function() {
+                if($(this).val().length == 0){
+                    total += parseFloat(0)
+                }else{
+                    total += parseFloat($(this).val())
+                }
+            });
+            $('#compra_precio').val(total)
+        }
+        jQuery(document).ready(function() {
+
+        });
+    </script>
+{% endblock %}
