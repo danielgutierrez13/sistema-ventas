@@ -29,7 +29,7 @@ class Producto
     #[JoinColumn(nullable: false)]
     private $marca;
 
-    #[Column(type: 'text')]
+    #[Column(type: 'string', length: 100)]
     private $descripcion;
 
     #[ManyToOne(targetEntity: UnidadMedida::class)]
@@ -39,7 +39,7 @@ class Producto
     #[Column(type: 'decimal', precision: 10, scale: 2)]
     private $precio;
 
-    #[Column(type: 'string', length: 20)]
+    #[Column(type: 'decimal', precision: 10, scale: 2)]
     private $stock;
 
     #[Column(type: 'decimal', precision: 10, scale: 2)]

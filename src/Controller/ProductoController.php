@@ -40,7 +40,7 @@ class ProductoController extends WebAuthController
 
         $headers = [
             'tipoPersona.descripcion' => 'Tipo de Persona',
-            'nombre' => 'Nombre de Producto',
+            'nombre' => 'Nombre de producto',
             'tipoDocumento.descripcion' => 'Tipo de Documento',
             'documento' => 'N° de Documento',
             'direccion' => 'Direccion',
