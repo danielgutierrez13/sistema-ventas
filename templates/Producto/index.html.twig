@@ -1,0 +1,99 @@
+{% extends 'base.html.twig' %}
+{% import 'macro/breadcrumb.html.twig' as breadcrumb %}
+{% import 'macro/action.html.twig' as action %}
+{% import 'macro/pagination.html.twig' as pagination %}
+
+{% set _title = 'Productos' %}
+{% set _main_title = 'Listado' %}
+{% set _section =  'producto_index' %}
+
+{% block _breadcrumb %}
+    {{ breadcrumb.show('Productos') }}
+{% endblock %}
+
+{% block _main %}
+    <div class="table-responsive">
+        {{ action.tbl_start('table-sm') }}
+        {{ action.thead_start() }}
+        <tr>
+            {{ action.th('Categoria', true, 'd-none d-sm-table-cell') }}
+            {{ action.th('Marca', true, 'd-none d-sm-table-cell') }}
+            {{ action.th('Descripcion', true, 'd-none d-sm-table-cell') }}
+            {{ action.th('Unidad Medida', true, 'd-none d-sm-table-cell') }}
+            {{ action.th('Precio', true, 'd-none d-sm-table-cell') }}
+            {{ action.th('Stock', true, 'd-none d-sm-table-cell') }}
+            {{ action.th('Activo', true, 'd-none d-sm-table-cell') }}
+            <th></th>
+        </tr>
+        {{ action.thead_end() }}
+        {{ action.tbody_start() }}
+        {% for producto in paginator.results %}
+            <tr>
+                <td class="d-none d-sm-table-cell">{{ producto.categoria}}</td>
+                <td class="d-none d-sm-table-cell">{{ producto.marca}}</td>
+                <td class="d-none d-sm-table-cell">{{ producto.descripcion}}</td>
+                <td class="d-none d-sm-table-cell">{{ producto.unidadMedida}}</td>
+                <td class="d-none d-sm-table-cell">{{ producto.precio}}</td>
+                <td class="d-none d-sm-table-cell">{{ producto.stock}}</td>
+                <td class="d-none d-sm-table-cell">{{ producto.activo | yesno_custom | raw }}</td>
+                <td>
+                    {% if access.has('show') %}
+                        {{ action.btn_show_link2_ico(path('producto_show', {'id': producto.id})) }}
+                    {% endif %}
+                    {% if access.has('edit', producto) %}
+                        {{ action.btn_edit_link2_ico(path('producto_edit', {'id': producto.id})) }}
+                    {% endif %}
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">No hay registros</td>
+            </tr>
+        {% endfor %}
+        {{ action.tbody_end() }}
+        {{ action.tbl_end() }}
+    </div>
+    {{ pagination.show(paginator, _section) }}
+{% endblock %}
+
+{% block _main_footer %}
+    {% include 'crud/_index_links.html.twig' with {'route_base': 'producto'} %}
+{% endblock%}
+
+{% block _main_options %}
+    {% include 'crud/_index_filter.html.twig' %}
+{% endblock %}
+
+{% block _main_tools %}
+    {% include 'crud/_tools_ico.html.twig' %}
+{% endblock %}
+
+{% block _body_tools_ico %}
+    {% include 'crud/_index_links_tool.html.twig' with {'route_base': 'producto'}  %}
+{% endblock %}
+
+{% block _body_tools %}
+    {% include 'crud/_index_links_ico.html.twig' with {'route_base': 'producto'}  %}
+{% endblock %}
+
+{% block _stylesheets %}
+{% endblock %}
+
+{% block _javascripts %}
+    <script>
+        jQuery(document).ready(function () {
+            $(document).on('change', '#filter_size', function () {
+                let route = '{{ path('producto_index') }}';
+                route = route + "?" + 'n=' + $('#filter_size option:selected').val();
+                route = route + "&" + 'b=' + $('#filter_text').val();
+                window.location = route;
+            });
+            $(document).on('click', '.btn-send', function () {
+                window.location = '{{ path('producto_index') }}';
+            });
+            $(document).on('click', '.btn-clean', function () {
+                window.location.href = '{{ path('producto_index') }}';
+            });
+        });
+    </script>
+{% endblock %}
