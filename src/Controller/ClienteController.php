@@ -9,6 +9,7 @@ use Pidia\Apps\Demo\Entity\Cliente;
 use Pidia\Apps\Demo\Form\ClienteType;
 use Pidia\Apps\Demo\Manager\BusquedaApiManager;
 use Pidia\Apps\Demo\Manager\ClienteManager;
+use Pidia\Apps\Demo\Repository\TipoDocumentoRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -95,6 +96,7 @@ class ClienteController extends WebAuthController
 
         $form = $this->createForm(ClienteType::class, $cliente);
         $form->handleRequest($request);
+
         if ($form->isSubmitted() && $form->isValid()) {
             if ($manager->save($cliente)) {
                 $this->messageSuccess('Registro actualizado!!!');
@@ -165,5 +167,18 @@ class ClienteController extends WebAuthController
         $result = $apiManager->ruc($ruc);
 
         return $this->json($result);
+    }
+
+    #[Route('/busqueda/tipo_documento', name: 'documento_for_tipo_persona')]
+    public function documentoForTipo(Request $request, TipoDocumentoRepository $documentoRepository): Response
+    {
+        $idTipoPersona = $request->request->get('idTipoPersona');
+        $array = $documentoRepository->documentoForTipoPersona($idTipoPersona);
+        if (null === $array) {
+            return $this->json(['status' => false, 'message' => 'No se encontro el producto']);
+        }
+        return $this->json(['status' => true, 'data' => $array]);
+
+
     }
 }

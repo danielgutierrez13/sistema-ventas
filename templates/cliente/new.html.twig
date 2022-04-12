@@ -35,28 +35,45 @@
     <script src="{{ asset('js/notify.js') }}"></script>
     <script>
         Select2()
-
+        function tipoDocument( $tipoPersona){
+            $.ajax({
+                type: 'POST',
+                url: '{{ path('documento_for_tipo_persona') }}',
+                data: {
+                    idTipoPersona: $tipoPersona.val(),
+                },
+                success: function (result) {
+                    if (result) {
+                        tipoDocumento.empty();
+                        $.each(result.data, function(k, v) {
+                            const option = document.createElement('option');
+                            option.value = result.data[k].id;
+                            option.text = result.data[k].descripcion;
+                            tipoDocumento.append(option);
+                        });
+                    }else {
+                        Notify.warning('Error Base de Datos')
+                    }
+                }
+            })
+        }
         function limpiar(){
             nombre.val('')
             direccion.val('')
             telefono.val('')
-            email.val('')
-            password.val('')
-            username.val('')
         }
 
         let nombre = $('#cliente_nombre')
         let direccion = $('#cliente_direccion')
         let telefono = $('#cliente_telefono')
         let documento = $('#cliente_documento')
-        let username = $('#cliente_username')
-        let password = $('#cliente_password')
-        let email = $('#cliente_email')
         let tipoDocumento = $('#cliente_tipoDocumento')
+        let tipoPersona = $('#cliente_tipoPersona')
+
+        tipoDocument(tipoPersona)
 
         jQuery(document).ready(function() {
             limpiar()
-
             $(document).on('keyup', '#cliente_documento', function () {
                 let $this = $(this)
                 if ($this.val().length === 8 && tipoDocumento.val() == 1 ) {
@@ -84,8 +101,9 @@
                 }
             });
 
-            $(document).on('change', '#cliente_tipoDocumento', function () {
+            $(document).on('change', '#cliente_tipoPersona', function () {
                 limpiar()
+                tipoDocument($(this))
                 documento.val('')
             });
         })

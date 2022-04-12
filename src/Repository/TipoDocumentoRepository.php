@@ -7,9 +7,9 @@ use CarlosChininin\App\Infrastructure\Security\Security;
 use CarlosChininin\Util\Filter\DoctrineValueSearch;
 use CarlosChininin\Util\Http\ParamFetcher;
 use Doctrine\ORM\QueryBuilder;
+use Doctrine\Persistence\ManagerRegistry;
 use Pidia\Apps\Demo\Controller\TipoPersonaController;
 use Pidia\Apps\Demo\Entity\TipoDocumento;
-use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * @method TipoDocumento|null find($id, $lockMode = null, $lockVersion = null)
@@ -68,5 +68,15 @@ class TipoDocumentoRepository extends BaseRepository
             ->select(['tipoDocumento'])
             ->join('tipoDocumento.config', 'config')
             ;
+    }
+
+    public function documentoForTipoPersona(int $idTipoPersona): array
+    {
+        $queryBuilder = $this->createQueryBuilder('tipoDocumento')
+            ->where('tipoDocumento.tipoPersona = :idTipoPersona')
+            ->setParameter('idTipoPersona', $idTipoPersona)
+            ;
+
+        return $queryBuilder->getQuery()->getArrayResult();
     }
 }
