@@ -12,49 +12,10 @@
 
 {% block _main %}
     {{ action.tbl_start() }}
-    {{ action.tbl_tr('Codigo', pedido.codigo) }}
-    {{ action.tbl_tr('Vendedor', pedido.vendedor) }}
-    {{ action.tbl_tr('Precio Final',pedido.precioFinal) }}
-    {{ action.tbl_end() }}
-    {{ action.tbl_start() }}
-    <div class="table-responsive">
+    {{ action.tbl_tr('Cliente',pedido.codigo) }}
+    {{ action.tbl_tr('Precio',pedido.vendedor) }}
 
-        <tr class="fw-bolder fs-6 text-gray-800">
-            {{ action.th('Producto', false, 'd-none d-sm-table-cell') }}
-            {{ action.th('Cantidad', true, 'text-center') }}
-            {{ action.th('Precio', true, 'text-center') }}
-            {{ action.th('Descuento', true, 'text-center') }}
-            {{ action.th('Estado Entrega', true, 'text-center') }}
-            {{ action.th('Acciones', true, 'text-center') }}
-        </tr>
-
-        {% for pedido in pedido.detallePedidos %}
-
-            <tr>
-                <td class="d-none d-sm-table-cell">{{ pedido.producto}}</td>
-                <td class="text-center">{{ pedido.cantidad}}</td>
-                <td class="text-center">{{ pedido.precio}}</td>
-                <td class="text-center">{{ pedido.descuento}}</td>
-                <td class="text-center">{{ pedido.estadoEntrega | yesnocustom | raw }}</td>
-                <td class="text-center">{% if (pedido.estadoEntrega == 1)  %}
-                        {% if access.has('edit') %}
-                            {{ action.btn_entrega2_ico(path('pago_entrega_detalle', {'id': pedido.id})) }}
-                        {% endif %}
-                    {% endif %}
-                    {% if (pedido.estadoEntrega == 0)  %}
-                        {% if access.has('edit') %}
-                            {{ action.btn_entrega_ico(path('pago_entrega_detalle', {'id': pedido.id})) }}
-                        {% endif %}
-                    {% endif %}
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="4">No hay registros</td>
-            </tr>
-        {% endfor %}
-
-    </div>
+    {% include 'crud/_show_info.html.twig' with {'entity': pedido} %}
     {{ action.tbl_end() }}
 
 {% endblock %}
