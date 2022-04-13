@@ -164,6 +164,6 @@ class Vendedor
 
     public function __toString(): string
     {
-        return $this->getNombre().' - '.$this->getNumeroDocumento();
+        return $this->getNombre().' - '.$this->getDocumento();
     }
 }

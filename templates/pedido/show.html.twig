@@ -1,0 +1,76 @@
+{% extends 'base.html.twig' %}
+{% import 'macro/breadcrumb.html.twig' as breadcrumb %}
+{% import 'macro/action.html.twig' as action %}
+
+{% set _title = 'Pedido' %}
+{% set _main_title = 'Mostrar' %}
+{% set _section =  'pedido_index'%}
+
+{% block _breadcrumb %}
+    {{ breadcrumb.show2(_title, _section, 'Mostrar') }}
+{% endblock %}
+
+{% block _main %}
+    {{ action.tbl_start() }}
+    {{ action.tbl_tr('Codigo', pedido.codigo) }}
+    {{ action.tbl_tr('Vendedor', pedido.vendedor) }}
+    {{ action.tbl_tr('Precio Final',pedido.precioFinal) }}
+    {{ action.tbl_end() }}
+    {{ action.tbl_start() }}
+    <div class="table-responsive">
+
+        <tr class="fw-bolder fs-6 text-gray-800">
+            {{ action.th('Producto', false, 'd-none d-sm-table-cell') }}
+            {{ action.th('Cantidad', true, 'text-center') }}
+            {{ action.th('Precio', true, 'text-center') }}
+            {{ action.th('Descuento', true, 'text-center') }}
+            {{ action.th('Estado Entrega', true, 'text-center') }}
+            {{ action.th('Acciones', true, 'text-center') }}
+        </tr>
+
+        {% for pedido in pedido.detallePedidos %}
+
+            <tr>
+                <td class="d-none d-sm-table-cell">{{ pedido.producto}}</td>
+                <td class="text-center">{{ pedido.cantidad}}</td>
+                <td class="text-center">{{ pedido.precio}}</td>
+                <td class="text-center">{{ pedido.descuento}}</td>
+                <td class="text-center">{{ pedido.estadoEntrega | yesnocustom | raw }}</td>
+                <td class="text-center">{% if (pedido.estadoEntrega == 1)  %}
+                        {% if access.has('edit') %}
+                            {{ action.btn_entrega2_ico(path('pago_entrega_detalle', {'id': pedido.id})) }}
+                        {% endif %}
+                    {% endif %}
+                    {% if (pedido.estadoEntrega == 0)  %}
+                        {% if access.has('edit') %}
+                            {{ action.btn_entrega_ico(path('pago_entrega_detalle', {'id': pedido.id})) }}
+                        {% endif %}
+                    {% endif %}
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">No hay registros</td>
+            </tr>
+        {% endfor %}
+
+    </div>
+    {{ action.tbl_end() }}
+
+{% endblock %}
+
+{% block _main_footer %}
+    {% include 'crud/_show_links.html.twig' with {'route_base':'pedido','entity': pedido} %}
+{% endblock %}
+
+{% block _main_tools %}
+    {% include 'crud/_tools_ico.html.twig' %}
+{% endblock %}
+
+{% block _body_tools %}
+    {% include 'crud/_show_links_ico.html.twig' with {'route_base':'pedido','entity': pedido} %}
+{% endblock %}
+
+{% block _body_tools_ico %}
+    {% include 'crud/_show_links_tool.html.twig' with {'route_base':'pedido','entity': pedido} %}
+{% endblock %}

@@ -1,0 +1,135 @@
+{% extends 'base.html.twig' %}
+{% import 'macro/breadcrumb.html.twig' as breadcrumb %}
+{% import 'macro/action.html.twig' as action %}
+
+{% set _title = 'Pedido' %}
+{% set _main_title = 'Nuevo' %}
+{% set _section =  'pedido_index'%}
+
+{% block _breadcrumb %}
+    {{ breadcrumb.show2('Pedido',_section,'Nuevo') }}
+{% endblock %}
+
+{% form_theme form _self %}
+
+{% block _pedido_detallePedidos_label %}
+{% endblock %}
+
+{% block _pedido_detallePedidos_entry_widget %}
+    {% import 'macro/action.html.twig' as actions %}
+    {{ action.frm_column(
+        action.frm_column_field_select(form.producto,'','product_select',2),
+        null,
+        null,
+        null,
+        1
+    ) }}
+    {{ action.frm_column(
+        action.frm_column_field(form.cantidad, '', 'cantidad_input'),
+        action.frm_column_field(form.precio, '', 'precio_input')
+    ) }}
+    {{ action.frm_column(
+        action.frm_column_field(form.descuento,'','descuento_input',2),
+        null,
+        null,
+        null,
+        1
+    ) }}
+    <script>
+        setTimeout(function() {
+            Select2();
+        }, 1000);
+    </script>
+{% endblock %}
+
+{% block _main %}
+
+    {{ include('pedido/_form.html.twig') }}
+
+{% endblock %}
+
+{% block _main_tools %}
+    {% include 'crud/_tools_ico.html.twig' %}
+{% endblock %}
+
+{% block _body_tools %}
+    {% include 'crud/_new_links_ico.html.twig' with {'route_base':'pedido'} %}
+{% endblock %}
+
+{% block _body_tools_ico %}
+    {% include 'crud/_new_links_tool.html.twig' with {'route_base': 'pedido'}  %}
+{% endblock %}
+
+{% block _main_footer %}
+    {% include 'crud/_new_links.html.twig' with {'route_base':'pedido'} %}
+{% endblock %}
+
+{% block _stylesheets %}
+{% endblock %}
+
+{% block _javascripts %}
+    <script src="{{ asset('js/select2.js') }}"></script>
+    <script src="{{ asset('js/notify.js') }}"></script>
+    <script src="{{ asset('js/collection.js') }}"></script>
+    <script>
+        function calcularTotal()
+        {
+            let total = 0.00
+            $('.precio_input').each(function() {
+                total += parseFloat($(this).val())
+            });
+            $('#pedido_precioFinal').val(total)
+        }
+        function calcularPrecio($this)
+        {
+            let $detalle = $this.closest('.collection_child')
+            let $cantidad = $detalle.find('.cantidad_input');
+            let cantidad = parseInt($cantidad.val())
+            let stock = parseInt($cantidad.data('stock'))
+            let precio = parseFloat($cantidad.data('precio'))
+            let descuento = parseFloat($detalle.find('.descuento_input').val())
+            if (isNaN(descuento)) {
+                descuento = 0.00;
+            }
+            if (isNaN(cantidad)) {
+                $detalle.find('.precio_input').val(0)
+                return false
+            }
+            if(cantidad < 0) {
+                $detalle.find('.precio_input').val('')
+                $detalle.find('.cantidad_input').val('')
+                Notify.warning('Cantidad Incorrecta')
+                return false
+            }
+            if (cantidad > stock){
+                $detalle.find('.precio_input').val('')
+                $detalle.find('.cantidad_input').val('')
+                Notify.warning('Excedio Stock')
+                return false
+            }
+            let total = precio * cantidad
+            if (total < descuento) {
+                $detalle.find('.descuento_input').val(0.00)
+                Notify.warning('Exceso de Descuento')
+                return false
+            }
+            $detalle.find('.precio_input').val(total - descuento)
+            calcularTotal()
+        }
+        jQuery(document).ready(function() {
+
+            $(document).on('keyup', '.cantidad_input', function () {
+                calcularPrecio($(this))
+            });
+            $(document).on('change', '.cantidad_input', function () {
+                calcularPrecio($(this))
+            });
+            $(document).on('keyup', '.descuento_input', function () {
+                calcularPrecio($(this))
+            });
+            $(document).on('click', '.btn_cerrar', function () {
+                calcularPrecio($(this))
+            });
+        });
+    </script>
+{% endblock %}
