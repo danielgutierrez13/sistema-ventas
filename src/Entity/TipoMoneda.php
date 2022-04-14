@@ -8,12 +8,14 @@ use Pidia\Apps\Demo\Entity\Traits\EntityTrait;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
+use Pidia\Apps\Demo\Repository\TipoMonedaRepository;
 
-#[Entity(repositoryClass: 'Pidia\Apps\Demo\Repository\TipoMonedaRepository')]
+#[Entity(repositoryClass: TipoMonedaRepository::class)]
 #[HasLifecycleCallbacks]
 class TipoMoneda
 {
     use EntityTrait;
+
     #[Id]
     #[GeneratedValue]
     #[Column(type: 'integer')]
@@ -37,5 +39,10 @@ class TipoMoneda
         $this->descripcion = $descripcion;
 
         return $this;
+    }
+
+    public function __toString(): string
+    {
+        return $this->getDescripcion();
     }
 }
