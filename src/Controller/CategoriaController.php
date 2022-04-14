@@ -15,6 +15,8 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/admin/categoria')]
 class CategoriaController extends WebAuthController
 {
+    public const BASE_ROUTE = 'categoria_index';
+
     #[Route(path: '/', name: 'categoria_index', defaults: ['page' => '1'], methods: ['GET'])]
     #[Route(path: '/page/{page<[1-9]\d*>}', name: 'categoria_index_paginated', methods: ['GET'])]
     public function index(Request $request, int $page, CategoriaManager $manager): Response

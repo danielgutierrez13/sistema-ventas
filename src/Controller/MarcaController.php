@@ -15,6 +15,8 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/admin/marca')]
 class MarcaController extends WebAuthController
 {
+    public const BASE_ROUTE = 'marca_index';
+
     #[Route(path: '/', name: 'marca_index', defaults: ['page' => '1'], methods: ['GET'])]
     #[Route(path: '/page/{page<[1-9]\d*>}', name: 'marca_index_paginated', methods: ['GET'])]
     public function index(Request $request, int $page, MarcaManager $manager): Response

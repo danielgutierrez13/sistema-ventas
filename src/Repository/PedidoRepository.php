@@ -10,6 +10,7 @@ use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 use Pidia\Apps\Demo\Controller\PedidoController;
+use Pidia\Apps\Demo\Controller\VendedorController;
 use Pidia\Apps\Demo\Entity\Pedido;
 
 /**
@@ -38,12 +39,14 @@ class PedidoRepository extends BaseRepository
 
     public function filterQuery(array|ParamFetcher $params, array $permissions = []): QueryBuilder
     {
-        $queryBuilder = $this->createQueryBuilder('pedido')
+        $queryBuilder = $this->createQueryBuilder('vendedor')
+            ->select(['vendedor'])
+            ->join('vendedor.config', 'config')
         ;
 
         $this->security->filterQuery($queryBuilder, PedidoController::BASE_ROUTE, $permissions);
 
-        DoctrineValueSearch::apply($queryBuilder, $params->getNullableString('b'), ['pedido.nombre', 'pedido.documento', 'tipoPersona.descripcion',  'tipoDocumento.descripcion']);
+        DoctrineValueSearch::apply($queryBuilder, $params->getNullableString('b'), ['pedido.codigo']);
 
         return $queryBuilder;
     }

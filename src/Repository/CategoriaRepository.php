@@ -57,7 +57,7 @@ class CategoriaRepository extends BaseRepository
             ->orderBy('categoria.descripcion', 'ASC')
         ;
 
-        $this->security->filterQuery($queryBuilder, MenuController::BASE_ROUTE);
+        $this->security->filterQuery($queryBuilder, CategoriaController::BASE_ROUTE);
 
         return $queryBuilder->getQuery()->getArrayResult();
     }

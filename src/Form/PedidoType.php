@@ -25,23 +25,15 @@ class PedidoType extends AbstractType
             ->add('codigo')
             ->add('vendedor', EntityType::class, options: [
                 'class' => Vendedor::class,
-                'label' => 'Vendedor',
-                'placeholder' => true,
             ])
             ->add('cliente', EntityType::class, options: [
                 'class' => Cliente::class,
-                'required' => false,
-                'label' => 'Cliente',
             ])
             ->add('tipoPago', EntityType::class, options: [
                 'class' => TipoPago::class,
-                'required' => false,
-                'label' => 'Tipo de Pago',
             ])
             ->add('tipoMoneda', EntityType::class, options: [
                 'class' => TipoMoneda::class,
-                'required' => false,
-                'label' => 'Tipo de Moneda',
             ])
             ->add('cambio', TextType::class, options: [
                 'label' => 'Cambio',
