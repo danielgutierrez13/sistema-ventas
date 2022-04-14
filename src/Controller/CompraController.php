@@ -62,7 +62,7 @@ class CompraController extends WebAuthController
     }
 
     #[Route(path: '/new', name: 'compra_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, CompraManager $manager,EntityManagerInterface $entityManager): Response
+    public function new(Request $request, CompraManager $manager, EntityManagerInterface $entityManager): Response
     {
         $this->denyAccess([Permission::NEW]);
         $compra = new Compra();
@@ -108,14 +108,13 @@ class CompraController extends WebAuthController
     }
 
     #[Route(path: '/{id}/edit', name: 'compra_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Compra $compra, CompraManager $manager,EntityManagerInterface $entityManager): Response
+    public function edit(Request $request, Compra $compra, CompraManager $manager, EntityManagerInterface $entityManager): Response
     {
         $this->denyAccess([Permission::EDIT], $compra);
         $CompraAnterior = $compra->clone();
         $form = $this->createForm(CompraType::class, $compra);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-
             foreach ($CompraAnterior->getDetalleCompras() as $detallesAnterior) {
                 $producto = $detallesAnterior->getProducto();
                 $producto->setStock($producto->getStock() - $detallesAnterior->getCantidad());

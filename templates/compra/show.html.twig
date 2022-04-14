@@ -15,7 +15,37 @@
     {{ action.tbl_tr('Cliente',compra.codigo) }}
     {{ action.tbl_tr('Proveedor',compra.proveedor) }}
     {{ action.tbl_tr('Precio',compra.precio) }}
+    {{ action.tbl_end() }}
 
+    <div class="table-responsive">
+        <table class="table table-hover table-rounded table-striped border gy-6 gs-6">
+            <tr class="fw-bolder fs-6 text-gray-800">
+                <th>
+                    Producto
+                </th>
+                <th>
+                    Cantidad
+                </th>
+                <th>
+                    Precio
+                </th>
+            </tr>
+
+            {% for compra in compra.detalleCompras %}
+
+                <tr>
+                    <td class="d-none d-sm-table-cell">{{ compra.producto}}</td>
+                    <td class="d-none d-sm-table-cell">{{ compra.cantidad}}</td>
+                    <td class="d-none d-sm-table-cell">{{ compra.precio}}</td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="4">No hay registros</td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+    {{ action.tbl_start() }}
     {% include 'crud/_show_info.html.twig' with {'entity': compra} %}
     {{ action.tbl_end() }}
 
