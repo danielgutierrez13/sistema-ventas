@@ -6,10 +6,10 @@ use CarlosChininin\App\Infrastructure\Repository\BaseRepository;
 use CarlosChininin\App\Infrastructure\Security\Security;
 use CarlosChininin\Util\Filter\DoctrineValueSearch;
 use CarlosChininin\Util\Http\ParamFetcher;
+use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
-use Pidia\Apps\Demo\Controller\CategoriaController;
-use Pidia\Apps\Demo\Controller\MarcaController;
+use Pidia\Apps\Demo\Controller\ProductoController;
 use Pidia\Apps\Demo\Entity\Producto;
 
 /**
@@ -45,7 +45,7 @@ class ProductoRepository extends BaseRepository
             ->join('producto.marca', 'marca')
         ;
 
-        $this->security->filterQuery($queryBuilder, CategoriaController::BASE_ROUTE, $permissions, MarcaController::BASE_ROUTE, $permissions);
+        $this->security->filterQuery($queryBuilder, ProductoController::BASE_ROUTE, $permissions);
 
         DoctrineValueSearch::apply($queryBuilder, $params->getNullableString('b'), ['producto.descripcion', 'categoria.descripcion',
             'marca.descripcion', ]);
@@ -68,7 +68,7 @@ class ProductoRepository extends BaseRepository
             ->orderBy('producto.descripcion', 'ASC')
         ;
 
-        $this->security->filterQuery($queryBuilder, MenuController::BASE_ROUTE);
+        $this->security->filterQuery($queryBuilder, ProductoController::BASE_ROUTE);
 
         return $queryBuilder->getQuery()->getArrayResult();
     }
@@ -79,5 +79,19 @@ class ProductoRepository extends BaseRepository
             ->select(['producto'])
             ->join('producto.config', 'config')
             ;
+    }
+
+    public function buscarProductoById(int $productoId): ?Producto
+    {
+        try {
+            return $this->createQueryBuilder('producto')
+                ->where('producto.id = :productoId')
+                ->setParameter('productoId', $productoId)
+                ->getQuery()
+                ->getOneOrNullResult();
+        } catch (NonUniqueResultException) {
+        }
+
+        return null;
     }
 }

@@ -8,6 +8,7 @@ use CarlosChininin\Util\Http\ParamFetcher;
 use Pidia\Apps\Demo\Entity\Producto;
 use Pidia\Apps\Demo\Form\ProductoType;
 use Pidia\Apps\Demo\Manager\ProductoManager;
+use Pidia\Apps\Demo\Repository\ProductoRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -144,5 +145,22 @@ class ProductoController extends WebAuthController
         }
 
         return $this->redirectToRoute('producto_index');
+    }
+
+    #[Route(path: '/values_pedido/ajax', name: 'producto_values_pedido_ajax', methods: ['GET', 'POST'])]
+    public function pedidoAjax(Request $request, ProductoRepository $productoRepository): Response
+    {
+        $id = $request->request->get('id');
+        $producto = $productoRepository->buscarProductoById($id);
+        if (null === $producto) {
+            return $this->json(['status' => false, 'message' => 'No se encontro el producto']);
+        }
+
+        $data = [
+            'precio' => $producto->getPrecioVenta(),
+            'stock' => $producto->getStock(),
+        ];
+
+        return $this->json(['status' => true, 'data' => $data]);
     }
 }

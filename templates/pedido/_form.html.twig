@@ -15,23 +15,25 @@
         null,
         1
     ) }}
-<div id="pago_module">
-    {{ action.frm_column(
-        action.frm_column_field_select(form.cliente, '', '', 2),
-        null,
-        null,
-        null,
-        1
-    ) }}
-    {{ action.frm_column(
-        action.frm_column_field_select(form.tipoPago),
-        action.frm_column_field_select(form.tipoMoneda)
-    ) }}
-    {{ action.frm_column(
-        action.frm_column_field(form.cantidadRecibida),
-        action.frm_column_field(form.cambio)
-    ) }}
-</div>
+    <div id="pago_module">
+        {{ action.frm_column(
+            action.frm_column_field_select(form.cliente, '', '', 2),
+            null,
+            null,
+            null,
+            1
+        ) }}
+        {{ action.frm_column(
+            action.frm_column_field_select(form.tipoPago),
+            action.frm_column_field_select(form.tipoMoneda)
+        ) }}
+        <div id="tipo_pago_module">
+            {{ action.frm_column(
+                action.frm_column_field(form.cantidadRecibida),
+                action.frm_column_field(form.cambio)
+            ) }}
+        </div>
+    </div>
     {{ action.frm_column(
         action.frm_column_field_collection(form.detallePedidos,'','','',2),
         null,

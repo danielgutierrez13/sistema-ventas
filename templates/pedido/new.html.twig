@@ -38,14 +38,12 @@
     <script>
         setTimeout(function() {
             Select2();
-        }, 1000);
+        }, 50);
     </script>
 {% endblock %}
 
 {% block _main %}
-
     {{ include('pedido/_form.html.twig') }}
-
 {% endblock %}
 
 {% block _main_tools %}
@@ -72,16 +70,15 @@
     <script src="{{ asset('js/notify.js') }}"></script>
     <script src="{{ asset('js/collection.js') }}"></script>
     <script>
-        function calcularTotal()
-        {
+
+        function calcularTotal() {
             let total = 0.00
             $('.precio_input').each(function() {
                 total += parseFloat($(this).val())
             });
             $('#pedido_precioFinal').val(total)
         }
-        function calcularPrecio($this)
-        {
+        function calcularPrecio($this) {
             let $detalle = $this.closest('.collection_child')
             let $cantidad = $detalle.find('.cantidad_input');
             let cantidad = parseInt($cantidad.val())
@@ -116,20 +113,54 @@
             $detalle.find('.precio_input').val(total - descuento)
             calcularTotal()
         }
-        jQuery(document).ready(function() {
 
+        jQuery(document).ready(function() {
+            Collection.init('#pedido_detallePedidos')
+            Select2();
+
+            $(document).on('change', '.product_select', function () {
+                let $this = $(this);
+                $.ajax({
+                    type: 'POST',
+                    url: '{{ path('producto_values_pedido_ajax') }}',
+                    data: {
+                        id: $this.val(),
+                    },
+                    success: function (response) {
+                        if (!response.status) {
+                            Notify.warning(response.message)
+                            return false
+                        }
+                        console.log(response)
+                        let data = response.data;
+                        let precio = data.precio;
+                        let stock = data.stock;
+                        let $cantidad = $this.closest('.collection_child').find('.cantidad_input')
+                        $cantidad.val(1)
+                        $cantidad.attr('data-stock', stock)
+                        $cantidad.attr('data-precio', precio)
+                        $this.closest('.collection_child').find('.precio_input').val(precio)
+                        $this.closest('.collection_child').find('.descuento_input').val(0)
+                        calcularTotal($this)
+                    }
+                })
+            });
             $(document).on('keyup', '.cantidad_input', function () {
+                alert('sdd')
                 calcularPrecio($(this))
             });
             $(document).on('change', '.cantidad_input', function () {
                 calcularPrecio($(this))
             });
             $(document).on('keyup', '.descuento_input', function () {
+                alert('sdd')
                 calcularPrecio($(this))
             });
             $(document).on('click', '.btn_cerrar', function () {
+                alert('sdd')
                 calcularPrecio($(this))
             });
+
         });
     </script>
 {% endblock %}

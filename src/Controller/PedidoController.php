@@ -62,7 +62,7 @@ class PedidoController extends WebAuthController
     }
 
     #[Route(path: '/new', name: 'pedido_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, PedidoManager $manager, EntityManagerInterface $entityManager): Response
+    public function new(Request $request, PedidoManager $manager): Response
     {
         $this->denyAccess([Permission::NEW]);
         $pedido = new Pedido();
@@ -101,24 +101,9 @@ class PedidoController extends WebAuthController
     public function edit(Request $request, Pedido $pedido, PedidoManager $manager, EntityManagerInterface $entityManager): Response
     {
         $this->denyAccess([Permission::EDIT], $pedido);
-        $PedidoAnterior = $pedido->clone();
         $form = $this->createForm(PedidoType::class, $pedido);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            foreach ($PedidoAnterior->getDetallePedidos() as $detallesAnterior) {
-                $producto = $detallesAnterior->getProducto();
-                $producto->setStock($producto->getStock() - $detallesAnterior->getCantidad());
-                $entityManager->persist($producto);
-                $entityManager->flush();
-            }
-
-            foreach ($pedido->getDetallePedidos() as $detalle) {
-                $producto = $detalle->getProducto();
-                $producto->setStock($producto->getStock() + $detalle->getCantidad());
-                $entityManager->persist($producto);
-                $entityManager->flush();
-            }
-
             if ($manager->save($pedido)) {
                 $this->addFlash('success', 'Registro actualizado!!!');
             } else {
