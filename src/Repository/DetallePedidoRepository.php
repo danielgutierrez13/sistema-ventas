@@ -37,10 +37,12 @@ class DetallePedidoRepository extends BaseRepository
     public function filterQuery(array|ParamFetcher $params, array $permissions = []): QueryBuilder
     {
         $queryBuilder = $this->createQueryBuilder('detallePedido')
+            ->select(['detallePedido', 'producto'])
+            ->join('detallePedido.config', 'config')
+            ->join('detallePedido.producto', 'producto')
         ;
 
-
-        DoctrineValueSearch::apply($queryBuilder, $params->getNullableString('b'), ['detallePedido.nombre', 'detallePedido.documento', 'tipoPersona.descripcion',  'tipoDocumento.descripcion']);
+        DoctrineValueSearch::apply($queryBuilder, $params->getNullableString('b'), ['producto.descripcion']);
 
         return $queryBuilder;
     }
@@ -48,6 +50,10 @@ class DetallePedidoRepository extends BaseRepository
     public function findAllActivo(): array
     {
         $queryBuilder = $this->createQueryBuilder('detallePedido')
+            ->select('detallePedido.producto as producto')
+            ->addSelect('detallePedido.cantidad as cantidad')
+            ->addSelect('detallePedido.precio as precio')
+            ->where('detallePedido.activo = TRUE')
         ;
 
         return $queryBuilder->getQuery()->getArrayResult();
@@ -58,6 +64,6 @@ class DetallePedidoRepository extends BaseRepository
         return $this->createQueryBuilder('detallePedido')
             ->select(['detallePedido'])
             ->join('detallePedido.config', 'config')
-            ;
+        ;
     }
 }

@@ -67,6 +67,6 @@ class CategoriaRepository extends BaseRepository
         return $this->createQueryBuilder('categoria')
             ->select(['categoria'])
             ->join('categoria.config', 'config')
-            ;
+        ;
     }
 }

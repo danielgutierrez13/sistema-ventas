@@ -57,7 +57,7 @@ class MarcaRepository extends BaseRepository
             ->orderBy('marca.descripcion', 'ASC')
         ;
 
-        $this->security->filterQuery($queryBuilder, MenuController::BASE_ROUTE);
+        $this->security->filterQuery($queryBuilder, MarcaController::BASE_ROUTE);
 
         return $queryBuilder->getQuery()->getArrayResult();
     }

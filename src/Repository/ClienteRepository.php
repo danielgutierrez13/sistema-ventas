@@ -47,7 +47,7 @@ class ClienteRepository extends BaseRepository
 
         $this->security->filterQuery($queryBuilder, ClienteController::BASE_ROUTE, $permissions);
 
-        DoctrineValueSearch::apply($queryBuilder, $params->getNullableString('b'), ['cliente.nombre', 'cliente.documento', 'tipoPersona.descripcion',  'tipoDocumento.descripcion']);
+        DoctrineValueSearch::apply($queryBuilder, $params->getNullableString('b'), ['cliente.nombre', 'cliente.documento', 'cliente.direccion', 'tipoPersona.descripcion',  'tipoDocumento.descripcion']);
 
         return $queryBuilder;
     }
@@ -56,11 +56,11 @@ class ClienteRepository extends BaseRepository
     {
         $queryBuilder = $this->createQueryBuilder('cliente')
             ->select('cliente.tipoPersona as tipoPersona')
-            ->select('cliente.nombre as nombre')
-            ->select('cliente.tipoDocumento as cliente.tipoDocumento')
-            ->select('cliente.documento as documento')
-            ->select('cliente.direccion as direccion')
-            ->select('cliente.telefono as telefono')
+            ->addSelect('cliente.nombre as nombre')
+            ->addSelect('cliente.tipoDocumento as tipoDocumento')
+            ->addSelect('cliente.documento as documento')
+            ->addSelect('cliente.direccion as direccion')
+            ->addSelect('cliente.telefono as telefono')
             ->where('cliente.activo = TRUE')
             ->orderBy('cliente.descripcion', 'ASC')
         ;

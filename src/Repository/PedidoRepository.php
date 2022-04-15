@@ -39,14 +39,15 @@ class PedidoRepository extends BaseRepository
 
     public function filterQuery(array|ParamFetcher $params, array $permissions = []): QueryBuilder
     {
-        $queryBuilder = $this->createQueryBuilder('vendedor')
-            ->select(['vendedor'])
-            ->join('vendedor.config', 'config')
+        $queryBuilder = $this->createQueryBuilder('pedido')
+            ->select(['pedido', 'vendedor'])
+            ->join('pedido.config', 'config')
+            ->join('pedido.vendedor', 'vendedor')
         ;
 
         $this->security->filterQuery($queryBuilder, PedidoController::BASE_ROUTE, $permissions);
 
-        DoctrineValueSearch::apply($queryBuilder, $params->getNullableString('b'), ['pedido.codigo']);
+        DoctrineValueSearch::apply($queryBuilder, $params->getNullableString('b'), ['pedido.codigo', 'vendedor.nombre']);
 
         return $queryBuilder;
     }
