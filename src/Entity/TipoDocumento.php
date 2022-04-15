@@ -19,13 +19,13 @@ class TipoDocumento
     #[Id]
     #[GeneratedValue]
     #[Column(type: 'integer')]
-    private $id;
+    private ?int $id = null;
 
     #[Column(type: 'string', length: 100)]
-    private $descripcion;
+    private ?string $descripcion = null;
 
     #[ManyToOne(targetEntity: TipoPersona::class)]
-    private $tipoPersona;
+    private ?TipoPersona $tipoPersona = null;
 
 
     public function __construct()

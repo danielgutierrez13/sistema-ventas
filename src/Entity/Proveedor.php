@@ -20,27 +20,27 @@ class Proveedor
     #[Id]
     #[GeneratedValue]
     #[Column(type: 'integer')]
-    private $id;
+    private ?int $id = null;
 
     #[ManyToOne(targetEntity: TipoPersona::class)]
     #[JoinColumn(nullable: false)]
-    private $tipoPersona;
+    private ?TipoPersona $tipoPersona = null;
 
     #[Column(type: 'string', length: 200)]
-    private $nombre;
+    private ?string $nombre = null;
 
     #[ManyToOne(targetEntity: TipoDocumento::class)]
     #[JoinColumn(nullable: false)]
-    private $tipoDocumento;
+    private ?TipoDocumento $tipoDocumento = null;
 
     #[Column(type: 'string', length: 15)]
-    private $documento;
+    private ?string $documento = null;
 
     #[Column(type: 'string', length: 100, nullable: true)]
-    private $direccion;
+    private ?string $direccion = null;
 
     #[Column(type: 'string', length: 15, nullable: true)]
-    private $telefono;
+    private ?string $telefono = null;
 
     public function getId(): ?int
     {

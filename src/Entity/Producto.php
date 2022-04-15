@@ -19,34 +19,34 @@ class Producto
     #[Id]
     #[GeneratedValue]
     #[Column(type: 'integer')]
-    private $id;
+    private ?int $id = null;
 
     #[ManyToOne(targetEntity: Categoria::class)]
     #[JoinColumn(nullable: false)]
-    private $categoria;
+    private ?Categoria $categoria = null;
 
     #[ManyToOne(targetEntity: Marca::class)]
     #[JoinColumn(nullable: false)]
-    private $marca;
+    private ?Marca $marca = null;
 
     #[Column(type: 'string', length: 100)]
-    private $descripcion;
+    private ?string $descripcion = null;
 
     #[ManyToOne(targetEntity: UnidadMedida::class)]
     #[JoinColumn(nullable: false)]
-    private $unidadMedida;
+    private ?UnidadMedida $unidadMedida = null;
 
     #[Column(type: 'decimal', precision: 10, scale: 2)]
-    private $precio;
+    private ?string $precio = null;
 
     #[Column(type: 'decimal', precision: 10, scale: 2)]
-    private $stock;
+    private ?string $stock = null;
 
     #[Column(type: 'decimal', precision: 10, scale: 2)]
-    private $precioVenta;
+    private ?string $precioVenta = null;
 
     #[Column(type: 'string', length: 8)]
-    private $codigo;
+    private ?string $codigo = null;
 
 
     public function getId(): ?int
