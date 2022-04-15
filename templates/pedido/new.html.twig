@@ -18,7 +18,7 @@
 {% block _pedido_detallePedidos_entry_widget %}
     {% import 'macro/action.html.twig' as actions %}
     {{ action.frm_column(
-        action.frm_column_field_select(form.producto,'','product_select',2),
+        action.frm_column_field_select(form.producto,'',' product_select',2),
         null,
         null,
         null,
@@ -119,6 +119,7 @@
             Select2();
 
             $(document).on('change', '.product_select', function () {
+                console.log('sdsd')
                 let $this = $(this);
                 $.ajax({
                     type: 'POST',

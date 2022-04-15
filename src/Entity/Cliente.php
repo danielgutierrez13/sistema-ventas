@@ -120,6 +120,6 @@ class Cliente
     }
     public function __toString(): string
     {
-        return $this->getNombre().' - '.$this->getDocumento();
+        return $this->getNombre().'  '.$this->getDocumento();
     }
 }
