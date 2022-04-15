@@ -39,11 +39,14 @@ class CompraRepository extends BaseRepository
     public function filterQuery(array|ParamFetcher $params, array $permissions = []): QueryBuilder
     {
         $queryBuilder = $this->createQueryBuilder('compra')
+            ->select(['compra', 'proveedor'])
+            ->join('compra.config', 'config')
+            ->join('compra.proveedor', 'proveedor')
         ;
 
         $this->security->filterQuery($queryBuilder, CompraController::BASE_ROUTE, $permissions);
 
-        DoctrineValueSearch::apply($queryBuilder, $params->getNullableString('b'), ['compra.nombre', 'compra.documento', 'tipoPersona.descripcion',  'tipoDocumento.descripcion']);
+        DoctrineValueSearch::apply($queryBuilder, $params->getNullableString('b'), ['compra.codigo', 'proveedor.nombre']);
 
         return $queryBuilder;
     }
@@ -51,6 +54,11 @@ class CompraRepository extends BaseRepository
     public function findAllActivo(): array
     {
         $queryBuilder = $this->createQueryBuilder('compra')
+            ->select('compra.proveedor as proveedor')
+            ->addSelect('compra.codigo as codigo')
+            ->addSelect('compra.precio as precio')
+            ->where('compra.activo = TRUE')
+            ->orderBy('compra.descripcion', 'ASC')
         ;
 
         $this->security->filterQuery($queryBuilder, CompraController::BASE_ROUTE);

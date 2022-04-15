@@ -8,6 +8,7 @@ use CarlosChininin\Util\Filter\DoctrineValueSearch;
 use CarlosChininin\Util\Http\ParamFetcher;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
+use Pidia\Apps\Demo\Controller\CompraController;
 use Pidia\Apps\Demo\Entity\DetalleCompra;
 
 /**
@@ -37,10 +38,12 @@ class DetalleCompraRepository extends BaseRepository
     public function filterQuery(array|ParamFetcher $params, array $permissions = []): QueryBuilder
     {
         $queryBuilder = $this->createQueryBuilder('detalleCompra')
+            ->select(['detalleCompra', 'producto'])
+            ->join('detalleCompra.config', 'config')
+            ->join('detalleCompra.producto', 'producto')
         ;
 
-
-        DoctrineValueSearch::apply($queryBuilder, $params->getNullableString('b'), ['detalleCompra.nombre', 'detalleCompra.documento', 'tipoPersona.descripcion',  'tipoDocumento.descripcion']);
+        DoctrineValueSearch::apply($queryBuilder, $params->getNullableString('b'), ['producto.descripcion']);
 
         return $queryBuilder;
     }
@@ -48,6 +51,10 @@ class DetalleCompraRepository extends BaseRepository
     public function findAllActivo(): array
     {
         $queryBuilder = $this->createQueryBuilder('detalleCompra')
+            ->select('detalleCompra.producto as producto')
+            ->addSelect('detalleCompra.cantidad as cantidad')
+            ->addSelect('detalleCompra.precio as precio')
+            ->where('detalleCompra.activo = TRUE')
         ;
 
         return $queryBuilder->getQuery()->getArrayResult();
