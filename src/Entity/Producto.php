@@ -39,8 +39,8 @@ class Producto
     #[Column(type: 'decimal', precision: 10, scale: 2)]
     private ?string $precio = null;
 
-    #[Column(type: 'decimal', precision: 10, scale: 2)]
-    private ?string $stock = null;
+    #[Column(type: 'integer')]
+    private ?int $stock = null;
 
     #[Column(type: 'decimal', precision: 10, scale: 2)]
     private ?string $precioVenta = null;
@@ -114,12 +114,13 @@ class Producto
         return $this;
     }
 
-    public function getStock(): ?string
+
+    public function getStock(): ?int
     {
         return $this->stock;
     }
 
-    public function setStock(string $stock): self
+    public function setStock(int $stock): self
     {
         $this->stock = $stock;
 

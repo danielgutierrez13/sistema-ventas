@@ -19,21 +19,34 @@ class PedidoType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('precioFinal', TextType::class, options: [
+            ->add('precioFinal', TextType::class, [
                 'label' => 'Precio Total',
+                'disabled' => true,
             ])
-            ->add('codigo')
-            ->add('vendedor', EntityType::class, options: [
+            ->add('codigo', TextType::class, [
+                'label' => 'Código',
+                'disabled' => true,
+            ])
+            ->add('vendedor', EntityType::class, [
                 'class' => Vendedor::class,
+                'label' => 'Vendedor',
             ])
-            ->add('cliente', EntityType::class, options: [
+            ->add('cliente', EntityType::class, [
                 'class' => Cliente::class,
+                'label' => 'Cliente',
+                'placeholder' => true,
             ])
-            ->add('tipoPago', EntityType::class, options: [
+            ->add('tipoPago', EntityType::class, [
                 'class' => TipoPago::class,
+                'label' => 'Modo de Pago',
+                'required' => false,
+                'placeholder' => false,
             ])
             ->add('tipoMoneda', EntityType::class, options: [
                 'class' => TipoMoneda::class,
+                'label' => 'Tipo de Moneda',
+                'required' => false,
+                'placeholder' => false,
             ])
             ->add('cambio', TextType::class, options: [
                 'label' => 'Cambio',
@@ -45,6 +58,7 @@ class PedidoType extends AbstractType
             ])
             ->add('detallePedidos', CollectionType::class, [
                 'entry_type' => DetallePedidoType::class,
+                'label' => 'Detalles',
                 'entry_options' => ['label' => false],
                 'allow_add' => true,
                 'allow_delete' => true,

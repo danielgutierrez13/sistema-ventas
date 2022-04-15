@@ -7,6 +7,7 @@ use Pidia\Apps\Demo\Entity\DetallePedido;
 use Pidia\Apps\Demo\Entity\Producto;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -16,12 +17,18 @@ class DetallePedidoType extends AbstractType
     {
         $builder
             ->add('cantidad')
-            ->add('precio')
-            ->add('descuento')
+            ->add('precio', NumberType::class, [
+                'label' => 'Precio',
+                'required' => true,
+            ])
+            ->add('descuento', NumberType::class, [
+                'label' => 'Descuento',
+                'required' => true,
+            ])
             ->add('producto', EntityType::class, [
                 'class' => Producto::class,
                 'required' => true,
-                'placeholder' => 'Seleccione ...',
+                'placeholder' => true,
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('producto')
                         ->where('producto.stock > 0');

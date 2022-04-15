@@ -18,7 +18,7 @@
 {% block _pedido_detallePedidos_entry_widget %}
     {% import 'macro/action.html.twig' as actions %}
     {{ action.frm_column(
-        action.frm_column_field_select(form.producto,'',' product_select',2),
+        action.frm_column_field_select(form.producto,'','product_select',2),
         null,
         null,
         null,
@@ -38,7 +38,7 @@
     <script>
         setTimeout(function() {
             Select2();
-        }, 50);
+        }, 100);
     </script>
 {% endblock %}
 
@@ -116,6 +116,9 @@
         jQuery(document).ready(function() {
             Collection.init('#pedido_detallePedidos')
             Select2();
+            $('#pago_module').hide();
+            let date = new Date();
+            $('#pedido_codigo').val(date.getDate().toString() + date.getMonth().toString() + date.getFullYear().toString() + date.getHours().toString() + date.getMinutes().toString() + date.getSeconds())
             $(document).on('change', '.product_select', function () {
                 console.log('sdsd')
                 let $this = $(this);
@@ -153,7 +156,7 @@
             $(document).on('keyup', '.descuento_input', function () {
                 calcularPrecio($(this))
             });
-            $(document).on('click', '.btn_cerrar', function () {
+            $(document).on('click', '.btn-icon', function () {
                 calcularPrecio($(this))
             });
         });

@@ -19,14 +19,15 @@ class CompraType extends AbstractType
         $builder
             ->add('codigo', TextType::class, [
                 'label' => 'Código',
+                'disabled' => true,
             ])
             ->add('precio', NumberType::class, [
                 'label' => 'Precio Final',
                 'disabled' => true,
             ])
             ->add('proveedor', EntityType::class, [
-                'label' => 'Proveedor',
                 'class' => Proveedor::class,
+                'label' => 'Proveedor',
                 'placeholder' => true,
             ])
             ->add('detalleCompras', CollectionType::class, [

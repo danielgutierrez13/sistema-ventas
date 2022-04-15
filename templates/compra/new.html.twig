@@ -29,9 +29,9 @@
         action.frm_column_field(form.cantidad, '', 'cantidad_input')
     ) }}
     <script>
-        jQuery(document).ready(function() {
+        setTimeout(function() {
             Select2();
-        });
+        }, 100);
     </script>
 {% endblock %}
 
@@ -86,7 +86,7 @@
             $(document).on('keyup', '.precio_input', function () {
                 calcularTotal()
             });
-            $(document).on('click', '.btn_cerrar', function () {
+            $(document).on('click', '.btn-icon', function () {
                 calcularTotal()
             });
         });
