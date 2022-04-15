@@ -40,9 +40,9 @@ class TipoPagoController extends WebAuthController
 
         $headers = [
             'descripcion' => 'Descripcion',
-            'nombreCorto' => 'Nombre Corto',
+            'propietarioCuenta' => 'Propietario Cuenta',
             'cuenta' => 'N° Cuenta',
-            'propietarioCuenta' => 'Nombre Cuenta',
+            'nombreCorto' => 'Nombre Corto',
             'activo' => 'Activo',
         ];
 

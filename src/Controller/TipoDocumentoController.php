@@ -40,6 +40,7 @@ class TipoDocumentoController extends WebAuthController
 
         $headers = [
             'descripcion' => 'Descripcion',
+            'tipoPersona.descripcion' => 'Tipo de Persona', // no trae datos
             'activo' => 'Activo',
         ];
 
