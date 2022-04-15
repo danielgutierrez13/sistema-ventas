@@ -22,38 +22,38 @@ class Pedido
     #[Id]
     #[GeneratedValue]
     #[Column(type: 'integer')]
-    private $id;
+    private ?int $id = null;
 
     #[ManyToOne(targetEntity: Vendedor::class)]
     #[JoinColumn(nullable: false)]
-    private $vendedor;
+    private ?Vendedor $vendedor = null;
 
     #[Column(type: 'decimal', precision: 10, scale: 2)]
-    private $precioFinal;
+    private ?string $precioFinal = null;
 
     #[Column(type: 'string', length: 15)]
-    private $codigo;
+    private ?string $codigo = null;
 
     #[Column(type: 'boolean', nullable: true)]
-    private $estadoPago;
+    private ?bool $estadoPago = null;
 
     #[ManyToOne(targetEntity: Cliente::class)]
-    private $cliente;
+    private ?Cliente $cliente = null;
 
     #[ManyToOne(targetEntity: TipoPago::class)]
-    private $tipoPago;
+    private ?TipoPago $tipoPago = null;
 
     #[ManyToOne(targetEntity: TipoMoneda::class)]
-    private $tipoMoneda;
+    private ?TipoMoneda $tipoMoneda = null;
 
     #[Column(type: 'decimal', precision: 10, scale: 2, nullable: true)]
-    private $cantidadRecibida;
+    private ?string $cantidadRecibida = null;
 
     #[Column(type: 'decimal', precision: 10, scale: 2, nullable: true)]
-    private $cambio;
+    private ?string $cambio = null;
 
     #[OneToMany(mappedBy: 'pedido', targetEntity: DetallePedido::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
-    private $detallePedidos;
+    private Collection $detallePedidos;
 
     public function __construct()
     {

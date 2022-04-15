@@ -22,21 +22,21 @@ class DetalleCompra
     #[Id]
     #[GeneratedValue]
     #[Column(type: 'integer')]
-    private $id;
+    private ?int $id = null;
 
     #[ManyToOne(targetEntity: Producto::class)]
     #[JoinColumn(nullable: false)]
-    private $producto;
+    private ?Producto $producto = null;
 
     #[Column(type: 'decimal', precision: 10, scale: 2)]
-    private $precio;
+    private ?string $precio = null;
 
     #[Column(type: 'decimal', precision: 10, scale: 2)]
-    private $cantidad;
+    private ?string $cantidad = null;
 
     #[ManyToOne(targetEntity: Compra::class, inversedBy: 'detalleCompras')]
     #[JoinColumn(nullable: false)]
-    private $compra;
+    private ?Compra $compra = null;
 
     public function getId(): ?int
     {

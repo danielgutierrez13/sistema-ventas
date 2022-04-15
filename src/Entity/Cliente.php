@@ -20,11 +20,11 @@ class Cliente
     #[Id]
     #[GeneratedValue]
     #[Column(type: 'integer')]
-    private $id;
+    private ?int $id = null;
 
     #[ManyToOne(targetEntity: TipoPersona::class)]
     #[JoinColumn(nullable: false)]
-    private $tipoPersona;
+    private ?TipoPersona $tipoPersona = null;
 
     #[Column(type: 'string', length: 200)]
     private $nombre;

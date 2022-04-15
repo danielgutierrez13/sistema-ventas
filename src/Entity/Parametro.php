@@ -1,10 +1,5 @@
 <?php
 
-/*
- * This file is part of the PIDIA.
- * (c) Carlos Chininin <cio@pidia.pe>
- */
-
 namespace Pidia\Apps\Demo\Entity;
 
 use Doctrine\Common\Collections\Collection;
@@ -26,16 +21,16 @@ class Parametro
     #[Id]
     #[GeneratedValue]
     #[Column(type: 'integer')]
-    private $id;
+    private ?int $id = null;
     #[Column(type: 'string', length: 100)]
-    private $nombre;
+    private ?string $nombre = null;
     #[Column(type: 'string', length: 16, nullable: true)]
     #[Length(max: 16, maxMessage: 'Debe tener un máximo de 16 carácteres')]
-    private $alias;
+    private ?string $alias = null;
     #[Column(type: 'decimal', precision: 10, scale: 2, nullable: true)]
-    private $valor;
+    private ?string $valor = null;
     #[ManyToOne(targetEntity: 'Pidia\Apps\Demo\Entity\Parametro')]
-    private $padre;
+    private ?Parametro $padre = null;
 
     public function getId(): ?int
     {

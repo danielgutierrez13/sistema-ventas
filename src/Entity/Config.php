@@ -1,10 +1,5 @@
 <?php
 
-/*
- * This file is part of the PIDIA.
- * (c) Carlos Chininin <cio@pidia.pe>
- */
-
 namespace Pidia\Apps\Demo\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;

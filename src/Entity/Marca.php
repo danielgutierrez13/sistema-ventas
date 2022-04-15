@@ -17,10 +17,10 @@ class Marca
     #[Id]
     #[GeneratedValue]
     #[Column(type: 'integer')]
-    private $id;
+    private ?int $id = null;
 
     #[Column(type: 'string', length: 50)]
-    private $descripcion;
+    private ?string $descripcion = null;
 
     public function getId(): ?int
     {

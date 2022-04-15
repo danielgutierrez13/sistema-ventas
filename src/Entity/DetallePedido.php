@@ -21,27 +21,27 @@ class DetallePedido
     #[Id]
     #[GeneratedValue]
     #[Column(type: 'integer')]
-    private $id;
+    private ?int $id = null;
 
     #[ManyToOne(targetEntity: Producto::class)]
     #[JoinColumn(nullable: false)]
-    private $producto;
+    private ?Producto $producto = null;
 
     #[Column(type: 'integer')]
-    private $cantidad;
+    private ?int $cantidad = null;
 
     #[Column(type: 'decimal', precision: 10, scale: 2)]
-    private $precio;
+    private ?string $precio = null;
 
     #[Column(type: 'decimal', precision: 10, scale: 2)]
-    private $descuento;
+    private ?string $descuento = null;
 
     #[ManyToOne(targetEntity: Pedido::class, inversedBy: 'detallePedidos')]
     #[JoinColumn(nullable: false)]
-    private $pedido;
+    private ?Pedido $pedido = null;
 
     #[Column(type: 'boolean', nullable: true)]
-    private $estadoEntrega;
+    private ?bool $estadoEntrega = null;
 
     public function getId(): ?int
     {

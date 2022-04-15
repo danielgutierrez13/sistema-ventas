@@ -23,20 +23,20 @@ class Compra
     #[Id]
     #[GeneratedValue]
     #[Column(type: 'integer')]
-    private $id;
+    private ?int $id = null;
 
     #[Column(type: 'string', length: 15)]
-    private $codigo;
+    private ?string $codigo = null;
 
     #[ManyToOne(targetEntity: Proveedor::class)]
     #[JoinColumn(nullable: false)]
-    private $proveedor;
+    private ?Proveedor $proveedor = null;
 
     #[Column(type: 'decimal', precision: 10, scale: 2)]
-    private $precio;
+    private ?string $precio = null;
 
     #[OneToMany(mappedBy: 'compra', targetEntity: DetalleCompra::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
-    private $detalleCompras;
+    private Collection $detalleCompras;
 
     public function __construct()
     {
@@ -113,6 +113,7 @@ class Compra
 
         return $this;
     }
+
     public function clone(): self
     {
         $CompraCopia = new self();

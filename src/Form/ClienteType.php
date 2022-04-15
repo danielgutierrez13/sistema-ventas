@@ -16,21 +16,31 @@ class ClienteType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('nombre', TextType::class)
-            ->add('documento', TextType::class)
+            ->add('nombre', TextType::class, [
+                'label' => 'Nombre del Cliente',
+                'required' => true,
+            ])
+            ->add('documento', TextType::class, [
+                'label' => 'N° Documento',
+                'required' => true,
+            ])
             ->add('direccion', TextType::class, [
+                'label' => 'Direccion',
                 'required' => false,
             ])
             ->add('telefono', TextType::class, [
+                'label' => 'Telefono',
                 'required' => false,
             ])
             ->add('tipoPersona', EntityType::class, [
                 'class' => TipoPersona::class,
+                'label' => 'Tipo de Persona',
                 'required' => true,
                 'placeholder' => false,
             ])
             ->add('tipoDocumento', EntityType::class, [
                 'class' => TipoDocumento::class,
+                'label' => 'Tipo de Documento',
                 'required' => true,
                 'placeholder' => false,
             ])

@@ -70,7 +70,6 @@
     <script src="{{ asset('js/notify.js') }}"></script>
     <script src="{{ asset('js/collection.js') }}"></script>
     <script>
-
         function calcularTotal() {
             let total = 0.00
             $('.precio_input').each(function() {
@@ -117,7 +116,6 @@
         jQuery(document).ready(function() {
             Collection.init('#pedido_detallePedidos')
             Select2();
-
             $(document).on('change', '.product_select', function () {
                 console.log('sdsd')
                 let $this = $(this);
@@ -147,21 +145,17 @@
                 })
             });
             $(document).on('keyup', '.cantidad_input', function () {
-                alert('sdd')
                 calcularPrecio($(this))
             });
             $(document).on('change', '.cantidad_input', function () {
                 calcularPrecio($(this))
             });
             $(document).on('keyup', '.descuento_input', function () {
-                alert('sdd')
                 calcularPrecio($(this))
             });
             $(document).on('click', '.btn_cerrar', function () {
-                alert('sdd')
                 calcularPrecio($(this))
             });
-
         });
     </script>
 {% endblock %}
