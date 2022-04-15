@@ -13,14 +13,20 @@ class TipoPagoType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('descripcion', TextType::class)
+            ->add('descripcion', TextType::class, [
+                'label' => 'Descripción',
+                'required' => true,
+            ])
             ->add('propietarioCuenta', TextType::class, [
+                'label' => 'Propietario Cuenta',
                 'required' => false,
             ])
             ->add('cuenta', TextType::class, [
+                'label' => 'Cuenta',
                 'required' => false,
             ])
             ->add('nombreCorto', TextType::class, [
+                'label' => 'nombre Corto',
                 'required' => false,
             ])
         ;
