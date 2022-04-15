@@ -19,10 +19,10 @@ class TipoPersona
     #[Id]
     #[GeneratedValue]
     #[Column(type: 'integer')]
-    private $id;
+    private ?int $id = null;
 
     #[Column(type: 'string', length: 100)]
-    private $descripcion;
+    private ?string $descripcion = null;
 
     public function __construct()
     {

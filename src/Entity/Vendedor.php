@@ -21,27 +21,27 @@ class Vendedor
     #[Id]
     #[GeneratedValue]
     #[Column(type: 'integer')]
-    private $id;
+    private ?int $id = null;
 
     #[Column(type: 'string', length: 200)]
-    private $nombre;
+    private ?string $nombre = null;
 
     #[Column(type: 'string', length: 15)]
-    private $documento;
+    private ?string $documento = null;
 
     #[ManyToOne(targetEntity: TipoDocumento::class)]
     #[JoinColumn(nullable: false)]
-    private $tipoDocumento;
+    private ?TipoDocumento $tipoDocumento = null;
 
     #[Column(type: 'string', length: 15, nullable: true)]
-    private $telefono;
+    private ?string $telefono = null;
 
     #[Column(type: 'string', length: 100, nullable: true)]
-    private $direccion;
+    private ?string $direccion = null;
 
     #[OneToOne(targetEntity: Usuario::class, cascade: ['persist', 'remove'])]
     #[JoinColumn(nullable: false)]
-    private $usuario;
+    private ?Usuario $usuario = null;
 
     private ?string $username;
     private ?string $password;

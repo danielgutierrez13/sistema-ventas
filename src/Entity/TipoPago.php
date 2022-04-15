@@ -19,19 +19,19 @@ class TipoPago
     #[Id]
     #[GeneratedValue]
     #[Column(type: 'integer')]
-    private $id;
+    private ?int $id = null;
 
     #[Column(type: 'string', length: 100)]
-    private $descripcion;
+    private ?string $descripcion = null;
 
     #[Column(type: 'string', length: 200, nullable: true)]
-    private $propietarioCuenta;
+    private ?string $propietarioCuenta = null;
 
     #[Column(type: 'string', length: 50, nullable: true)]
-    private $cuenta;
+    private ?string $cuenta = null;
 
     #[Column(type: 'string', length: 50, nullable: true)]
-    private $nombreCorto;
+    private ?string $nombreCorto = null;
 
     public function getId(): ?int
     {
