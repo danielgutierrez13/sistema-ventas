@@ -207,6 +207,7 @@ class Pedido
 
         return $this;
     }
+
     public function clone(): self
     {
         $PedidoCopia = new self();

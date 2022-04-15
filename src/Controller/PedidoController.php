@@ -41,28 +41,18 @@ class PedidoController extends WebAuthController
 
         $headers = [
             'codigo' => 'Codigo',
-            'vendedor' => 'Vendedor',
-            'precio' => 'Precio Compra',
+            'vendedor.nombre' => 'Nombre de Vendedor',
+            'precioFinal' => 'Precio',
+            'activo' => 'Activo',
         ];
 
-        $objetos = $manager->dataExport(ParamFetcher::fromRequestQuery($request));
-        $data = [];
-        /** @var Pedido $pedido */
-        foreach ($objetos as $pedido) {
-            $item = [];
-            $item['codigo'] = $pedido->getCodigo();
-            $item['vendedor'] = $pedido->getVendedor();
-            $item['precio'] = $pedido->getPrecioFinal();
-            $item['activo'] = $pedido->activo();
-            $data[] = $item;
-            unset($item);
-        }
+        $items = $manager->dataExport(ParamFetcher::fromRequestQuery($request), true);
 
-        return $manager->export($data, $headers, 'pedido');
+        return $manager->export($items, $headers, 'compra');
     }
 
     #[Route(path: '/new', name: 'pedido_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, PedidoManager $manager): Response
+    public function new(Request $request, PedidoManager $manager, EntityManagerInterface $entityManager): Response
     {
         $this->denyAccess([Permission::NEW]);
         $pedido = new Pedido();
@@ -70,7 +60,16 @@ class PedidoController extends WebAuthController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $pedido->setPropietario($this->getUser());
-
+            $pedido->setEstadoPago(0);
+            foreach ($pedido->getDetallePedidos() as $detalle) {
+                $producto = $detalle->getProducto();
+                $cantidad = $detalle->getCantidad();
+                $detalle->setPropietario($this->getUser());
+                $detalle->setEstadoEntrega(0);
+                $producto->setStock($producto->getStock() - $cantidad);
+                $entityManager->persist($producto);
+                $entityManager->flush();
+            }
             if ($manager->save($pedido)) {
                 $this->addFlash('success', 'Registro creado!!!');
             } else {
@@ -101,9 +100,23 @@ class PedidoController extends WebAuthController
     public function edit(Request $request, Pedido $pedido, PedidoManager $manager, EntityManagerInterface $entityManager): Response
     {
         $this->denyAccess([Permission::EDIT], $pedido);
+        $PedidoAnterior = $pedido->clone();
         $form = $this->createForm(PedidoType::class, $pedido);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+            foreach ($PedidoAnterior->getDetallePedidos() as $detallesAnterior) {
+                $producto = $detallesAnterior->getProducto();
+                $producto->setStock($producto->getStock() + $detallesAnterior->getCantidad());
+                $entityManager->persist($producto);
+                $entityManager->flush();
+            }
+
+            foreach ($pedido->getDetallePedidos() as $detalle) {
+                $producto = $detalle->getProducto();
+                $producto->setStock($producto->getStock() - $detalle->getCantidad());
+                $entityManager->persist($producto);
+                $entityManager->flush();
+            }
             if ($manager->save($pedido)) {
                 $this->addFlash('success', 'Registro actualizado!!!');
             } else {
@@ -140,11 +153,18 @@ class PedidoController extends WebAuthController
     }
 
     #[Route(path: '/{id}/delete', name: 'pedido_delete_forever', methods: ['POST'])]
-    public function deleteForever(Request $request, Pedido $pedido, PedidoManager $manager): Response
+    public function deleteForever(Request $request, Pedido $pedido, PedidoManager $manager, EntityManagerInterface $entityManager): Response
     {
         $this->denyAccess([Permission::DELETE], $pedido);
 
         if ($this->isCsrfTokenValid('delete_forever'.$pedido->getId(), $request->request->get('_token'))) {
+            foreach ($pedido->getDetallePedidos() as $detalle) {
+                $producto = $detalle->getProducto();
+                $cantidad = $detalle->getCantidad();
+                $producto->setStock($producto->getStock() + $cantidad);
+                $entityManager->persist($producto);
+                $entityManager->flush();
+            }
             if ($manager->remove($pedido)) {
                 $this->messageWarning('Registro eliminado');
             } else {

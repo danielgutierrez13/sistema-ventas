@@ -6,6 +6,7 @@ use CarlosChininin\App\Infrastructure\Repository\BaseRepository;
 use CarlosChininin\App\Infrastructure\Security\Security;
 use CarlosChininin\Util\Filter\DoctrineValueSearch;
 use CarlosChininin\Util\Http\ParamFetcher;
+use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 use Pidia\Apps\Demo\Controller\VendedorController;
@@ -38,15 +39,14 @@ class VendedorRepository extends BaseRepository
     public function filterQuery(array|ParamFetcher $params, array $permissions = []): QueryBuilder
     {
         $queryBuilder = $this->createQueryBuilder('vendedor')
-            ->select(['vendedor','tipoDocumento'])
+            ->select(['vendedor', 'tipoDocumento'])
             ->join('vendedor.config', 'config')
             ->join('vendedor.tipoDocumento', 'tipoDocumento')
         ;
 
         $this->security->filterQuery($queryBuilder, VendedorController::BASE_ROUTE, $permissions);
 
-        DoctrineValueSearch::apply($queryBuilder, $params->getNullableString('b'), ['vendedor.nombre', 'vendedor.documento',
-            'tipoDocumento.descripcion', 'vendedor.direccion' ]);
+        DoctrineValueSearch::apply($queryBuilder, $params->getNullableString('b'), ['vendedor.nombre', 'vendedor.documento', 'tipoDocumento.descripcion', 'vendedor.direccion']);
 
         return $queryBuilder;
     }
@@ -84,7 +84,7 @@ class VendedorRepository extends BaseRepository
                 ->setParameter('documento', $documento)
                 ->getQuery()
                 ->getOneOrNullResult();
-        } catch (NonUniqueResultException) {
+        } catch (NonUniqueResultException $e) {
         }
 
         return null;

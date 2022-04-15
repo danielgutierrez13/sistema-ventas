@@ -41,24 +41,14 @@ class CompraController extends WebAuthController
 
         $headers = [
             'codigo' => 'Codigo',
-            'proveedor' => 'Proveedor',
-            'precio' => 'Precio Compra',
+            'proveedor.nombre' => 'Nombre de Proveedor',
+            'precio' => 'Precio',
+            'activo' => 'Activo',
         ];
 
-        $objetos = $manager->dataExport(ParamFetcher::fromRequestQuery($request));
-        $data = [];
-        /** @var Compra $objeto */
-        foreach ($objetos as $objeto) {
-            $item = [];
-            $item['codigo'] = $objeto->getCodigo();
-            $item['proveedor'] = $objeto->getProveedor();
-            $item['precio'] = $objeto->getPrecio();
-            $item['activo'] = $objeto->activo();
-            $data[] = $item;
-            unset($item);
-        }
+        $items = $manager->dataExport(ParamFetcher::fromRequestQuery($request), true);
 
-        return $manager->export($data, $headers, 'compra');
+        return $manager->export($items, $headers, 'compra');
     }
 
     #[Route(path: '/new', name: 'compra_new', methods: ['GET', 'POST'])]
@@ -165,11 +155,18 @@ class CompraController extends WebAuthController
     }
 
     #[Route(path: '/{id}/delete', name: 'compra_delete_forever', methods: ['POST'])]
-    public function deleteForever(Request $request, Compra $compra, CompraManager $manager): Response
+    public function deleteForever(Request $request, Compra $compra, CompraManager $manager, EntityManagerInterface $entityManager): Response
     {
         $this->denyAccess([Permission::DELETE], $compra);
 
         if ($this->isCsrfTokenValid('delete_forever'.$compra->getId(), $request->request->get('_token'))) {
+            foreach ($compra->getDetalleCompras() as $detalle) {
+                $producto = $detalle->getProducto();
+                $cantidad = $detalle->getCantidad();
+                $producto->setStock($producto->getStock() - $cantidad);
+                $entityManager->persist($producto);
+                $entityManager->flush();
+            }
             if ($manager->remove($compra)) {
                 $this->messageWarning('Registro eliminado');
             } else {

@@ -57,7 +57,6 @@ class CategoriaController extends WebAuthController
         if ($form->isSubmitted() && $form->isValid()) {
             if ($manager->save($categoria)) {
                 $this->messageSuccess('Registro creado!!!');
-
                 return $this->redirectToRoute('categoria_index');
             }
 
