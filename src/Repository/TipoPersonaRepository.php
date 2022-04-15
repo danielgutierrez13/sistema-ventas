@@ -57,7 +57,7 @@ class TipoPersonaRepository extends BaseRepository
             ->orderBy('tipoPersona.descripcion', 'ASC')
         ;
 
-        $this->security->filterQuery($queryBuilder, MenuController::BASE_ROUTE);
+        $this->security->filterQuery($queryBuilder, TipoPersonaController::BASE_ROUTE);
 
         return $queryBuilder->getQuery()->getArrayResult();
     }

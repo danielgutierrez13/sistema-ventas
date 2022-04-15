@@ -7,10 +7,9 @@ use CarlosChininin\App\Infrastructure\Security\Security;
 use CarlosChininin\Util\Filter\DoctrineValueSearch;
 use CarlosChininin\Util\Http\ParamFetcher;
 use Doctrine\ORM\QueryBuilder;
-use Pidia\Apps\Demo\Controller\TipoMonedaController;
+use Doctrine\Persistence\ManagerRegistry;
 use Pidia\Apps\Demo\Controller\TipoPagoController;
 use Pidia\Apps\Demo\Entity\TipoPago;
-use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * @method TipoPago|null find($id, $lockMode = null, $lockVersion = null)
@@ -18,7 +17,7 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method TipoPago[]    findAll()
  * @method TipoPago[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class TipoPagoRepository  extends BaseRepository
+class TipoPagoRepository extends BaseRepository
 {
     public function __construct(ManagerRegistry $registry, private Security $security)
     {
@@ -45,7 +44,8 @@ class TipoPagoRepository  extends BaseRepository
 
         $this->security->filterQuery($queryBuilder, TipoPagoController::BASE_ROUTE, $permissions);
 
-        DoctrineValueSearch::apply($queryBuilder, $params->getNullableString('b'), ['tipoPago.descripcion']);
+        DoctrineValueSearch::apply($queryBuilder, $params->getNullableString('b'), ['tipoPago.descripcion',
+            'tipoPago.propietarioCuenta', 'tipoPago.cuenta', 'tipoPago.nombreCorto', ]);
 
         return $queryBuilder;
     }
@@ -54,6 +54,9 @@ class TipoPagoRepository  extends BaseRepository
     {
         $queryBuilder = $this->createQueryBuilder('tipoPago')
             ->select('tipoPago.descripcion as descripcion')
+            ->addselect('tipoPago.propietarioCuenta as propietarioCuenta')
+            ->select('tipoPago.cuenta as cuenta')
+            ->select('tipoPago.nombreCorto as nombreCorto')
             ->where('tipoPago.activo = TRUE')
             ->orderBy('tipoPago.descripcion', 'ASC')
         ;

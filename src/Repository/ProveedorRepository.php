@@ -46,7 +46,7 @@ class ProveedorRepository extends BaseRepository
 
         $this->security->filterQuery($queryBuilder, ProveedorController::BASE_ROUTE, $permissions);
 
-        DoctrineValueSearch::apply($queryBuilder, $params->getNullableString('b'), ['proveedor.nombre', 'proveedor.documento', 'tipoPersona.descripcion',  'tipoDocumento.descripcion']);
+        DoctrineValueSearch::apply($queryBuilder, $params->getNullableString('b'), ['proveedor.nombre', 'proveedor.documento', 'tipoPersona.descripcion',  'tipoDocumento.descripcion','proveedor.direccion']);
 
         return $queryBuilder;
     }
@@ -55,11 +55,11 @@ class ProveedorRepository extends BaseRepository
     {
         $queryBuilder = $this->createQueryBuilder('proveedor')
             ->select('proveedor.tipoPersona as tipoPersona')
-            ->select('proveedor.nombre as nombre')
-            ->select('proveedor.tipoDocumento as proveedor.tipoDocumento')
-            ->select('proveedor.documento as documento')
-            ->select('proveedor.direccion as direccion')
-            ->select('proveedor.telefono as telefono')
+            ->addselect('proveedor.nombre as nombre')
+            ->addSelect('proveedor.tipoDocumento as proveedor.tipoDocumento')
+            ->addSelect('proveedor.documento as documento')
+            ->addSelect('proveedor.direccion as direccion')
+            ->addSelect('proveedor.telefono as telefono')
             ->where('proveedor.activo = TRUE')
             ->orderBy('proveedor.descripcion', 'ASC')
         ;

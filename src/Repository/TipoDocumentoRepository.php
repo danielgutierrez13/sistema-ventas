@@ -54,6 +54,7 @@ class TipoDocumentoRepository extends BaseRepository
     {
         $queryBuilder = $this->createQueryBuilder('tipoDocumento')
             ->select('tipoDocumento.descripcion as descripcion')
+            ->addSelect('tipoDocumento.tipoPersona as tipoPersona')
             ->where('tipoDocumento.activo = TRUE')
             ->orderBy('tipoDocumento.descripcion', 'ASC')
         ;

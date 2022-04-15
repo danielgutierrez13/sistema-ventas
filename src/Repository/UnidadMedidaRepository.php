@@ -57,7 +57,7 @@ class UnidadMedidaRepository extends BaseRepository
             ->orderBy('unidad_medida.descripcion', 'ASC')
         ;
 
-        $this->security->filterQuery($queryBuilder, MenuController::BASE_ROUTE);
+        $this->security->filterQuery($queryBuilder, UnidadMedidaController::BASE_ROUTE);
 
         return $queryBuilder->getQuery()->getArrayResult();
     }
