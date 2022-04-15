@@ -39,8 +39,8 @@ class ProveedorController extends WebAuthController
         $this->denyAccess([Permission::EXPORT]);
 
         $headers = [
+            'nombre' => 'Nombre',
             'tipoPersona.descripcion' => 'Tipo de Persona',
-            'nombre' => 'Nombre de Proveedor',
             'tipoDocumento.descripcion' => 'Tipo de Documento',
             'documento' => 'N° de Documento',
             'direccion' => 'Direccion',

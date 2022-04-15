@@ -40,12 +40,14 @@ class ProductoController extends WebAuthController
         $this->denyAccess([Permission::EXPORT]);
 
         $headers = [
-            'tipoPersona.descripcion' => 'Tipo de Persona',
-            'nombre' => 'Nombre de producto',
-            'tipoDocumento.descripcion' => 'Tipo de Documento',
-            'documento' => 'N° de Documento',
-            'direccion' => 'Direccion',
-            'telefono' => 'Telefono',
+            'codigo' => 'Codigo',
+            'descripcion' => 'Producto',
+            'categoria.descripcion' => 'Categoria',
+            'marca.descripcion' => 'Marca',
+            'unidadMedida.descripcion' => 'Unidad Medida', // no trae datos
+            'precio' => 'Precio',
+            'precioVenta' => 'Precio Venta',
+            'stock' => 'Stock',
             'activo' => 'Activo',
         ];
 
