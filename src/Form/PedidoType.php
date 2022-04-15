@@ -21,11 +21,9 @@ class PedidoType extends AbstractType
         $builder
             ->add('precioFinal', TextType::class, [
                 'label' => 'Precio Total',
-                'disabled' => true,
             ])
             ->add('codigo', TextType::class, [
                 'label' => 'Código',
-                'disabled' => true,
             ])
             ->add('vendedor', EntityType::class, [
                 'class' => Vendedor::class,
@@ -34,6 +32,7 @@ class PedidoType extends AbstractType
             ->add('cliente', EntityType::class, [
                 'class' => Cliente::class,
                 'label' => 'Cliente',
+                'required' => false,
                 'placeholder' => true,
             ])
             ->add('tipoPago', EntityType::class, [

@@ -29,7 +29,7 @@ class Pedido
     private ?Vendedor $vendedor = null;
 
     #[Column(type: 'decimal', precision: 10, scale: 2)]
-    private ?string $precioFinal = null;
+    private ?string $precioFinal;
 
     #[Column(type: 'string', length: 15)]
     private ?string $codigo = null;
