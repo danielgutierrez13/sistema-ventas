@@ -15,9 +15,14 @@ class TipoDocumentoType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('descripcion', TextType::class)
+            ->add('descripcion', TextType::class, [
+                'label' => 'Descripción',
+                'required' => true,
+            ])
             ->add('tipoPersona', EntityType::class, [
                 'class' => TipoPersona::class,
+                'label' => 'Tipo Persona',
+                'required' => true,
             ])
         ;
     }

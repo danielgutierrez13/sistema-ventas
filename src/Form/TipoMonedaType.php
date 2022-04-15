@@ -13,7 +13,10 @@ class TipoMonedaType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('descripcion', TextType::class)
+            ->add('descripcion', TextType::class, [
+                'label' => 'Descripcion',
+                'required' => true,
+            ])
         ;
     }
 
