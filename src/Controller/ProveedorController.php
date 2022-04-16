@@ -5,9 +5,14 @@ namespace Pidia\Apps\Demo\Controller;
 use CarlosChininin\App\Infrastructure\Controller\WebAuthController;
 use CarlosChininin\App\Infrastructure\Security\Permission;
 use CarlosChininin\Util\Http\ParamFetcher;
+use Doctrine\ORM\EntityManagerInterface;
+use Pidia\Apps\Demo\Entity\TipoCliente;
 use Pidia\Apps\Demo\Entity\Proveedor;
+use Pidia\Apps\Demo\Entity\TipoDocumento;
+use Pidia\Apps\Demo\Entity\TipoPersona;
 use Pidia\Apps\Demo\Form\ProveedorType;
 use Pidia\Apps\Demo\Manager\ProveedorManager;
+use Pidia\Apps\Demo\Repository\ProveedorRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -144,5 +149,50 @@ class ProveedorController extends WebAuthController
         }
 
         return $this->redirectToRoute('proveedor_index');
+    }
+
+    #[Route(path: '/new/ajax', name: 'proveedor_new_ajax', methods: ['POST'])]
+    public function newAjax(Request $request, EntityManagerInterface $entityManager): Response
+    {
+        $this->denyAccess([Permission::NEW]);
+        $data = $request->request->all('proveedor');
+        $newProveedor = new Proveedor();
+
+        $tipoPersona = $entityManager->getRepository(TipoPersona::class)->find((int) $data['tipoPersona']);
+        if (null === $tipoPersona) {
+            return $this->json(['status' => false, 'message' => 'Tipo de persona no existe']);
+        }
+        $newProveedor->setTipoPersona($tipoPersona);
+
+        $tipoDocumento = $entityManager->getRepository(TipoDocumento::class)->find((int) $data['tipoDocumento']);
+        if (null === $tipoDocumento) {
+            return $this->json(['status' => false, 'message' => 'Tipo de documento no existe']);
+        }
+        $newProveedor->setTipoDocumento($tipoDocumento);
+
+        $newProveedor->setDireccion($data['direccion']);
+        $newProveedor->setTelefono($data['telefono']);
+
+        if ('' === $data['documento']) {
+            return $this->json(['status' => false, 'message' => 'Ingrese un numero de documento']);
+        }
+        $newProveedor->setDocumento($data['documento']);
+
+        if ('' === $data['nombre']) {
+            return $this->json(['status' => false, 'message' => 'Ingrese un nombre']);
+        }
+        $newProveedor->setNombre($data['nombre']);
+
+        $newProveedor->setPropietario($this->getUser());
+
+        $entityManager->persist($newProveedor);
+        $entityManager->flush();
+
+        $data = [
+            'id' => $newProveedor->getId(),
+            'name' => $newProveedor->getNombre(),
+        ];
+
+        return $this->json(['status' => true, 'data' => $data]);
     }
 }
