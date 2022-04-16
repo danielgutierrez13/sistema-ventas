@@ -43,6 +43,7 @@ class VendedorType extends AbstractType
                         ->andWhere('tipoDocumento.tipoPersona = 2')
                     ;
                 },
+                'placeholder' => true,
             ])
             ->add('username', TextType::class, [
                 'label' => 'Usuario',

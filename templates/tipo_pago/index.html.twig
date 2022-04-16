@@ -18,8 +18,8 @@
         <tr>
             {{ action.th('Descripcion', true, 'd-none d-sm-table-cell') }}
             {{ action.th('Nombre Corto', true, 'd-none d-sm-table-cell') }}
-            {{ action.th('N° Cuenta', true, 'd-none d-sm-table-cell') }}
             {{ action.th('Propietario Cuenta', true, 'd-none d-sm-table-cell') }}
+            {{ action.th('N° Cuenta', true, 'd-none d-sm-table-cell') }}
             {{ action.th('Activo', true, 'd-none d-sm-table-cell') }}
             <th></th>
         </tr>
@@ -29,8 +29,8 @@
             <tr>
                 <td class="d-none d-sm-table-cell">{{ tipo_pago.descripcion}}</td>
                 <td class="d-none d-sm-table-cell">{{ tipo_pago.nombreCorto}}</td>
-                <td class="d-none d-sm-table-cell">{{ tipo_pago.cuenta}}</td>
                 <td class="d-none d-sm-table-cell">{{ tipo_pago.propietarioCuenta}}</td>
+                <td class="d-none d-sm-table-cell">{{ tipo_pago.cuenta}}</td>
                 <td class="d-none d-sm-table-cell">{{ tipo_pago.activo | yesno_custom | raw }}</td>
                 <td>
                     {% if access.has('show') %}

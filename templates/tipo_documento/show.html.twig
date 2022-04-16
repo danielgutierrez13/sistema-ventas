@@ -2,7 +2,7 @@
 {% import '@App/theme1/breadcrumb.html.twig' as breadcrumb %}
 {% import '@App/theme1/table.html.twig' as table %}
 
-{% set _title = 'Tipo Persona' %}
+{% set _title = 'Tipo Documento' %}
 {% set _main_title = 'Mostrar' %}
 {% set _section =  'tipo_documento_index'%}
 
@@ -13,6 +13,7 @@
 {% block _main %}
     {{ table.tbl_start() }}
     {{ table.tbl_tr('Descripcion',tipo_documento.descripcion) }}
+    {{ table.tbl_tr('Tipo de Persona',tipo_documento.tipoPersona) }}
     {% include 'crud/_show_info.html.twig' with {'entity': tipo_documento} %}
     {{ table.tbl_end() }}
 

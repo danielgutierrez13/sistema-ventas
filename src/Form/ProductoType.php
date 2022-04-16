@@ -34,16 +34,19 @@ class ProductoType extends AbstractType
                 'class' => Categoria::class,
                 'label' => 'Categoria',
                 'required' => true,
+                'placeholder' => true,
             ])
             ->add('marca', EntityType::class, [
                 'class' => Marca::class,
                 'label' => 'Marca',
                 'required' => true,
+                'placeholder' => true,
             ])
             ->add('unidadMedida', EntityType::class, [
                 'class' => UnidadMedida::class,
                 'label' => 'Unidad Medida',
                 'required' => true,
+                'placeholder' => true,
             ])
             ->add('precioVenta', NumberType::class, [
                 'label' => 'Precio Venta',

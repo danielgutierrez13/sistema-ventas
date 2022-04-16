@@ -16,9 +16,9 @@
         {{ action.tbl_start('table-sm') }}
         {{ action.thead_start() }}
         <tr>
+            {{ action.th('Descripcion', true, 'd-none d-sm-table-cell') }}
             {{ action.th('Categoria', true, 'd-none d-sm-table-cell') }}
             {{ action.th('Marca', true, 'd-none d-sm-table-cell') }}
-            {{ action.th('Descripcion', true, 'd-none d-sm-table-cell') }}
             {{ action.th('Unidad Medida', true, 'd-none d-sm-table-cell') }}
             {{ action.th('Precio', true, 'd-none d-sm-table-cell') }}
             {{ action.th('Stock', true, 'd-none d-sm-table-cell') }}
@@ -29,9 +29,9 @@
         {{ action.tbody_start() }}
         {% for producto in paginator.results %}
             <tr>
+                <td class="d-none d-sm-table-cell">{{ producto.descripcion}}</td>
                 <td class="d-none d-sm-table-cell">{{ producto.categoria}}</td>
                 <td class="d-none d-sm-table-cell">{{ producto.marca}}</td>
-                <td class="d-none d-sm-table-cell">{{ producto.descripcion}}</td>
                 <td class="d-none d-sm-table-cell">{{ producto.unidadMedida}}</td>
                 <td class="d-none d-sm-table-cell">{{ producto.precio}}</td>
                 <td class="d-none d-sm-table-cell">{{ producto.stock}}</td>

@@ -16,8 +16,8 @@
         {{ action.tbl_start('table-sm') }}
         {{ action.thead_start() }}
         <tr>
-            {{ action.th('Tipo Persona', true, 'd-none d-sm-table-cell') }}
             {{ action.th('Nombre', true, 'd-none d-sm-table-cell') }}
+            {{ action.th('Tipo Persona', true, 'd-none d-sm-table-cell') }}
             {{ action.th('Tipo Documento', true, 'd-none d-sm-table-cell') }}
             {{ action.th('N° Documento', true, 'd-none d-sm-table-cell') }}
             {{ action.th('Direccion', true, 'd-none d-sm-table-cell') }}
@@ -29,8 +29,8 @@
         {{ action.tbody_start() }}
         {% for proveedor in paginator.results %}
             <tr>
-                <td class="d-none d-sm-table-cell">{{ proveedor.tipoPersona}}</td>
                 <td class="d-none d-sm-table-cell">{{ proveedor.nombre}}</td>
+                <td class="d-none d-sm-table-cell">{{ proveedor.tipoPersona}}</td>
                 <td class="d-none d-sm-table-cell">{{ proveedor.tipoDocumento}}</td>
                 <td class="d-none d-sm-table-cell">{{ proveedor.documento}}</td>
                 <td class="d-none d-sm-table-cell">{{ proveedor.direccion}}</td>

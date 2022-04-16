@@ -14,8 +14,8 @@
     {{ table.tbl_start() }}
     {{ table.tbl_tr('Descripcion',tipo_pago.descripcion) }}
     {{ table.tbl_tr('Nombre Corto',tipo_pago.nombreCorto) }}
-    {{ table.tbl_tr('N° Cuenta',tipo_pago.cuenta) }}
     {{ table.tbl_tr('Propietario Cuenta',tipo_pago.propietarioCuenta) }}
+    {{ table.tbl_tr('N° Cuenta',tipo_pago.cuenta) }}
     {% include 'crud/_show_info.html.twig' with {'entity': tipo_pago} %}
     {{ table.tbl_end() }}
 
