@@ -73,7 +73,8 @@
         function calcularTotal() {
             let total = 0.00
             $('.precio_input').each(function() {
-                total += parseFloat($(this).val())
+                var nuevo = $(this).val().replace(",", ".");
+                total += parseFloat(nuevo)
             });
             $('#pedido_precioFinal').val(total)
         }
@@ -156,7 +157,7 @@
             $(document).on('keyup', '.descuento_input', function () {
                 calcularPrecio($(this))
             });
-            $(document).on('click', '.btn-icon', function () {
+            $(document).on('click', '.btn_cerrar', function () {
                 calcularPrecio($(this))
             });
         });

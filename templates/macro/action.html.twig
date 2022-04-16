@@ -72,6 +72,16 @@
     {{ actions.btn_link_ico(link,'fa fa-list-ul','info', attributes, 'lbl.list') }}
 {% endmacro %}
 
+{% macro btn_entrega_ico(link, attributes='width="200" height="200"') %}
+    {% import _self as actions %}
+    {{ actions.btn_link2(null,link,'bi bi-cart-check-fill','info', attributes, 'Entregar') }}
+{% endmacro %}
+
+{% macro btn_entrega2_ico(link, attributes='width="200" height="200"') %}
+    {% import _self as actions %}
+    {{ actions.btn_link2(null,link,'bi bi-cart-x-fill','danger btn-delete', attributes, 'Anular') }}
+{% endmacro %}
+
 {% macro btn_new_link_ico(link, attributes='') %}
     {% import _self as actions %}
     {{ actions.btn_link_ico(link,'fa fa-file','success', attributes, 'lbl.new') }}
@@ -950,9 +960,9 @@
             <ul id="{{ value.vars.id }}" class="list-group list-unstyled"
                 data-prototype="{{ form_widget(value.vars.prototype)|e('html_attr') }}"
                     {% if value.vars.prototype.vars.name %} data-prototype-name="{{ value.vars.prototype.vars.name | e }}" {% endif %}
-                data-widget-tags="{{ '<li class="list-group-item"></li>'|e }}">
+                data-widget-tags="{{ '<li class="list-group-item "></li>'|e }}">
                 {% for item in value %}
-                    <li class="list-group-item collection-item pb-1 pt-0" style="position: relative;">
+                    <li class="list-group-item collection_child pb-1 pt-0" style="position: relative;">
                         {{ form_errors(item) }}
                         {{ form_widget(item, {attr: {class: '' ~ class_widget} }) }}
                     </li>

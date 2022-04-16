@@ -16,7 +16,6 @@
         {{ action.tbl_start('table-sm') }}
         {{ action.thead_start() }}
         <tr>
-            {{ action.th('N°', false, 'text-center') }}
             {{ action.th('Codigo', true, 'd-none d-sm-table-cell') }}
             {{ action.th('Proveedor', true, 'd-none d-sm-table-cell') }}
             {{ action.th('Precio', true, 'd-none d-sm-table-cell') }}
@@ -27,7 +26,6 @@
         {{ action.tbody_start() }}
         {% for compra in paginator.results %}
             <tr>
-                <td class="text-center">{{ loop.index | indexReverse(paginator) }}</td>
                 <td class="d-none d-sm-table-cell">{{ compra.codigo}}</td>
                 <td class="d-none d-sm-table-cell">{{ compra.proveedor}}</td>
                 <td class="d-none d-sm-table-cell">{{ compra.precio}}</td>

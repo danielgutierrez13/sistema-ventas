@@ -69,7 +69,8 @@
                 if($(this).val().length == 0){
                     total += parseFloat(0)
                 }else{
-                    total += parseFloat($(this).val())
+                    var nuevo = $(this).val().replace(",", ".");
+                    total += parseFloat(nuevo)
                 }
             });
             $('#compra_precio').val(total)
@@ -82,6 +83,10 @@
                 calcularTotal()
             });
             $(document).on('click', '.btn_cerrar', function () {
+                calcularTotal()
+
+            });
+            $(document).on('click', 'btn-warning', function () {
                 calcularTotal()
 
             });

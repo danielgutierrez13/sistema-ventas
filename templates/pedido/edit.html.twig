@@ -39,7 +39,7 @@
     <script>
         setTimeout(function() {
             Select2();
-        }, 1000);
+        }, 500);
     </script>
 {% endblock %}
 
@@ -74,7 +74,8 @@
         {
             let total = 0.00
             $('.precio_input').each(function() {
-                total += parseFloat($(this).val())
+                var nuevo = $(this).val().replace(",", ".");
+                total += parseFloat(nuevo)
             });
             $('#pedido_precioFinal').val(total)
         }
@@ -173,7 +174,7 @@
             });
             $(document).on('click', '.btn_cerrar', function () {
                 console.log($(this))
-                calcularPrecio($(this).val())
+                calcularPrecio($(this))
             });
         });
     </script>

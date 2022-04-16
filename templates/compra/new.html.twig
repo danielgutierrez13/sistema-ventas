@@ -78,6 +78,7 @@
             });
             $('#compra_precio').val(total)
         }
+
         jQuery(document).ready(function() {
             Select2();
             Collection.init('#compra_detalleCompras')
@@ -88,6 +89,9 @@
             });
             $(document).on('click', '.btn-icon', function () {
                 calcularTotal()
+            });
+            $(document).on('click', '#btn-warning', function () {
+
             });
         });
     </script>

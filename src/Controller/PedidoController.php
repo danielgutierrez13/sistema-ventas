@@ -6,6 +6,7 @@ use CarlosChininin\App\Infrastructure\Controller\WebAuthController;
 use CarlosChininin\App\Infrastructure\Security\Permission;
 use CarlosChininin\Util\Http\ParamFetcher;
 use Doctrine\ORM\EntityManagerInterface;
+use Pidia\Apps\Demo\Entity\DetallePedido;
 use Pidia\Apps\Demo\Entity\Pedido;
 use Pidia\Apps\Demo\Form\PedidoType;
 use Pidia\Apps\Demo\Manager\PedidoManager;
@@ -150,6 +151,20 @@ class PedidoController extends WebAuthController
         }
 
         return $this->redirectToRoute('pedido_index');
+    }
+
+    #[Route(path: '/{id}/entregaDetalle', name: 'pago_entrega_detalle', methods: ['GET', 'POST'])]
+    public function entregaDetalle(DetallePedido $detallePedido, EntityManagerInterface $entityManager): Response
+    {
+        if (1 == $detallePedido->getEstadoEntrega()) {
+            $detallePedido->setEstadoEntrega(0);
+        } else {
+            $detallePedido->setEstadoEntrega(1);
+        }
+        $entityManager->persist($detallePedido);
+        $entityManager->flush();
+
+        return $this->render('pedido/show.html.twig', ['pedido' => $detallePedido->getPedido()]);
     }
 
     #[Route(path: '/{id}/delete', name: 'pedido_delete_forever', methods: ['POST'])]
