@@ -19,8 +19,6 @@
             {{ action.th('Nombre', true, 'd-none d-sm-table-cell') }}
             {{ action.th('Tipo Documento', true, 'd-none d-sm-table-cell') }}
             {{ action.th('N° Documento', true, 'd-none d-sm-table-cell') }}
-            {{ action.th('Direccion', true, 'd-none d-sm-table-cell') }}
-            {{ action.th('Telefono', true, 'd-none d-sm-table-cell') }}
             {{ action.th('Usuario', true, 'd-none d-sm-table-cell') }}
             {{ action.th('Correo', true, 'd-none d-sm-table-cell') }}
             {{ action.th('Activo', true, 'd-none d-sm-table-cell') }}
@@ -33,8 +31,6 @@
                 <td class="d-none d-sm-table-cell">{{ vendedor.nombre}}</td>
                 <td class="d-none d-sm-table-cell">{{ vendedor.tipoDocumento}}</td>
                 <td class="d-none d-sm-table-cell">{{ vendedor.documento}}</td>
-                <td class="d-none d-sm-table-cell">{{ vendedor.direccion}}</td>
-                <td class="d-none d-sm-table-cell">{{ vendedor.telefono}}</td>
                 <td class="d-none d-sm-table-cell">{{ vendedor.usuario.username}}</td>
                 <td class="d-none d-sm-table-cell">{{ vendedor.usuario.email}}</td>
                 <td class="d-none d-sm-table-cell">{{ vendedor.activo | yesno_custom | raw }}</td>

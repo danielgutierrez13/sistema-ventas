@@ -26,7 +26,7 @@ class TipoPagoType extends AbstractType
                 'required' => false,
             ])
             ->add('nombreCorto', TextType::class, [
-                'label' => 'nombre Corto',
+                'label' => 'Nombre Corto',
                 'required' => false,
             ])
         ;

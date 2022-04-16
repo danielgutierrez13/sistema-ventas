@@ -16,6 +16,8 @@
     {{ table.tbl_tr(vendedor.tipoDocumento,vendedor.documento) }}
     {{ table.tbl_tr("Direccion",vendedor.direccion) }}
     {{ table.tbl_tr("Telefono",vendedor.telefono) }}
+    {{ table.tbl_tr("Usuario",vendedor.usuario.username) }}
+    {{ table.tbl_tr("Correo",vendedor.usuario.email) }}
     {% include 'crud/_show_info.html.twig' with {'entity': vendedor} %}
     {{ table.tbl_end() }}
 

@@ -37,7 +37,7 @@ var Collection = function () {
             newForm = prototype.replace(prototype_name, index);
         }
         else{
-            newForm = prototype.replace(/__name__/g, index);
+            newForm = prototype.replace(/_name_/g, index);
         }
         $collectionHolder.data('index', index + 1);
         var $newFormLi = $(child).append(newForm);

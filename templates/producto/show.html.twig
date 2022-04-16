@@ -12,9 +12,9 @@
 
 {% block _main %}
     {{ table.tbl_start() }}
+    {{ table.tbl_tr('Descripcion',producto.descripcion) }}
     {{ table.tbl_tr('Categoria',producto.categoria) }}
     {{ table.tbl_tr('Marca',producto.marca) }}
-    {{ table.tbl_tr('Descripcion',producto.descripcion) }}
     {{ table.tbl_tr('Unidad Medida',producto.unidadMedida) }}
     {{ table.tbl_tr('Precio',producto.precio) }}
     {{ table.tbl_tr('Stock',producto.stock) }}
