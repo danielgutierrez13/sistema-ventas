@@ -7,7 +7,9 @@ use CarlosChininin\App\Infrastructure\Security\Permission;
 use CarlosChininin\Util\Http\ParamFetcher;
 use Doctrine\ORM\EntityManagerInterface;
 use Pidia\Apps\Demo\Entity\Compra;
+use Pidia\Apps\Demo\Entity\Proveedor;
 use Pidia\Apps\Demo\Form\CompraType;
+use Pidia\Apps\Demo\Form\ProveedorType;
 use Pidia\Apps\Demo\Manager\CompraManager;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -80,11 +82,16 @@ class CompraController extends WebAuthController
             return $this->redirectToRoute('compra_index');
         }
 
-        return $this->renderForm(
+        $proveedor = new Proveedor();
+        $frmProveedor = $this->createForm(ProveedorType::class, $proveedor);
+        $frmProveedor->handleRequest($request);
+
+        return $this->render(
             'compra/new.html.twig',
             [
                 'compra' => $compra,
-                'form' => $form,
+                'form' => $form->createView(),
+                'frmProveedor' => $frmProveedor->createView(),
             ]
         );
     }
