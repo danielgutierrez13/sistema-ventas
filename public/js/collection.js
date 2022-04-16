@@ -3,7 +3,7 @@ var Collection = function () {
 
     var createChild = function (child,child_class) {
         child = typeof child !== 'undefined' ? child : 'li';
-        var custom_child = '<' + child + ' class="list-group-item collection_child"></' + child + '>' ;
+        var custom_child = '<' + child + ' class="' + child_class + ' list-group-item collection_child"></' + child + '>' ;
 
         return custom_child;
     };
