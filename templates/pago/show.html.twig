@@ -1,0 +1,95 @@
+{% extends 'base.html.twig' %}
+{% import 'macro/breadcrumb.html.twig' as breadcrumb %}
+{% import 'macro/action.html.twig' as action %}
+
+{% set _title = 'Pago' %}
+{% set _main_title = 'Mostrar' %}
+{% set _section =  'pago_index'%}
+
+{% block _breadcrumb %}
+    {{ breadcrumb.show2(_title, _section, 'Mostrar') }}
+{% endblock %}
+
+{% block _main %}
+    {{ action.tbl_start() }}
+    {{ action.tbl_tr('Codigo', pago.codigo) }}
+    {{ action.tbl_tr('Vendedor', pago.vendedor) }}
+    {{ action.tbl_tr('Cliente', pago.cliente) }}
+    {{ action.tbl_tr('Tipo de Pago', pago.tipoPago) }}
+    {{ action.tbl_tr('Tipo de Moneda', pago.tipoMoneda) }}
+    {{ action.tbl_tr('Precio Total',pago.precioFinal) }}
+    {{ action.tbl_end() }}
+    {{ action.tbl_start() }}
+    <div class="table-responsive">
+
+        <tr class="fw-bolder fs-6 text-gray-800">
+            {{ action.th('Producto', false, 'd-none d-sm-table-cell') }}
+            {{ action.th('Cantidad', true, 'text-center') }}
+            {{ action.th('Precio', true, 'text-center') }}
+            {{ action.th('Descuento', true, 'text-center') }}
+            {{ action.th('Estado Entrega', true, 'text-center') }}
+            {{ action.th('Acciones', true, 'text-center') }}
+        </tr>
+
+        {% for pago in pago.detallePedidos %}
+
+            <tr>
+                <td class="d-none d-sm-table-cell">{{ pago.producto}}</td>
+                <td class="text-center">{{ pago.cantidad}}</td>
+                <td class="text-center">{{ pago.precio}}</td>
+                <td class="text-center">{{ pago.descuento}}</td>
+                <td class="text-center">{{ pago.estadoEntrega | yesno_custom | raw }}</td>
+                <td class="text-center">{% if (pago.estadoEntrega == 1)  %}
+                        {% if access.has('edit') %}
+                            {{ action.btn_entrega2_ico(path('pago_entrega_detalle', {'id': pago.id})) }}
+                        {% endif %}
+                    {% endif %}
+                    {% if (pago.estadoEntrega == 0)  %}
+                        {% if access.has('edit') %}
+                            {{ action.btn_entrega_ico(path('pago_entrega_detalle', {'id': pago.id})) }}
+                        {% endif %}
+                    {% endif %}
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">No hay registros</td>
+            </tr>
+        {% endfor %}
+
+    </div>
+    {{ action.tbl_end() }}
+
+{% endblock %}
+
+{% block _main_footer %}
+    {% if access.has('list') %}
+        {{ action.btn_list_link(path('pago_index')) }}
+    {% endif %}
+    {% if access.has('new') %}
+        {{ action.btn_new_link(path('pedido_index')) }}
+    {% endif %}
+    {% if access.has('delete') %}
+        {{ action.btn_anular_form(path('pago_delete', {'id': pago.id})) }}
+    {% endif %}
+{% endblock %}
+
+{% block _main_tools %}
+
+{% endblock %}
+
+{% block _body_tools %}
+    {% if access.has('list') %}
+        {{ action.btn_list_link_ico(path('pago_index')) }}
+    {% endif %}
+    {% if access.has('new') %}
+        {{ action.btn_new_link_ico(path('pedido_index')) }}
+    {% endif %}
+    {% if access.has('delete') %}
+        {{ action.btn_anular_form_ico(path('pago_delete', {'id': pago.id})) }}
+    {% endif %}
+{% endblock %}
+
+{% block _body_tools_ico %}
+
+{% endblock %}

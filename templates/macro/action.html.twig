@@ -97,6 +97,11 @@
     {{ actions.btn_link_ico(link,'fa fa-print','primary', attributes, 'lbl.print') }}
 {% endmacro %}
 
+{% macro btn_pago_link_ico(link, attributes='') %}
+    {% import _self as actions %}
+    {{ actions.btn_link_ico(link,'bi bi-currency-dollar','success', attributes, 'Pagar') }}
+{% endmacro %}
+
 {% macro btn_export_link_ico(link, attributes='') %}
     {% import _self as actions %}
     {{ actions.btn_link_ico(link,'fa fa-download','dark btn-export', attributes, 'lbl.export') }}
@@ -122,6 +127,31 @@
                     <i class="fa fa-ban"></i>
                     <span>{{ 'inhabilitar'|gtrans|capitalize }}</span>
                 </span>
+        </button>
+    </form>
+{% endmacro %}
+
+{% macro btn_anular_form(link, token) %}
+    <form method="post" action="{{ link }}" onsubmit="return confirm('Seguro de anular este registro?');"
+          style="display: inline">
+        <input type="hidden" name="_method" value="DELETE">
+        <input type="hidden" name="_token" value="{{ token }}">
+        <button class="js-swal-confirm btn btn-sm btn-light-danger">
+                <span>
+                    <i class="fa fa-ban"></i>
+                    <span>{{ 'Anular'|gtrans|capitalize }}</span>
+                </span>
+        </button>
+    </form>
+{% endmacro %}
+
+{% macro btn_anular_form_ico(link, token) %}
+    <form method="post" action="{{ link }}" onsubmit="return confirm({{ 'Seguro de anular este registro?'|gtrans }});"
+          style="display: inline">
+        <input type="hidden" name="_method" value="DELETE">
+        <input type="hidden" name="_token" value="{{ token }}">
+        <button class="btn btn-sm btn-icon btn-light-danger" data-toggle="tooltip" title="{{ 'anular'| trans }}">
+            <i class="fa fa-ban"></i>
         </button>
     </form>
 {% endmacro %}

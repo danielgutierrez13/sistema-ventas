@@ -49,7 +49,7 @@ class PedidoController extends WebAuthController
 
         $items = $manager->dataExport(ParamFetcher::fromRequestQuery($request), true);
 
-        return $manager->export($items, $headers, 'compra');
+        return $manager->export($items, $headers, 'pedido');
     }
 
     #[Route(path: '/new', name: 'pedido_new', methods: ['GET', 'POST'])]

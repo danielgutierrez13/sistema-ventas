@@ -56,10 +56,6 @@
 
     </div>
     {{ action.tbl_end() }}
-    {{ action.tbl_start() }}
-    {{ action.tbl_tr(' ',' ') }}
-    {% include 'crud/_show_info.html.twig' with {'entity': pedido} %}
-    {{ action.tbl_end() }}
 
 {% endblock %}
 

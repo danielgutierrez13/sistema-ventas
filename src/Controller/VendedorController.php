@@ -194,7 +194,7 @@ class VendedorController extends WebAuthController
     }
 
     #[Route('/busqueda/usuario', name: 'usuario_for_vendedor')]
-    public function busquedaUsuariVendedor(Request $request, VendedorRepository $vendedorRepository, PasswordSecurity $authPassword): Response
+    public function busquedaUsuariVendedor(Request $request, VendedorRepository $vendedorRepository): Response
     {
         $documento = $request->request->get('documentoVendedor');
         $vendedor = $vendedorRepository->buscarUsuarioVendedor($documento);

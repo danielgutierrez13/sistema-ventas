@@ -3,12 +3,12 @@
 {% import 'macro/action.html.twig' as action %}
 {% import 'macro/pagination.html.twig' as pagination %}
 
-{% set _title = 'Pedidos' %}
+{% set _title = 'Pagos' %}
 {% set _main_title = 'Listado' %}
-{% set _section =  'pedido_index' %}
+{% set _section =  'pago_reporte' %}
 
 {% block _breadcrumb %}
-    {{ breadcrumb.show('Pedidos') }}
+    {{ breadcrumb.show('Pagos') }}
 {% endblock %}
 
 {% block _main %}
@@ -18,29 +18,24 @@
         <tr>
             {{ action.th('Codigo', true, 'd-none d-sm-table-cell') }}
             {{ action.th('Vendedor', true, 'd-none d-sm-table-cell') }}
+            {{ action.th('Cliente', true, 'd-none d-sm-table-cell') }}
             {{ action.th('Precio Final', true, 'd-none d-sm-table-cell') }}
             {{ action.th('Activo', true, 'text-center d-none d-sm-table-cell') }}
-            <th></th>
+            {{ action.th('Acciones', true, 'text-center d-none d-sm-table-cell') }}
+
         </tr>
         {{ action.thead_end() }}
         {{ action.tbody_start() }}
-        {% for pedido in paginator.results %}
+        {% for pago in pago %}
             <tr>
-                <td class="d-none d-sm-table-cell">{{ pedido.codigo}}</td>
-                <td class="d-none d-sm-table-cell">{{ pedido.vendedor}}</td>
-                <td class="d-none d-sm-table-cell">{{ pedido.precioFinal}}</td>
-                <td class="text-center">{{ pedido.activo | yesno_custom | raw }}</td>
-                <td>
+                <td class="d-none d-sm-table-cell">{{ pago.codigo}}</td>
+                <td class="d-none d-sm-table-cell">{{ pago.vendedor}}</td>
+                <td class="d-none d-sm-table-cell">{{ pago.cliente}}</td>
+                <td class="d-none d-sm-table-cell">{{ pago.precioFinal}}</td>
+                <td class="text-center">{{ pago.activo | yesnocustom | raw }}</td>
+                <td class="text-center">
                     {% if access.has('view') %}
-                        {{ action.btn_show_link2_ico(path('pedido_show', {'id': pedido.id})) }}
-                    {% endif %}
-                    {% if (pedido.estadoPago == 0) %}
-                        {% if access.has('edit', pedido) %}
-                            {{ action.btn_edit_link2_ico(path('pedido_edit', {'id': pedido.id})) }}
-                        {% endif %}
-                        {% if access.has('new', pedido) %}
-                            {{ action.btn_pago_link_ico(path('pago_new', {'id': pedido.id})) }}
-                        {% endif %}
+                        {{ action.btn_show_link2_ico(path('pago_show', {'id': pago.id})) }}
                     {% endif %}
                 </td>
             </tr>
@@ -52,11 +47,11 @@
         {{ action.tbody_end() }}
         {{ action.tbl_end() }}
     </div>
-    {{ pagination.show(paginator, _section) }}
+
 {% endblock %}
 
 {% block _main_footer %}
-    {% include 'crud/_index_links.html.twig' with {'route_base': 'pedido'} %}
+
 {% endblock%}
 
 {% block _main_options %}
@@ -72,7 +67,7 @@
 {% endblock %}
 
 {% block _body_tools %}
-    {% include 'crud/_index_links_ico.html.twig' with {'route_base': 'pedido'}  %}
+
 {% endblock %}
 
 {% block _stylesheets %}
@@ -82,18 +77,18 @@
     <script>
         jQuery(document).ready(function () {
             $(document).on('change', '#filter_size', function () {
-                let route = '{{ path('pedido_index') }}';
+                let route = '{{ path('pago_reporte') }}';
                 route = route + "?" + 'n=' + $('#filter_size option:selected').val();
                 route = route + "&" + 'b=' + $('#filter_text').val();
                 window.location = route;
             });
 
             $(document).on('click', '.btn-send', function () {
-                window.location = '{{ path('pedido_index') }}';
+                window.location = '{{ path('pago_reporte') }}';
             });
 
             $(document).on('click', '.btn-clean', function () {
-                window.location.href = '{{ path('pedido_index') }}';
+                window.location.href = '{{ path('pago_reporte') }}';
             });
         });
     </script>

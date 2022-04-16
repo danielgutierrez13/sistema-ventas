@@ -6,11 +6,9 @@ use CarlosChininin\App\Infrastructure\Repository\BaseRepository;
 use CarlosChininin\App\Infrastructure\Security\Security;
 use CarlosChininin\Util\Filter\DoctrineValueSearch;
 use CarlosChininin\Util\Http\ParamFetcher;
-use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 use Pidia\Apps\Demo\Controller\PedidoController;
-use Pidia\Apps\Demo\Controller\VendedorController;
 use Pidia\Apps\Demo\Entity\Pedido;
 
 /**
@@ -19,7 +17,7 @@ use Pidia\Apps\Demo\Entity\Pedido;
  * @method Pedido[]    findAll()
  * @method Pedido[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class PedidoRepository extends BaseRepository
+class PagoRepository extends BaseRepository
 {
     public function __construct(ManagerRegistry $registry, private Security $security)
     {
@@ -43,8 +41,8 @@ class PedidoRepository extends BaseRepository
             ->select(['pedido', 'vendedor'])
             ->join('pedido.config', 'config')
             ->join('pedido.vendedor', 'vendedor')
-            ->orderBy('pedido.estadoPago')
-            ->addOrderBy('pedido.codigo', 'DESC')
+            ->where('pedido.estadoPago = 1')
+            ->orderBy('pedido.codigo', 'DESC')
         ;
 
         $this->security->filterQuery($queryBuilder, PedidoController::BASE_ROUTE, $permissions);
@@ -72,19 +70,4 @@ class PedidoRepository extends BaseRepository
             ;
     }
 
-    public function BuscarPedidoId(int $id): ?Pedido
-    {
-        try {
-            return $this->createQueryBuilder('pedido')
-                ->select(['pedido', 'config'])
-                ->join('pedido.config', 'config')
-                ->where('pedido.id = :pedidoId')
-                ->setParameter('pedidoId', $id)
-                ->getQuery()
-                ->getOneOrNullResult();
-        } catch (NonUniqueResultException) {
-        }
-
-        return null;
-    }
 }

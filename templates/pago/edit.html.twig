@@ -1,0 +1,236 @@
+{% extends 'base.html.twig' %}
+{% import 'macro/breadcrumb.html.twig' as breadcrumb %}
+{% import 'macro/action.html.twig' as action %}
+
+{% set _title = 'Pago' %}
+{% set _main_title = 'Editar' %}
+{% set _section = 'pago_index' %}
+
+{% block _breadcrumb %}
+    {{ breadcrumb.show2('Pago',_section,'Editar') }}
+{% endblock %}
+
+{% form_theme form _self %}
+
+{% block _pedido_detallePedidos_label %}
+{% endblock %}
+
+{% block _pedido_detallePedidos_entry_widget %}
+    {% import 'macro/action.html.twig' as actions %}
+    {{ action.frm_column(
+        action.frm_column_field_select(form.producto,'','product_select',2),
+        null,
+        null,
+        null,
+        1
+    ) }}
+    {{ action.frm_column(
+        action.frm_column_field(form.cantidad, '', 'cantidad_input'),
+        action.frm_column_field(form.precio, '', 'precio_input')
+    ) }}
+    {{ action.frm_column(
+        action.frm_column_field(form.descuento,'','descuento_input',2),
+        null,
+        null,
+        null,
+        1
+    ) }}
+
+    <script>
+        setTimeout(function() {
+            Select2();
+        }, 500);
+    </script>
+{% endblock %}
+
+{% block _main %}
+    {{ include('pago/_form.html.twig', {'button_label': 'Actualizar'}) }}
+{% endblock %}
+
+{% block _main_tools %}
+    {% include 'crud/_tools_ico.html.twig' %}
+{% endblock %}
+
+{% block _body_tools %}
+    {% if access.has('list') %}
+        {{ action.btn_list_link_ico(path('pago_index')) }}
+    {% endif %}
+    {% if access.has('new') %}
+        {{ action.btn_new_link_ico(path('pedido_index')) }}
+    {% endif %}
+    {% if access.has('delete') %}
+        {{ action.btn_anular_form_ico(path('pago_delete', {'id': pedido.id})) }}
+    {% endif %}
+{% endblock %}
+
+{% block _body_tools_ico %}
+
+{% endblock %}
+
+{% block _main_footer %}
+    {% if access.has('list') %}
+        {{ action.btn_list_link(path('pago_index')) }}
+    {% endif %}
+    {% if access.has('new') %}
+        {{ action.btn_new_link(path('pedido_index')) }}
+    {% endif %}
+    {% if access.has('delete') %}
+        {{ action.btn_anular_form(path('pago_delete', {'id': pedido.id})) }}
+    {% endif %}
+{% endblock %}
+
+{% block _stylesheets %}
+{% endblock %}
+
+{% block _javascripts %}
+    <script src="{{ asset('js/select2.js') }}"></script>
+    <script src="{{ asset('js/collection.js') }}"></script>
+    <script>
+        function calcularTotal()
+        {
+            let total = 0.00
+            $('.precio_input').each(function() {
+                var nuevo = $(this).val().replace(",", ".");
+                total += parseFloat(nuevo)
+            });
+            $('#pedido_precioFinal').val(total)
+        }
+
+        function calcularPrecio($this)
+        {
+            let $detalle = $this.closest('.collection_child')
+            let $cantidad = $detalle.find('.cantidad_input');
+            let cantidad = parseInt($cantidad.val())
+            let stock = parseInt($cantidad.data('stock'))
+            let precio = parseFloat($cantidad.data('precio'))
+            let descuento = parseFloat($detalle.find('.descuento_input').val())
+            if (isNaN(descuento)) {
+                descuento = 0.00;
+            }
+            if (isNaN(cantidad)) {
+                $detalle.find('.precio_input').val(0)
+                return false
+            }
+            if(cantidad <= 0) {
+                $detalle.find('.precio_input').val('')
+                $detalle.find('.cantidad_input').val('')
+                $detalle.find('.descuento_input').val('')
+                Notify.warning('Cantidad Incorrecta')
+                return false
+            }
+            if (cantidad > stock){
+                $detalle.find('.precio_input').val('')
+                $detalle.find('.cantidad_input').val('')
+                Notify.warning('Excedio Stock')
+                return false
+            }
+            let total = precio * cantidad
+            if (total < descuento) {
+                Notify.warning('Exceso de Descuento')
+                return false
+            }
+            $detalle.find('.precio_input').val(total - descuento)
+            calcularTotal()
+        }
+
+        function buscarPrecioStock($this)
+        {
+            $.ajax({
+                type: 'POST',
+                url: '{{ path('producto_values_pedido_ajax') }}',
+                data: {
+                    id: parseInt($this.val()),
+                },
+                success: function (response) {
+                    if (!response.status) {
+                        Notify.warning(response.message)
+                        return false
+                    }
+                    let data = response.data;
+                    let precio = data.precio;
+                    let stock = data.stock;
+                    let $cantidad = $this.closest('.collection_child').find('.cantidad_input')
+                    if (!$cantidad.val()) {
+                        $cantidad.val(1)
+                        $this.closest('.collection_child').find('.descuento_input').val(0)
+                        $this.closest('.collection_child').find('.precio_input').val(precio)
+                    }
+                    $cantidad.attr('data-stock', stock)
+                    $cantidad.attr('data-precio', precio)
+                    calcularTotal()
+                }
+            })
+        }
+
+        function selectObligatorios()
+        {
+            let selectores = document.getElementsByTagName('select')
+            for (let i = 0; i < selectores.length; i++){
+                selectores[i].required = true;
+            }
+        }
+
+        function inputsObligatorios($var){
+            let inputs = document.getElementsByTagName('input')
+            for (let i = 0; i < inputs.length; i++){
+                inputs[i].required = $var;
+            }
+        }
+
+        function tipoPago()
+        {
+            let tipoPago = $('#pedido_tipoPago')
+            if(tipoPago.val() == 3){
+                inputsObligatorios(true)
+                $('#tipo_pago_module').show();
+            }
+
+            if (tipoPago.val() != 3){
+                inputsObligatorios(false)
+                $('#tipo_pago_module').hide();
+            }
+
+        }
+
+        jQuery(document).ready(function() {
+            Collection.init('#pedido_detallePedidos');
+            Select2();
+            selectObligatorios();
+            tipoPago()
+            $(document).find('li .product_select').each(function() {
+                if ($(this).val()) {
+                    buscarPrecioStock($(this))
+                }
+            });
+
+            $(document).on('change', '.product_select', function () {
+                let $this = $(this);
+                $this.closest('.collection_child').find('.cantidad_input').val('')
+                $this.closest('.collection_child').find('.precio_input').val('')
+                $this.closest('.collection_child').find('.descuento_input').val('')
+                buscarPrecioStock($this)
+            });
+
+            $(document).on('keyup', '.cantidad_input', function () {
+                calcularPrecio($(this))
+            });
+            $(document).on('change', '.cantidad_input', function () {
+                calcularPrecio($(this))
+            });
+            $(document).on('change', '#pedido_tipoPago', function () {
+                tipoPago()
+            });
+            $(document).on('keyup', '.descuento_input', function () {
+                calcularPrecio($(this))
+            });
+            $(document).on('click', '.btn_cerrar', function () {
+                calcularPrecio($(this))
+            });
+            $(document).on('keyup', '#pedido_cantidadRecibida', function () {
+                let $this = $(this).val();
+                let precio = $('#pedido_precioFinal').val();
+                $('#pedido_cambio').val(parseFloat($this) - parseFloat(precio))
+            });
+        });
+    </script>
+{% endblock %}
