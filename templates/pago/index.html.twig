@@ -18,6 +18,7 @@
         <tr>
             {{ action.th('Codigo', true, 'd-none d-sm-table-cell') }}
             {{ action.th('Vendedor', true, 'd-none d-sm-table-cell') }}
+            {{ action.th('Cliente', true, 'd-none d-sm-table-cell') }}
             {{ action.th('Precio Final', true, 'd-none d-sm-table-cell') }}
             {{ action.th('Activo', true, 'text-center d-none d-sm-table-cell') }}
             <th></th>
@@ -28,6 +29,7 @@
             <tr>
                 <td class="d-none d-sm-table-cell">{{ pago.codigo}}</td>
                 <td class="d-none d-sm-table-cell">{{ pago.vendedor}}</td>
+                <td class="d-none d-sm-table-cell">{{ pago.cliente}}</td>
                 <td class="d-none d-sm-table-cell">{{ pago.precioFinal}}</td>
                 <td class="text-center">{{ pago.activo | yesno_custom | raw }}</td>
                 <td class="text-center">

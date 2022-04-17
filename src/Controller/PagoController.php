@@ -36,13 +36,14 @@ class PagoController extends WebAuthController
     }
 
     #[Route(path: '/export', name: 'pago_export', methods: ['GET'])]
-    public function export(Request $request, PagoManager $manager): Response
+    public function export(Request $request, PedidoManager $manager): Response
     {
         $this->denyAccess([Permission::EXPORT]);
 
         $headers = [
             'codigo' => 'Codigo',
             'vendedor.nombre' => 'Nombre de Vendedor',
+            'cliente.nombre' => 'Nombre de Cliente', // no resonator
             'precioFinal' => 'Precio',
             'activo' => 'Activo',
         ];
@@ -145,7 +146,6 @@ class PagoController extends WebAuthController
     public function state(Request $request, Pedido $pedido, PagoManager $manager): Response
     {
         $this->denyAccess([Permission::ENABLE, Permission::DISABLE], $pedido);
-
         $pedido->setEstadoPago(0);
         $pedido->setCliente(null);
         $pedido->setTipoMoneda(null);

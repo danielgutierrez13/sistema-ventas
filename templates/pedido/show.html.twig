@@ -60,7 +60,26 @@
 {% endblock %}
 
 {% block _main_footer %}
-    {% include 'crud/_show_links.html.twig' with {'route_base':'pedido','entity': pedido} %}
+    {% if access.list %}
+        {{ action.btn_list_link(path('pedido_index')) }}
+    {% endif %}
+    {% if access.new %}
+        {{ action.btn_new_link(path('pedido_new')) }}
+    {% endif %}
+    {% if(pedido.estadoPago == false) %}
+        {% if access.edit %}
+            {{ action.btn_edit_link(path('pedido_edit', {'id': pedido.id})) }}
+        {% endif %}
+    {% endif %}
+    {% if access.delete and pedido.activo == true %}
+        {{ action.btn_delete_form(path('pedido_delete', {'id': pedido.id}), csrf_token('delete' ~ pedido.id)) }}
+    {% endif %}
+    {% if access.delete and pedido.activo == false %}
+        {{ action.btn_restore_form(path('pedido_delete', {'id': pedido.id}), csrf_token('delete' ~ pedido.id)) }}
+    {% endif %}
+    {% if access.master %}
+        {{ action.btn_delete_forever_form(path('pedido_delete_forever', {'id': pedido.id}), csrf_token('delete_forever' ~ pedido.id)) }}
+    {% endif %}
 {% endblock %}
 
 {% block _main_tools %}

@@ -31,15 +31,20 @@
                 <td class="d-none d-sm-table-cell">{{ pedido.precioFinal}}</td>
                 <td class="text-center">{{ pedido.activo | yesno_custom | raw }}</td>
                 <td>
-                    {% if access.has('view') %}
-                        {{ action.btn_show_link2_ico(path('pedido_show', {'id': pedido.id})) }}
-                    {% endif %}
                     {% if (pedido.estadoPago == 0) %}
+                        {% if access.has('view') %}
+                            {{ action.btn_show_link2_ico(path('pedido_show', {'id': pedido.id})) }}
+                        {% endif %}
                         {% if access.has('edit', pedido) %}
                             {{ action.btn_edit_link2_ico(path('pedido_edit', {'id': pedido.id})) }}
                         {% endif %}
                         {% if access.has('new', pedido) %}
                             {{ action.btn_pago_link_ico(path('pago_new', {'id': pedido.id})) }}
+                        {% endif %}
+                    {% endif %}
+                    {% if (pedido.estadoPago == 1) %}
+                        {% if access.has('view') %}
+                            {{ action.btn_show_link2_ico(path('pago_show', {'id': pedido.id})) }}
                         {% endif %}
                     {% endif %}
                 </td>

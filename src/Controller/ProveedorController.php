@@ -6,13 +6,11 @@ use CarlosChininin\App\Infrastructure\Controller\WebAuthController;
 use CarlosChininin\App\Infrastructure\Security\Permission;
 use CarlosChininin\Util\Http\ParamFetcher;
 use Doctrine\ORM\EntityManagerInterface;
-use Pidia\Apps\Demo\Entity\TipoCliente;
 use Pidia\Apps\Demo\Entity\Proveedor;
 use Pidia\Apps\Demo\Entity\TipoDocumento;
 use Pidia\Apps\Demo\Entity\TipoPersona;
 use Pidia\Apps\Demo\Form\ProveedorType;
 use Pidia\Apps\Demo\Manager\ProveedorManager;
-use Pidia\Apps\Demo\Repository\ProveedorRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -186,13 +184,15 @@ class ProveedorController extends WebAuthController
         $newProveedor->setPropietario($this->getUser());
 
         $entityManager->persist($newProveedor);
-        $entityManager->flush();
+        if ($entityManager->flush()) {
+            $data = [
+                'id' => $newProveedor->getId(),
+                'name' => $newProveedor->getNombre(),
+            ];
 
-        $data = [
-            'id' => $newProveedor->getId(),
-            'name' => $newProveedor->getNombre(),
-        ];
-
-        return $this->json(['status' => true, 'data' => $data]);
+            return $this->json(['status' => true, 'data' => $data]);
+        } else {
+            return $this->json(['status' => false, 'message' => 'Datos duplicados']);
+        }
     }
 }

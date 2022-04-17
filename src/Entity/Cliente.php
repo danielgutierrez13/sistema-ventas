@@ -33,7 +33,7 @@ class Cliente
     #[JoinColumn(nullable: false)]
     private $tipoDocumento;
 
-    #[Column(type: 'string', length: 20)]
+    #[Column(type: 'string', length: 20, unique: true)]
     private $documento;
 
     #[Column(type: 'string', length: 200, nullable: true)]
@@ -120,6 +120,6 @@ class Cliente
     }
     public function __toString(): string
     {
-        return $this->getNombre().'  '.$this->getDocumento();
+        return $this->getNombre().' - '.$this->getDocumento();
     }
 }

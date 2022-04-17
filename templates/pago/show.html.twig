@@ -21,7 +21,6 @@
     {{ action.tbl_end() }}
     {{ action.tbl_start() }}
     <div class="table-responsive">
-
         <tr class="fw-bolder fs-6 text-gray-800">
             {{ action.th('Producto', false, 'd-none d-sm-table-cell') }}
             {{ action.th('Cantidad', true, 'text-center') }}
@@ -30,9 +29,7 @@
             {{ action.th('Estado Entrega', true, 'text-center') }}
             {{ action.th('Acciones', true, 'text-center') }}
         </tr>
-
         {% for pago in pago.detallePedidos %}
-
             <tr>
                 <td class="d-none d-sm-table-cell">{{ pago.producto}}</td>
                 <td class="text-center">{{ pago.cantidad}}</td>
@@ -69,6 +66,9 @@
     {% if access.has('new') %}
         {{ action.btn_new_link(path('pedido_index')) }}
     {% endif %}
+    {% if access.has('edit') %}
+        {{ action.btn_edit_link(path('pago_edit', {'id': pago.id})) }}
+    {% endif %}
     {% if access.has('delete') %}
         {{ action.btn_anular_form(path('pago_delete', {'id': pago.id})) }}
     {% endif %}
@@ -84,6 +84,9 @@
     {% endif %}
     {% if access.has('new') %}
         {{ action.btn_new_link_ico(path('pedido_index')) }}
+    {% endif %}
+    {% if access.has('edit') %}
+        {{ action.btn_edit_link_ico(path('pago_edit', {'id': pago.id})) }}
     {% endif %}
     {% if access.has('delete') %}
         {{ action.btn_anular_form_ico(path('pago_delete', {'id': pago.id})) }}

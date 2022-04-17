@@ -33,7 +33,7 @@ class Proveedor
     #[JoinColumn(nullable: false)]
     private ?TipoDocumento $tipoDocumento = null;
 
-    #[Column(type: 'string', length: 15)]
+    #[Column(type: 'string', length: 15, unique: true)]
     private ?string $documento = null;
 
     #[Column(type: 'string', length: 100, nullable: true)]

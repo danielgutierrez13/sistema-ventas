@@ -65,11 +65,8 @@ class ClienteController extends WebAuthController
         if ($form->isSubmitted() && $form->isValid()) {
             if ($manager->save($cliente)) {
                 $this->messageSuccess('Registro creado!!!');
-
-                return $this->redirectToRoute('cliente_index');
             }
-
-            $this->addErrors($manager->errors());
+            return $this->redirectToRoute('cliente_index');
         }
 
         return $this->renderForm(
@@ -177,8 +174,7 @@ class ClienteController extends WebAuthController
         if (null === $array) {
             return $this->json(['status' => false, 'message' => 'No se encontro el producto']);
         }
+
         return $this->json(['status' => true, 'data' => $array]);
-
-
     }
 }
