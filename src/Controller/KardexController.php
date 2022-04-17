@@ -18,13 +18,13 @@ class KardexController extends WebAuthController
     #[Route('/', name: 'kardex_index')]
     public function index(Request $request, CompraRepository $compraRepository, PedidoRepository $pedidoRepository, ProductoRepository $productoRepository): Response
     {
-//      $producto = $productoRepository->find(1);
+        $producto = $productoRepository->find(1);
         $compras = $compraRepository->findBy(['activo' => true]);
         $ventas = $pedidoRepository->findBy(['estadoPago' => true, 'activo' => true]);
 
         $data = [];
-        $this->obtenerCompras($compras, $data);
-        $this->obtenerVentas($ventas, $data);
+        $this->obtenerCompras($compras, $data, $producto);
+        $this->obtenerVentas($ventas, $data, $producto);
 
         ksort($data);
 
@@ -36,38 +36,42 @@ class KardexController extends WebAuthController
         ]);
     }
 
-    private function obtenerCompras(array $compras, array &$data): void
+    private function obtenerCompras(array $compras, array &$data, $producto): void
     {
         foreach ($compras as $compra) {
             $fecha = $compra->createdAt()->format('Y-m-d');
             foreach ($compra->getDetalleCompras() as $detalleCompra) {
-                $precio = (float) $detalleCompra->getPrecio();
-                $cantidad = (float) $detalleCompra->getCantidad();
-                $data[$fecha]['compra'][] = [
-                    'fecha' => $compra->createdAt()->format('d-m-Y'),
-                    'producto' => $detalleCompra->getProducto()->getDescripcion(),
-                    'precio' => $precio,
-                    'cantidad' => $cantidad,
-                    'total' => $precio * $cantidad,
-                ];
+                if ($producto == $detalleCompra->getProducto()) {
+                    $precio = (float) $detalleCompra->getPrecio();
+                    $cantidad = (float) $detalleCompra->getCantidad();
+                    $data[$fecha]['compra'][] = [
+                        'fecha' => $compra->createdAt()->format('d-m-Y'),
+                        'producto' => $detalleCompra->getProducto()->getDescripcion(),
+                        'precio' => $precio,
+                        'cantidad' => $cantidad,
+                        'total' => $precio * $cantidad,
+                    ];
+                }
             }
         }
     }
 
-    private function obtenerVentas(array $ventas, array &$data): void
+    private function obtenerVentas(array $ventas, array &$data, $producto): void
     {
         foreach ($ventas as $venta) {
             $fecha = $venta->createdAt()->format('Y-m-d');
             foreach ($venta->getDetallePedidos() as $detallePedido) {
-                $precio = (float) $detallePedido->getPrecio();
-                $cantidad = (float) $detallePedido->getCantidad();
-                $data[$fecha]['venta'][] = [
-                    'fecha' => $venta->createdAt()->format('d-m-Y'),
-                    'producto' => $detallePedido->getProducto()->getDescripcion(),
-                    'precio' => $precio,
-                    'cantidad' => $cantidad,
-                    'total' => $precio * $cantidad,
-                ];
+                if ($producto == $detallePedido->getProducto()) {
+                    $precio = (float) $detallePedido->getPrecio();
+                    $cantidad = (float) $detallePedido->getCantidad();
+                    $data[$fecha]['venta'][] = [
+                        'fecha' => $venta->createdAt()->format('d-m-Y'),
+                        'producto' => $detallePedido->getProducto()->getDescripcion(),
+                        'precio' => $precio,
+                        'cantidad' => $cantidad,
+                        'total' => $precio * $cantidad,
+                    ];
+                }
             }
         }
     }
