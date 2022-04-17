@@ -18,18 +18,20 @@ class KardexController extends WebAuthController
     #[Route('/', name: 'kardex_index')]
     public function index(Request $request, CompraRepository $compraRepository, PedidoRepository $pedidoRepository, ProductoRepository $productoRepository): Response
     {
+        $mes = 4;
+        $anio = 2022;
         $producto = $productoRepository->find(2);
         $compras = $compraRepository->findBy(['activo' => true]);
         $ventas = $pedidoRepository->findBy(['estadoPago' => true, 'activo' => true]);
         $stockActual = $producto->getStock();
 
         $data = [];
-        $this->obtenerCompras($compras, $data, $producto, $stockActual);
-        $this->obtenerVentas($ventas, $data, $producto, $stockActual);
+        $this->obtenerCompras($compras, $data, $producto, $stockActual, $mes, $anio);
+        $this->obtenerVentas($ventas, $data, $producto, $stockActual, $mes, $anio);
 
         ksort($data);
 
-        $cantidadInicial = $stockActual; // Obtenido de la table Producto.
+        $cantidadInicial = $stockActual;
         $this->obtenerSaldos($cantidadInicial, $data, $stockActual);
 
         return $this->render('kardex/index.html.twig', [
@@ -38,43 +40,51 @@ class KardexController extends WebAuthController
         ]);
     }
 
-    private function obtenerCompras(array $compras, array &$data, $producto, &$stockActual): void
+    private function obtenerCompras(array $compras, array &$data, $producto, &$stockActual, $mes, $anio): void
     {
         foreach ($compras as $compra) {
             $fecha = $compra->createdAt()->format('Y-m-d');
+            $auxmes = $compra->createdAt()->format('m');
+            $auxanio = $compra->createdAt()->format('Y');
             foreach ($compra->getDetalleCompras() as $detalleCompra) {
                 if ($producto == $detalleCompra->getProducto()) {
-                    $precio = (float) $detalleCompra->getPrecio();
-                    $cantidad = (float) $detalleCompra->getCantidad();
-                    $data[$fecha]['compra'][] = [
-                        'fecha' => $compra->createdAt()->format('d-m-Y'),
-                        'producto' => $detalleCompra->getProducto()->getDescripcion(),
-                        'precio' => sprintf('%.2f', ($precio / $cantidad)),
-                        'cantidad' => $cantidad,
-                        'total' => sprintf('%.2f', ($precio)),
-                    ];
-                    $stockActual -= $cantidad;
+                    if ($auxmes == $mes && $auxanio == $anio) {
+                        $precio = (float) $detalleCompra->getPrecio();
+                        $cantidad = (float) $detalleCompra->getCantidad();
+                        $data[$fecha]['compra'][] = [
+                            'fecha' => $compra->createdAt()->format('d-m-Y'),
+                            'producto' => $detalleCompra->getProducto()->getDescripcion(),
+                            'precio' => sprintf('%.2f', ($precio / $cantidad)),
+                            'cantidad' => $cantidad,
+                            'total' => sprintf('%.2f', ($precio)),
+                        ];
+                        $stockActual -= $cantidad;
+                    }
                 }
             }
         }
     }
 
-    private function obtenerVentas(array $ventas, array &$data, $producto, &$stockActual): void
+    private function obtenerVentas(array $ventas, array &$data, $producto, &$stockActual, $mes, $anio): void
     {
         foreach ($ventas as $venta) {
             $fecha = $venta->createdAt()->format('Y-m-d');
+            $auxmes = $venta->createdAt()->format('m');
+            $auxanio = $venta->createdAt()->format('Y');
             foreach ($venta->getDetallePedidos() as $detallePedido) {
                 if ($producto == $detallePedido->getProducto()) {
-                    $precio = (float) $detallePedido->getPrecio();
-                    $cantidad = (float) $detallePedido->getCantidad();
-                    $data[$fecha]['venta'][] = [
-                        'fecha' => $venta->createdAt()->format('d-m-Y'),
-                        'producto' => $detallePedido->getProducto()->getDescripcion(),
-                        'cantidad' => $cantidad,
-                        'precio' => sprintf('%.2f', ($precio / $cantidad)),
-                        'total' => sprintf('%.2f', ($precio)),
-                    ];
-                    $stockActual += $cantidad;
+                    if ($auxmes == $mes && $auxanio == $anio) {
+                        $precio = (float) $detallePedido->getPrecio();
+                        $cantidad = (float) $detallePedido->getCantidad();
+                        $data[$fecha]['venta'][] = [
+                            'fecha' => $venta->createdAt()->format('d-m-Y'),
+                            'producto' => $detallePedido->getProducto()->getDescripcion(),
+                            'cantidad' => $cantidad,
+                            'precio' => sprintf('%.2f', ($precio / $cantidad)),
+                            'total' => sprintf('%.2f', ($precio)),
+                        ];
+                        $stockActual += $cantidad;
+                    }
                 }
             }
         }
@@ -82,18 +92,22 @@ class KardexController extends WebAuthController
 
     private function obtenerSaldos(float $cantidadSaldo, array &$data): void
     {
+        $saldo = $cantidadSaldo;
         foreach ($data as &$item) {
             if (isset($item['compra'])) {
                 foreach ($item['compra'] as &$compra) {
                     $cantidadSaldo += $compra['cantidad'];
-                    $compra['cantidadSaldo'] = $cantidadSaldo;
-                    $compra['total'] = $cantidadSaldo;
+                    $compra['totalSaldo'] = $cantidadSaldo;
+                    $compra['cantidadSaldo'] = $saldo;
+                    $saldo = $cantidadSaldo;
                 }
             }
             if (isset($item['venta'])) {
                 foreach ($item['venta'] as &$venta) {
                     $cantidadSaldo -= $venta['cantidad'];
-                    $venta['cantidadSaldo'] = $cantidadSaldo;
+                    $venta['totalSaldo'] = $cantidadSaldo;
+                    $venta['cantidadSaldo'] = $saldo;
+                    $saldo = $cantidadSaldo;
                 }
             }
         }

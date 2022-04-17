@@ -34,7 +34,6 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>{{ cantidad }}</tr>
                 {% for item in data %}
                     {% if item.compra is defined %}
                         {% for compra in item.compra %}
@@ -48,7 +47,7 @@
                                 <td></td>
                                 <td></td>
                                 <td>{{ compra.cantidadSaldo }}</td>
-                                <td></td>
+                                <td>{{ compra.totalSaldo }}</td>
                             </tr>
                         {% endfor %}
                     {% endif %}
@@ -64,7 +63,7 @@
                                 <td>{{ venta.cantidad }}</td>
                                 <td>{{ venta.total }}</td>
                                 <td>{{ venta.cantidadSaldo }}</td>
-                                <td></td>
+                                <td>{{ venta.totalSaldo }}</td>
                             </tr>
                         {% endfor %}
                     {% endif %}
