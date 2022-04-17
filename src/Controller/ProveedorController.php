@@ -184,15 +184,13 @@ class ProveedorController extends WebAuthController
         $newProveedor->setPropietario($this->getUser());
 
         $entityManager->persist($newProveedor);
-        if ($entityManager->flush()) {
-            $data = [
-                'id' => $newProveedor->getId(),
-                'name' => $newProveedor->getNombre(),
-            ];
+        $entityManager->flush();
+        $data = [
+            'id' => $newProveedor->getId(),
+            'documento' => $newProveedor->getDocumento(),
+            'name' => $newProveedor->getNombre(),
+        ];
 
-            return $this->json(['status' => true, 'data' => $data]);
-        } else {
-            return $this->json(['status' => false, 'message' => 'Datos duplicados']);
-        }
+        return $this->json(['status' => true, 'data' => $data]);
     }
 }

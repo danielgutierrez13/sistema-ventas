@@ -212,7 +212,7 @@
 
                         $('#modalAddProveedor').modal('hide')
                         let data = result.data
-                        let newDataProveedor = '<option value="'+ data.id +'">'+ data.name +'</option>'
+                        let newDataProveedor = '<option value="'+ data.id +'">'+ data.name +' - '+data.documento +'</option>'
                         proveedorSelect.append(newDataProveedor)
                         proveedorSelect.val(data.id);
                     }
