@@ -153,7 +153,7 @@ class PedidoController extends WebAuthController
         return $this->redirectToRoute('pedido_index');
     }
 
-    #[Route(path: '/{id}/entregaDetalle', name: 'pago_entrega_detalle', methods: ['GET', 'POST'])]
+    #[Route(path: '/{id}/entregaDetalle', name: 'pedido_entrega_detalle', methods: ['GET', 'POST'])]
     public function entregaDetalle(DetallePedido $detallePedido, EntityManagerInterface $entityManager): Response
     {
         if (1 == $detallePedido->getEstadoEntrega()) {

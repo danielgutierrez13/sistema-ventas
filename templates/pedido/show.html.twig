@@ -38,12 +38,12 @@
                 <td class="text-center">{{ pedido.estadoEntrega | yesno_custom | raw }}</td>
                 <td class="text-center">{% if (pedido.estadoEntrega == 1)  %}
                         {% if access.has('edit') %}
-                            {{ action.btn_entrega2_ico(path('pago_entrega_detalle', {'id': pedido.id})) }}
+                            {{ action.btn_entrega2_ico(path('pedido_entrega_detalle', {'id': pedido.id})) }}
                         {% endif %}
                     {% endif %}
                     {% if (pedido.estadoEntrega == 0)  %}
                         {% if access.has('edit') %}
-                            {{ action.btn_entrega_ico(path('pago_entrega_detalle', {'id': pedido.id})) }}
+                            {{ action.btn_entrega_ico(path('pedido_entrega_detalle', {'id': pedido.id})) }}
                         {% endif %}
                     {% endif %}
                 </td>

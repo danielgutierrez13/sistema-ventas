@@ -7,6 +7,7 @@ use CarlosChininin\App\Infrastructure\Security\Permission;
 use CarlosChininin\Util\Http\ParamFetcher;
 use Doctrine\ORM\EntityManagerInterface;
 use Pidia\Apps\Demo\Entity\Cliente;
+use Pidia\Apps\Demo\Entity\DetallePedido;
 use Pidia\Apps\Demo\Entity\Pedido;
 use Pidia\Apps\Demo\Entity\Proveedor;
 use Pidia\Apps\Demo\Form\ClienteType;
@@ -149,6 +150,20 @@ class PagoController extends WebAuthController
                 'form' => $form->createView(),
             ]
         );
+    }
+
+    #[Route(path: '/{id}/entregaDetallePago', name: 'pago_entrega_detalle', methods: ['GET', 'POST'])]
+    public function entregaDetalle(DetallePedido $detallePedido, EntityManagerInterface $entityManager): Response
+    {
+        if (1 == $detallePedido->getEstadoEntrega()) {
+            $detallePedido->setEstadoEntrega(0);
+        } else {
+            $detallePedido->setEstadoEntrega(1);
+        }
+        $entityManager->persist($detallePedido);
+        $entityManager->flush();
+
+        return $this->render('pago/show.html.twig', ['pago' => $detallePedido->getPedido()]);
     }
 
     #[Route(path: '/{id}', name: 'pago_delete', methods: ['POST'])]
