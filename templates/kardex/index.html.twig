@@ -12,88 +12,89 @@
 {% endblock %}
 
 {% block _main %}
-    <div class="table-responsive">
+    <div>
         <table class="table table-bordered">
-        <thead>
-        <tr class="text-uppercase font-weight-bold text-center" style="border: 1px solid #000000;">
-            <td rowspan="2">Fecha</td>
-            <td rowspan="2">Producto</td>
-            <td colspan="3">Ingresos</td>
-            <td colspan="3">Salidas</td>
-            <td colspan="2">Saldo</td>
-        </tr>
-        <tr class="text-uppercase font-weight-bold text-center " style="border: 1px solid #000000;">
-            {{ action.th('Precio', true, 'text-right') }}
-            {{ action.th('cantidad', true, 'text-right') }}
-            {{ action.th('total', true, 'text-right') }}
-            {{ action.th('Precio', true, 'text-right') }}
-            {{ action.th('cantidad', true, 'text-right') }}
-            {{ action.th('total', true, 'text-right') }}
-            {{ action.th('Cantidad', true, 'text-right') }}
-            {{ action.th('Total', true, 'text-right') }}
-        </tr>
-        </thead>
-        <tbody>
-            {% for item in data %}
-                {% if item.compra is defined %}
-                    {% for compra in item.compra %}
-                        <tr style="border: 1px solid #000000;">
-                            <td>{{ compra.fecha }}</td>
-                            <td>{{ compra.producto }}</td>
-                            <td class="text-end">{{ compra.precio }}</td>
-                            <td class="text-end">{{ compra.cantidad }}</td>
-                            <td class="text-end">{{ compra.total }}</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td class="text-end">{{ compra.cantidadSaldo }}</td>
-                            <td></td>
-                        </tr>
-                    {% endfor %}
-                {% endif %}
-                {% if item.venta is defined %}
-                    {% for venta in item.venta %}
-                        <tr style="border: 1px solid #000000;">
-                            <td>{{ venta.fecha }}</td>
-                            <td>{{ venta.producto }}</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td class="text-end">{{ venta.precio }}</td>
-                            <td class="text-end">{{ venta.cantidad }}</td>
-                            <td class="text-end">{{ venta.total }}</td>
-                            <td class="text-end">{{ venta.cantidadSaldo }}</td>
-                            <td></td>
-                        </tr>
-                    {% endfor %}
-                {% endif %}
-            {% endfor %}
-        </tbody>
+            <thead>
+                <tr class="text-uppercase font-weight-bold text-center">
+                    <td rowspan="2">Fecha</td>
+                    <td rowspan="2">Producto</td>
+                    <td colspan="3">Ingresos</td>
+                    <td colspan="3">Salidas</td>
+                    <td colspan="2">Saldo</td>
+                </tr>
+                <tr class="text-uppercase font-weight-bold text-center ">
+                    <th>Precio</th>
+                    <th>Cantidad</th>
+                    <th>Total</th>
+                    <th>Precio</th>
+                    <th>Cantidad</th>
+                    <th>Total</th>
+                    <th>Cantidad</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>{{ cantidad }}</tr>
+                {% for item in data %}
+                    {% if item.compra is defined %}
+                        {% for compra in item.compra %}
+                            <tr>
+                                <td>{{ compra.fecha }}</td>
+                                <td>{{ compra.producto }}</td>
+                                <td>{{ compra.precio }}</td>
+                                <td>{{ compra.cantidad }}</td>
+                                <td>{{ compra.total }}</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td>{{ compra.cantidadSaldo }}</td>
+                                <td></td>
+                            </tr>
+                        {% endfor %}
+                    {% endif %}
+                    {% if item.venta is defined %}
+                        {% for venta in item.venta %}
+                            <tr>
+                                <td>{{ venta.fecha }}</td>
+                                <td>{{ venta.producto }}</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td>{{ venta.precio }}</td>
+                                <td>{{ venta.cantidad }}</td>
+                                <td>{{ venta.total }}</td>
+                                <td>{{ venta.cantidadSaldo }}</td>
+                                <td></td>
+                            </tr>
+                        {% endfor %}
+                    {% endif %}
+                {% endfor %}
+            </tbody>
         </table>
     </div>
 
-{#    {{ pagination.show(paginator, _section) }}#}
+
 {% endblock %}
 
-{#{% block _main_footer %}#}
-{#    {% include 'crud/_index_links.html.twig' with {'route_base': 'categoria'} %}#}
-{#{% endblock%}#}
+{% block _main_footer %}
 
-{#{% block _main_options %}#}
-{#    {% include 'crud/_index_filter.html.twig' %}#}
-{#{% endblock %}#}
+{% endblock%}
 
-{#{% block _main_tools %}#}
-{#    {% include 'crud/_tools_ico.html.twig' %}#}
-{#{% endblock %}#}
+{% block _main_options %}
+   {% include 'crud/_index_filter.html.twig' %}
+{% endblock %}
 
-{#{% block _body_tools_ico %}#}
-{#    {% include 'crud/_index_links_tool.html.twig' with {'route_base': 'categoria'}  %}#}
-{#{% endblock %}#}
+{% block _main_tools %}
 
-{#{% block _body_tools %}#}
-{#    {% include 'crud/_index_links_ico.html.twig' with {'route_base': 'categoria'}  %}#}
-{#{% endblock %}#}
+{% endblock %}
+
+{% block _body_tools_ico %}
+
+{% endblock %}
+
+{% block _body_tools %}
+
+{% endblock %}
 
 {% block _stylesheets %}
 {% endblock %}

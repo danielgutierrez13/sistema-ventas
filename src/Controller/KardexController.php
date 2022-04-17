@@ -18,25 +18,27 @@ class KardexController extends WebAuthController
     #[Route('/', name: 'kardex_index')]
     public function index(Request $request, CompraRepository $compraRepository, PedidoRepository $pedidoRepository, ProductoRepository $productoRepository): Response
     {
-        $producto = $productoRepository->find(1);
+        $producto = $productoRepository->find(2);
         $compras = $compraRepository->findBy(['activo' => true]);
         $ventas = $pedidoRepository->findBy(['estadoPago' => true, 'activo' => true]);
+        $stockActual = $producto->getStock();
 
         $data = [];
-        $this->obtenerCompras($compras, $data, $producto);
-        $this->obtenerVentas($ventas, $data, $producto);
+        $this->obtenerCompras($compras, $data, $producto, $stockActual);
+        $this->obtenerVentas($ventas, $data, $producto, $stockActual);
 
         ksort($data);
 
-        $cantidadInicial = 0.00; // Obtenido de la table Producto.
-        $this->obtenerSaldos($cantidadInicial, $data);
+        $cantidadInicial = $stockActual; // Obtenido de la table Producto.
+        $this->obtenerSaldos($cantidadInicial, $data, $stockActual);
 
         return $this->render('kardex/index.html.twig', [
             'data' => $data,
+            'cantidad' => $cantidadInicial,
         ]);
     }
 
-    private function obtenerCompras(array $compras, array &$data, $producto): void
+    private function obtenerCompras(array $compras, array &$data, $producto, &$stockActual): void
     {
         foreach ($compras as $compra) {
             $fecha = $compra->createdAt()->format('Y-m-d');
@@ -47,16 +49,17 @@ class KardexController extends WebAuthController
                     $data[$fecha]['compra'][] = [
                         'fecha' => $compra->createdAt()->format('d-m-Y'),
                         'producto' => $detalleCompra->getProducto()->getDescripcion(),
-                        'precio' => $precio,
+                        'precio' => sprintf('%.2f', ($precio / $cantidad)),
                         'cantidad' => $cantidad,
-                        'total' => $precio * $cantidad,
+                        'total' => sprintf('%.2f', ($precio)),
                     ];
+                    $stockActual -= $cantidad;
                 }
             }
         }
     }
 
-    private function obtenerVentas(array $ventas, array &$data, $producto): void
+    private function obtenerVentas(array $ventas, array &$data, $producto, &$stockActual): void
     {
         foreach ($ventas as $venta) {
             $fecha = $venta->createdAt()->format('Y-m-d');
@@ -67,10 +70,11 @@ class KardexController extends WebAuthController
                     $data[$fecha]['venta'][] = [
                         'fecha' => $venta->createdAt()->format('d-m-Y'),
                         'producto' => $detallePedido->getProducto()->getDescripcion(),
-                        'precio' => $precio,
                         'cantidad' => $cantidad,
-                        'total' => $precio * $cantidad,
+                        'precio' => sprintf('%.2f', ($precio / $cantidad)),
+                        'total' => sprintf('%.2f', ($precio)),
                     ];
+                    $stockActual += $cantidad;
                 }
             }
         }
@@ -83,14 +87,13 @@ class KardexController extends WebAuthController
                 foreach ($item['compra'] as &$compra) {
                     $cantidadSaldo += $compra['cantidad'];
                     $compra['cantidadSaldo'] = $cantidadSaldo;
-                    // total saldo
+                    $compra['total'] = $cantidadSaldo;
                 }
             }
             if (isset($item['venta'])) {
                 foreach ($item['venta'] as &$venta) {
                     $cantidadSaldo -= $venta['cantidad'];
                     $venta['cantidadSaldo'] = $cantidadSaldo;
-                    // total saldo
                 }
             }
         }
