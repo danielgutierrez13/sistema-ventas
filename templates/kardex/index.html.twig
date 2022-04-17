@@ -13,16 +13,16 @@
 
 {% block _main %}
     <div>
-        <table class="table table-bordered">
-            <thead>
-                <tr class="text-uppercase font-weight-bold text-center">
+        <table class="table" style="text-align: center">
+            <thead style="color: black;border: solid;font-weight: bold;" >
+                <tr style="background: #13a4a4">
                     <td rowspan="2">Fecha</td>
                     <td rowspan="2">Producto</td>
                     <td colspan="3">Ingresos</td>
                     <td colspan="3">Salidas</td>
                     <td colspan="2">Saldo</td>
                 </tr>
-                <tr class="text-uppercase font-weight-bold text-center ">
+                <tr style="background: #33FFE0" ">
                     <th>Precio</th>
                     <th>Cantidad</th>
                     <th>Total</th>
@@ -33,7 +33,7 @@
                     <th>Total</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody style="color: black;border: solid">
                 {% for item in data %}
                     {% if item.compra is defined %}
                         {% for compra in item.compra %}
