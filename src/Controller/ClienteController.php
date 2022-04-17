@@ -5,7 +5,10 @@ namespace Pidia\Apps\Demo\Controller;
 use CarlosChininin\App\Infrastructure\Controller\WebAuthController;
 use CarlosChininin\App\Infrastructure\Security\Permission;
 use CarlosChininin\Util\Http\ParamFetcher;
+use Doctrine\ORM\EntityManagerInterface;
 use Pidia\Apps\Demo\Entity\Cliente;
+use Pidia\Apps\Demo\Entity\TipoDocumento;
+use Pidia\Apps\Demo\Entity\TipoPersona;
 use Pidia\Apps\Demo\Form\ClienteType;
 use Pidia\Apps\Demo\Manager\BusquedaApiManager;
 use Pidia\Apps\Demo\Manager\ClienteManager;
@@ -176,5 +179,50 @@ class ClienteController extends WebAuthController
         }
 
         return $this->json(['status' => true, 'data' => $array]);
+    }
+
+    #[Route(path: '/new/ajax', name: 'cliente_new_ajax', methods: ['POST'])]
+    public function newAjax(Request $request, EntityManagerInterface $entityManager): Response
+    {
+        $this->denyAccess([Permission::NEW]);
+        $data = $request->request->all('cliente');
+        $newCliente = new Cliente();
+
+        $tipoPersona = $entityManager->getRepository(TipoPersona::class)->find((int) $data['tipoPersona']);
+        if (null === $tipoPersona) {
+            return $this->json(['status' => false, 'message' => 'Tipo de persona no existe']);
+        }
+        $newCliente->setTipoPersona($tipoPersona);
+
+        $tipoDocumento = $entityManager->getRepository(TipoDocumento::class)->find((int) $data['tipoDocumento']);
+        if (null === $tipoDocumento) {
+            return $this->json(['status' => false, 'message' => 'Tipo de documento no existe']);
+        }
+        $newCliente->setTipoDocumento($tipoDocumento);
+
+        $newCliente->setDireccion($data['direccion']);
+        $newCliente->setTelefono($data['telefono']);
+
+        if ('' === $data['documento']) {
+            return $this->json(['status' => false, 'message' => 'Ingrese un numero de documento']);
+        }
+        $newCliente->setDocumento($data['documento']);
+
+        if ('' === $data['nombre']) {
+            return $this->json(['status' => false, 'message' => 'Ingrese un nombre']);
+        }
+        $newCliente->setNombre($data['nombre']);
+
+        $newCliente->setPropietario($this->getUser());
+
+        $entityManager->persist($newCliente);
+        $entityManager->flush();
+
+        $data = [
+            'id' => $newCliente->getId(),
+            'name' => $newCliente->getNombre(),
+        ];
+
+        return $this->json(['status' => true, 'data' => $data]);
     }
 }

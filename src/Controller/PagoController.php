@@ -6,8 +6,12 @@ use CarlosChininin\App\Infrastructure\Controller\WebAuthController;
 use CarlosChininin\App\Infrastructure\Security\Permission;
 use CarlosChininin\Util\Http\ParamFetcher;
 use Doctrine\ORM\EntityManagerInterface;
+use Pidia\Apps\Demo\Entity\Cliente;
 use Pidia\Apps\Demo\Entity\Pedido;
+use Pidia\Apps\Demo\Entity\Proveedor;
+use Pidia\Apps\Demo\Form\ClienteType;
 use Pidia\Apps\Demo\Form\PedidoType;
+use Pidia\Apps\Demo\Form\ProveedorType;
 use Pidia\Apps\Demo\Manager\PagoManager;
 use Pidia\Apps\Demo\Manager\PedidoManager;
 use Symfony\Component\HttpFoundation\Request;
@@ -85,11 +89,16 @@ class PagoController extends WebAuthController
             return $this->redirectToRoute('pago_index', ['id' => $pedido->getId()]);
         }
 
+        $cliente = new Cliente();
+        $fmrCliente = $this->createForm(ClienteType::class, $cliente);
+        $fmrCliente->handleRequest($request);
+
         return $this->render(
             'pago/new.html.twig',
             [
                 'pedido' => $pedido,
                 'form' => $form->createView(),
+                'fmrCliente' => $fmrCliente->createView(),
             ]
         );
     }
