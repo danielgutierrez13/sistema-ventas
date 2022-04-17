@@ -18,7 +18,7 @@ class KardexController extends WebAuthController
     #[Route('/', name: 'kardex_index')]
     public function index(Request $request, CompraRepository $compraRepository, PedidoRepository $pedidoRepository, ProductoRepository $productoRepository): Response
     {
-        $mes = 4;
+        $mes = 3;
         $anio = 2022;
         $producto = $productoRepository->find(2);
         $compras = $compraRepository->findBy(['activo' => true]);
@@ -48,9 +48,9 @@ class KardexController extends WebAuthController
             $auxanio = $compra->createdAt()->format('Y');
             foreach ($compra->getDetalleCompras() as $detalleCompra) {
                 if ($producto == $detalleCompra->getProducto()) {
+                    $precio = (float) $detalleCompra->getPrecio();
+                    $cantidad = (float) $detalleCompra->getCantidad();
                     if ($auxmes == $mes && $auxanio == $anio) {
-                        $precio = (float) $detalleCompra->getPrecio();
-                        $cantidad = (float) $detalleCompra->getCantidad();
                         $data[$fecha]['compra'][] = [
                             'fecha' => $compra->createdAt()->format('d-m-Y'),
                             'producto' => $detalleCompra->getProducto()->getDescripcion(),
@@ -58,8 +58,8 @@ class KardexController extends WebAuthController
                             'cantidad' => $cantidad,
                             'total' => sprintf('%.2f', ($precio)),
                         ];
-                        $stockActual -= $cantidad;
                     }
+                    $stockActual -= $cantidad;
                 }
             }
         }
@@ -73,9 +73,9 @@ class KardexController extends WebAuthController
             $auxanio = $venta->createdAt()->format('Y');
             foreach ($venta->getDetallePedidos() as $detallePedido) {
                 if ($producto == $detallePedido->getProducto()) {
+                    $precio = (float) $detallePedido->getPrecio();
+                    $cantidad = (float) $detallePedido->getCantidad();
                     if ($auxmes == $mes && $auxanio == $anio) {
-                        $precio = (float) $detallePedido->getPrecio();
-                        $cantidad = (float) $detallePedido->getCantidad();
                         $data[$fecha]['venta'][] = [
                             'fecha' => $venta->createdAt()->format('d-m-Y'),
                             'producto' => $detallePedido->getProducto()->getDescripcion(),
@@ -83,8 +83,8 @@ class KardexController extends WebAuthController
                             'precio' => sprintf('%.2f', ($precio / $cantidad)),
                             'total' => sprintf('%.2f', ($precio)),
                         ];
-                        $stockActual += $cantidad;
                     }
+                    $stockActual += $cantidad;
                 }
             }
         }
