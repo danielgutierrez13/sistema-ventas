@@ -18,7 +18,7 @@ class KardexController extends WebAuthController
     #[Route('/', name: 'kardex_index')]
     public function index(Request $request, CompraRepository $compraRepository, PedidoRepository $pedidoRepository, ProductoRepository $productoRepository): Response
     {
-        $mes = 3;
+        $mes = 4;
         $anio = 2022;
         $producto = $productoRepository->find(2);
         $compras = $compraRepository->findBy(['activo' => true]);
@@ -59,7 +59,9 @@ class KardexController extends WebAuthController
                             'total' => sprintf('%.2f', ($precio)),
                         ];
                     }
-                    $stockActual -= $cantidad;
+                    if ($auxmes >= $mes && $auxanio >= $anio) {
+                        $stockActual -= $cantidad;
+                    }
                 }
             }
         }
@@ -84,7 +86,9 @@ class KardexController extends WebAuthController
                             'total' => sprintf('%.2f', ($precio)),
                         ];
                     }
-                    $stockActual += $cantidad;
+                    if ($auxmes >= $mes && $auxanio >= $anio) {
+                        $stockActual += $cantidad;
+                    }
                 }
             }
         }
