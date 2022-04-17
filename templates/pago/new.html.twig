@@ -45,6 +45,62 @@
 
 {% block _main %}
     {{ include('pago/_form.html.twig', {'button_label': 'Guardar'}) }}
+
+    <div class="modal fade" tabindex="-1" id="modalAddCliente">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Agregar Cliente</h5>
+                    <!--begin::Close-->
+                    <div class="btn btn-sm btn-light-danger btn-icon btn_cerrar" data-bs-dismiss="modal" aria-label="Close">
+                        <span class="svg-icon svg-icon-2x">X</span>
+                    </div>
+                    <!--end::Close-->
+                </div>
+
+                <form id="fmrCliente" class="" action="{{ path('cliente_new_ajax') }}" method="post" autocomplete="off">
+                    <div class="modal-body">
+                        {{ action.frm_column(
+                            action.frm_column_field_select(fmrCliente.tipoPersona,'','',2),
+                            null,
+                            null,
+                            null,
+                            1
+                        ) }}
+                        {{ action.frm_column(
+                            action.frm_column_field_select(fmrCliente.tipoDocumento),
+                            action.frm_column_field(fmrCliente.documento)
+                        ) }}
+                        {{ action.frm_column(
+                            action.frm_column_field(fmrCliente.nombre,'','',2),
+                            null,
+                            null,
+                            null,
+                            1
+                        ) }}
+                        {{ action.frm_column(
+                            action.frm_column_field(fmrCliente.direccion,'','',2),
+                            null,
+                            null,
+                            null,
+                            1
+                        ) }}
+                        {{ action.frm_column(
+                            action.frm_column_field(fmrCliente.telefono,'','',2),
+                            null,
+                            null,
+                            null,
+                            1
+                        ) }}
+
+                    </div>
+                    <div class="modal-footer">
+                        <button id="btnSaveCliente" type="Submit" class="btn btn-warning"> <i class="fa fa-save"></i> Guardar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 {% endblock %}
 
 {% block _main_tools %}
@@ -55,6 +111,11 @@
     {% if access.has('list') %}
         {{ action.btn_list_link_ico(path('pago_index')) }}
     {% endif %}
+
+    <a class="btn btn-sm btn-icon btn-light-primary"  data-bs-toggle="modal" data-toggle="tooltip"
+       data-bs-target="#modalAddCliente" title= "Nuevo Cliente">
+        <i class="bi bi-person-plus-fill"></i>
+    </a>
 {% endblock %}
 
 {% block _body_tools_ico %}
@@ -74,6 +135,7 @@
     <script src="{{ asset('js/select2.js') }}"></script>
     <script src="{{ asset('js/collection.js') }}"></script>
     <script>
+        let clienteSelect = $('#pedido_cliente')
         function calcularTotal()
         {
             let total = 0.00
@@ -180,6 +242,44 @@
 
         }
 
+        function tipoDocument( $tipoPersona){
+            $.ajax({
+                type: 'POST',
+                url: '{{ path('documento_for_tipo_persona') }}',
+                data: {
+                    idTipoPersona: $tipoPersona.val(),
+                },
+                success: function (result) {
+                    if (result) {
+                        tipoDocumento.empty();
+                        $.each(result.data, function(k, v) {
+                            const option = document.createElement('option');
+                            option.value = result.data[k].id;
+                            option.text = result.data[k].descripcion;
+                            tipoDocumento.append(option);
+                        });
+                    }else {
+                        Notify.warning('Error Base de Datos')
+                    }
+                }
+            })
+        }
+
+        function limpiar(){
+            nombre.val('')
+            direccion.val('')
+            telefono.val('')
+        }
+
+        let nombre = $('#cliente_nombre')
+        let direccion = $('#cliente_direccion')
+        let telefono = $('#cliente_telefono')
+        let documento = $('#cliente_documento')
+        let tipoDocumento = $('#cliente_tipoDocumento')
+        let tipoPersona = $('#cliente_tipoPersona')
+
+        tipoDocument(tipoPersona)
+
         jQuery(document).ready(function() {
             Collection.init('#pedido_detallePedidos');
             Select2();
@@ -218,6 +318,96 @@
                 let $this = $(this).val();
                 let precio = $('#pedido_precioFinal').val();
                 $('#pedido_cambio').val(parseFloat($this) - parseFloat(precio))
+            });
+
+            $(document).on('click', '#btnSaveCliente', function (e) {
+                e.preventDefault()
+                let form = $('#fmrCliente');
+                let actionUrl = form.attr('action');
+
+                $.ajax({
+                    type: "POST",
+                    url: actionUrl,
+                    data: form.serialize(), // serializes the form's elements.
+                    success: function(result)
+                    {
+                        if (!result.status) {
+                            Notify.danger(result.message);
+                            return false;
+                        }
+
+                        $('#modalAddCliente').modal('hide')
+                        let data = result.data
+                        let newDataCliente = '<option value="'+ data.id +'">'+ data.name +'</option>'
+                        clienteSelect.append(newDataCliente)
+                        clienteSelect.val(data.id);
+                    }
+                });
+            });
+
+            limpiar()
+            $(document).on('keyup', '#cliente_documento', function () {
+                let $this = $(this)
+                //verificamos DNI
+                if ($this.val().length === 8 && tipoDocumento.val() == 1 ) {
+                    $.ajax({
+                        type: 'POST',
+                        url: '{{ path('cliente_busqueda_api_dni') }}',
+                        data: {
+                            dni: $this.val(),
+                        },
+                        success: function (result) {
+                            if (result) {
+                                nombre.val(result.nombre)
+                                direccion.val(result.direccion)
+                            } else {
+                                limpiar()
+                                Notify.warning('No se encontro nombre para documento')
+                            }
+                        }
+                    })
+                    //Verificamos RUC
+                }else if($this.val().length === 11 && tipoDocumento.val() == 2){
+                    $.ajax({
+                        type: 'POST',
+                        url: '{{ path('cliente_busqueda_api_ruc') }}',
+                        data: {
+                            ruc: $this.val(),
+                        },
+                        success: function (result) {
+                            if (result) {
+                                nombre.val(result.nombre)
+                                direccion.val(result.direccion)
+                            } else {
+                                limpiar()
+                                Notify.warning('No se encontro nombre para documento')
+                            }
+                        }
+                    })
+                }else if($this.val().length > 11 && tipoDocumento.val() == 2) {
+                    $this.val('')
+                    limpiar()
+                    Notify.warning('Numero de documento Incorrecto')
+                }else if($this.val().length > 8 && tipoDocumento.val() == 1) {
+                    $this.val('')
+                    limpiar()
+                    Notify.warning('Numero de documento Incorrecto')
+                }else if($this.val().length < 8 && tipoDocumento.val() == 1) {
+                    limpiar()
+                }else if($this.val().length < 11 && tipoDocumento.val() == 2) {
+                    limpiar()
+                }
+            });
+
+            $(document).on('change', '#cliente_tipoPersona', function () {
+                limpiar()
+                tipoDocument($(this))
+                documento.val('')
+            });
+
+            $(document).on('change', '#cliente_tipoDocumento', function () {
+                limpiar()
+                documento.val('')
             });
         });
     </script>
