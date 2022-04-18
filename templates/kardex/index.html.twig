@@ -85,15 +85,18 @@
             <label class="col-sm-1 col-4 col-form-label" for="filter_size">Buscar:</label>
 
             <div class="col-sm-2 col-4">
-                <select id="busProducto" class="form-select" data-control="select2" data-placeholder="Select an option" name="producto">
-                    <option value="0">SELECCIONAR</option>
+                <select id="busProducto" class="form-select form-control m-input" data-control="select2" data-placeholder="Select an option" name="producto" required>
                     {% for producto in productos %}
-                        <option value="{{ producto.id }}">{{ producto.descripcion }}  </option>
+                        {% if (idProducto == producto.id ) %}
+                            <option value="{{ producto.id }}"  selected>{{ producto.descripcion }}  </option>
+                        {% else %}
+                            <option value="{{ producto.id }}">{{ producto.descripcion }}  </option>
+                        {% endif %}
                     {% endfor %}
                 </select>
             </div>
             <div class="col-sm-4 col-8">
-                <input type="month" name="fecha" id="fecha" class="form-control" value="">
+                <input type="month" name="fecha" id="fecha" class="form-control" value="{{ fecha }}">
             </div>
             <div class="col-md-3 text-right">
                 <button class="btn-send btn btn-rounded btn-noborder btn-secondary"><i class="la la-search"></i>Buscar</button>
@@ -121,12 +124,6 @@
 {% block _javascripts %}
     <script>
         jQuery(document).ready(function () {
-            $(document).on('change', '#busProducto', function () {
-                let route = '{{ path('kardex_index') }}';
-                route = route + "?" + 'producto=' + $('#busProducto option:selected').val();
-                //route = route + "&" + 'b=' + $('#filter_text').val();
-                window.location = route;
-            });
             $(document).on('click', '.btn-send', function () {
                 window.location = '{{ path('kardex_index') }}';
             });

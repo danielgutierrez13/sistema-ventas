@@ -18,13 +18,17 @@ class KardexController extends WebAuthController
     #[Route('/', name: 'kardex_index')]
     public function index(Request $request, CompraRepository $compraRepository, PedidoRepository $pedidoRepository, ProductoRepository $productoRepository): Response
     {
-        $mes = 4;
-        $anio = 2022;
-        $id = $request->request->get('producto');
+        $id = $request->get('producto');
+        $fechaBuscar = $request->get('fecha');
 
         if (null == $id) {
             $id = 0;
         }
+
+        if (null == $fechaBuscar) {
+            $fechaBuscar = 0;
+        }
+
         $producto = $productoRepository->find($id);
         if (null == $producto) {
             $stockActual = 0;
@@ -37,31 +41,32 @@ class KardexController extends WebAuthController
         $ventas = $pedidoRepository->findBy(['estadoPago' => true, 'activo' => true]);
 
         $data = [];
-        $this->obtenerCompras($compras, $data, $producto, $stockActual, $mes, $anio);
-        $this->obtenerVentas($ventas, $data, $producto, $stockActual, $mes, $anio);
+        $this->obtenerCompras($compras, $data, $producto, $stockActual, $fechaBuscar);
+        $this->obtenerVentas($ventas, $data, $producto, $stockActual, $fechaBuscar);
 
         ksort($data);
         $cantidadInicial = $stockActual;
         $this->obtenerSaldos($cantidadInicial, $data, $stockActual);
 
         return $this->render('kardex/index.html.twig', [
+            'fecha' => $fechaBuscar,
+            'idProducto' => $id,
             'productos' => $productos,
             'data' => $data,
             'cantidad' => $cantidadInicial,
         ]);
     }
 
-    private function obtenerCompras(array $compras, array &$data, $producto, &$stockActual, $mes, $anio): void
+    private function obtenerCompras(array $compras, array &$data, $producto, &$stockActual, $fechaBuscar): void
     {
         foreach ($compras as $compra) {
             $fecha = $compra->createdAt()->format('Y-m-d');
-            $auxmes = $compra->createdAt()->format('m');
-            $auxanio = $compra->createdAt()->format('Y');
+            $fechaComprar = $compra->createdAt()->format('Y-m');
             foreach ($compra->getDetalleCompras() as $detalleCompra) {
                 if ($producto == $detalleCompra->getProducto()) {
                     $precio = (float) $detalleCompra->getPrecio();
                     $cantidad = (float) $detalleCompra->getCantidad();
-                    if ($auxmes == $mes && $auxanio == $anio) {
+                    if ($fechaBuscar == $fechaComprar) {
                         $data[$fecha]['compra'][] = [
                             'fecha' => $compra->createdAt()->format('d-m-Y'),
                             'producto' => $detalleCompra->getProducto()->getDescripcion(),
@@ -70,7 +75,16 @@ class KardexController extends WebAuthController
                             'total' => sprintf('%.2f', ($precio)),
                         ];
                     }
-                    if ($auxmes >= $mes && $auxanio >= $anio) {
+                    if (null == $fechaBuscar) {
+                        $data[$fecha]['compra'][] = [
+                            'fecha' => $compra->createdAt()->format('d-m-Y'),
+                            'producto' => $detalleCompra->getProducto()->getDescripcion(),
+                            'precio' => sprintf('%.2f', ($precio / $cantidad)),
+                            'cantidad' => $cantidad,
+                            'total' => sprintf('%.2f', ($precio)),
+                        ];
+                    }
+                    if ($fechaComprar >= $fechaBuscar) {
                         $stockActual -= $cantidad;
                     }
                 }
@@ -78,17 +92,16 @@ class KardexController extends WebAuthController
         }
     }
 
-    private function obtenerVentas(array $ventas, array &$data, $producto, &$stockActual, $mes, $anio): void
+    private function obtenerVentas(array $ventas, array &$data, $producto, &$stockActual, $fechaBuscar): void
     {
         foreach ($ventas as $venta) {
             $fecha = $venta->createdAt()->format('Y-m-d');
-            $auxmes = $venta->createdAt()->format('m');
-            $auxanio = $venta->createdAt()->format('Y');
+            $fechaComprar = $venta->createdAt()->format('Y-m');
             foreach ($venta->getDetallePedidos() as $detallePedido) {
                 if ($producto == $detallePedido->getProducto()) {
                     $precio = (float) $detallePedido->getPrecio();
                     $cantidad = (float) $detallePedido->getCantidad();
-                    if ($auxmes == $mes && $auxanio == $anio) {
+                    if ($fechaBuscar == $fechaComprar) {
                         $data[$fecha]['venta'][] = [
                             'fecha' => $venta->createdAt()->format('d-m-Y'),
                             'producto' => $detallePedido->getProducto()->getDescripcion(),
@@ -97,7 +110,16 @@ class KardexController extends WebAuthController
                             'total' => sprintf('%.2f', ($precio)),
                         ];
                     }
-                    if ($auxmes >= $mes && $auxanio >= $anio) {
+                    if (null == $fechaBuscar) {
+                        $data[$fecha]['venta'][] = [
+                            'fecha' => $venta->createdAt()->format('d-m-Y'),
+                            'producto' => $detallePedido->getProducto()->getDescripcion(),
+                            'cantidad' => $cantidad,
+                            'precio' => sprintf('%.2f', ($precio / $cantidad)),
+                            'total' => sprintf('%.2f', ($precio)),
+                        ];
+                    }
+                    if ($fechaComprar >= $fechaBuscar) {
                         $stockActual += $cantidad;
                     }
                 }
