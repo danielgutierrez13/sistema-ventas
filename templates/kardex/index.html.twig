@@ -97,7 +97,11 @@
                 </select>
             </div>
             <div class="col-sm-4 col-8">
-                <input type="month" name="fecha" id="fecha" class="form-control" value="{{ fecha }}">
+                {% if (fecha == null) %}
+                    <input type="month" name="fecha" id="fecha" class="form-control" value="{{ date() | date('Y-m') }}">
+                {% else %}
+                    <input type="month" name="fecha" id="fecha" class="form-control" value="{{ fecha }}">
+                {% endif %}
             </div>
             <div class="col-md-3 text-right">
                 <button class="btn-send btn btn-rounded btn-noborder btn-secondary"><i class="la la-search"></i>Buscar</button>
