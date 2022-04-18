@@ -21,20 +21,21 @@ class KardexController extends WebAuthController
         $mes = 4;
         $anio = 2022;
         $producto = $productoRepository->find(2);
+        $stockActual = $producto->getStock();
+        $productos = $productoRepository->findBy(['activo' => true]);
         $compras = $compraRepository->findBy(['activo' => true]);
         $ventas = $pedidoRepository->findBy(['estadoPago' => true, 'activo' => true]);
-        $stockActual = $producto->getStock();
 
         $data = [];
         $this->obtenerCompras($compras, $data, $producto, $stockActual, $mes, $anio);
         $this->obtenerVentas($ventas, $data, $producto, $stockActual, $mes, $anio);
-
+        //dd($compras);
         ksort($data);
-
         $cantidadInicial = $stockActual;
         $this->obtenerSaldos($cantidadInicial, $data, $stockActual);
 
         return $this->render('kardex/index.html.twig', [
+            'productos' => $productos,
             'data' => $data,
             'cantidad' => $cantidadInicial,
         ]);

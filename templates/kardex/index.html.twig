@@ -80,7 +80,30 @@
 {% endblock%}
 
 {% block _main_options %}
-   {% include 'crud/_index_filter.html.twig' %}
+    <form id="form_search" class="mt-5" autocomplete="off">
+        <div class="form-group row">
+            <div class="col-sm-2 col-4">
+                <select id="busProducto" class="form-select" data-control="select2" data-placeholder="Select an option" name="producto">
+                    <option>SELECCIONAR</option>
+                    {% for producto in productos %}
+                        <option>{{ producto.descripcion }}  </option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-sm-4 col-8">
+
+            </div>
+            <div class="col-md-3 text-right">
+                <button class="btn-send btn btn-rounded btn-noborder btn-secondary"><i class="la la-search"></i>Buscar</button>
+                <button type="reset" class="btn-clean btn btn-rounded btn-noborder btn-outline-secondary">Limpiar</button>
+            </div>
+        </div>
+    </form>
+    <script>
+        setTimeout(function() {
+            Select2();
+        }, 500);
+    </script>
 {% endblock %}
 
 {% block _main_tools %}
@@ -99,9 +122,10 @@
 {% endblock %}
 
 {% block _javascripts %}
+    <script src="{{ asset('js/select2.js') }}"></script>
     <script>
         jQuery(document).ready(function () {
+            Select2();
         });
-        console.log()
     </script>
 {% endblock %}
