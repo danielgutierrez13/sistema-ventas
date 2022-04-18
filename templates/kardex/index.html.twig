@@ -22,7 +22,7 @@
                     <td colspan="3">Salidas</td>
                     <td colspan="2">Saldo</td>
                 </tr>
-                <tr style="background: #33FFE0" ">
+                <tr style="background: #33FFE0">
                     <th>Precio</th>
                     <th>Cantidad</th>
                     <th>Total</th>
@@ -82,16 +82,18 @@
 {% block _main_options %}
     <form id="form_search" class="mt-5" autocomplete="off">
         <div class="form-group row">
+            <label class="col-sm-1 col-4 col-form-label" for="filter_size">Buscar:</label>
+
             <div class="col-sm-2 col-4">
                 <select id="busProducto" class="form-select" data-control="select2" data-placeholder="Select an option" name="producto">
-                    <option>SELECCIONAR</option>
+                    <option value="0">SELECCIONAR</option>
                     {% for producto in productos %}
-                        <option>{{ producto.descripcion }}  </option>
+                        <option value="{{ producto.id }}">{{ producto.descripcion }}  </option>
                     {% endfor %}
                 </select>
             </div>
             <div class="col-sm-4 col-8">
-
+                <input type="month" name="fecha" id="fecha" class="form-control" value="">
             </div>
             <div class="col-md-3 text-right">
                 <button class="btn-send btn btn-rounded btn-noborder btn-secondary"><i class="la la-search"></i>Buscar</button>
@@ -99,11 +101,6 @@
             </div>
         </div>
     </form>
-    <script>
-        setTimeout(function() {
-            Select2();
-        }, 500);
-    </script>
 {% endblock %}
 
 {% block _main_tools %}
@@ -122,10 +119,20 @@
 {% endblock %}
 
 {% block _javascripts %}
-    <script src="{{ asset('js/select2.js') }}"></script>
     <script>
         jQuery(document).ready(function () {
-            Select2();
+            $(document).on('change', '#busProducto', function () {
+                let route = '{{ path('kardex_index') }}';
+                route = route + "?" + 'producto=' + $('#busProducto option:selected').val();
+                //route = route + "&" + 'b=' + $('#filter_text').val();
+                window.location = route;
+            });
+            $(document).on('click', '.btn-send', function () {
+                window.location = '{{ path('kardex_index') }}';
+            });
+            $(document).on('click', '.btn-clean', function () {
+                window.location.href = '{{ path('kardex_index') }}';
+            });
         });
     </script>
 {% endblock %}

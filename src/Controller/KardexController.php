@@ -20,8 +20,18 @@ class KardexController extends WebAuthController
     {
         $mes = 4;
         $anio = 2022;
-        $producto = $productoRepository->find(2);
-        $stockActual = $producto->getStock();
+        $id = $request->request->get('producto');
+
+        if (null == $id) {
+            $id = 0;
+        }
+        $producto = $productoRepository->find($id);
+        if (null == $producto) {
+            $stockActual = 0;
+        } else {
+            $stockActual = $producto->getStock();
+        }
+
         $productos = $productoRepository->findBy(['activo' => true]);
         $compras = $compraRepository->findBy(['activo' => true]);
         $ventas = $pedidoRepository->findBy(['estadoPago' => true, 'activo' => true]);
@@ -29,7 +39,7 @@ class KardexController extends WebAuthController
         $data = [];
         $this->obtenerCompras($compras, $data, $producto, $stockActual, $mes, $anio);
         $this->obtenerVentas($ventas, $data, $producto, $stockActual, $mes, $anio);
-        //dd($compras);
+
         ksort($data);
         $cantidadInicial = $stockActual;
         $this->obtenerSaldos($cantidadInicial, $data, $stockActual);
