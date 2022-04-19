@@ -9,14 +9,14 @@ use Doctrine\ORM\EntityManagerInterface;
 use Pidia\Apps\Demo\Entity\Cliente;
 use Pidia\Apps\Demo\Entity\DetallePedido;
 use Pidia\Apps\Demo\Entity\Pedido;
-use Pidia\Apps\Demo\Entity\Proveedor;
 use Pidia\Apps\Demo\Form\ClienteType;
 use Pidia\Apps\Demo\Form\PedidoType;
-use Pidia\Apps\Demo\Form\ProveedorType;
 use Pidia\Apps\Demo\Manager\PagoManager;
 use Pidia\Apps\Demo\Manager\PedidoManager;
+use Pidia\Apps\Demo\Message\PagoCreated;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route('/admin/pago')]
@@ -25,7 +25,7 @@ class PagoController extends WebAuthController
     public const BASE_ROUTE = 'pago_index';
 
     #[Route(path: '/', name: 'pago_index', defaults: ['page' => '1'], methods: ['GET'])]
-    #[Route(path: '/page/{page<[1-9]\d*>}', name: 'pedido_index_paginated', methods: ['GET'])]
+    #[Route(path: '/page/{page<[1-9]\d*>}', name: 'pago_index_paginated', methods: ['GET'])]
     public function index(Request $request, int $page, PagoManager $manager): Response
     {
         $this->denyAccess([Permission::LIST]);
@@ -59,8 +59,13 @@ class PagoController extends WebAuthController
     }
 
     #[Route(path: '/{id}/new', name: 'pago_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, Pedido $pedido, PedidoManager $manager, EntityManagerInterface $entityManager): Response
-    {
+    public function new(
+        Request $request,
+        Pedido $pedido,
+        PedidoManager $manager,
+        EntityManagerInterface $entityManager,
+        MessageBusInterface $messageBus,
+    ): Response {
         $this->denyAccess([Permission::NEW], $pedido);
         $PedidoAnterior = $pedido->clone();
         $form = $this->createForm(PedidoType::class, $pedido);
@@ -83,6 +88,11 @@ class PagoController extends WebAuthController
             $pedido->setEstadoPago(1);
             if ($manager->save($pedido)) {
                 $this->addFlash('success', 'Registro actualizado!!!');
+
+                $messageBus->dispatch(new PagoCreated($pedido->getId()));
+            // revisar el stock de los productos
+                // envio del email. // Aaron
+                // crear la orden de compra. // Daniel
             } else {
                 $this->addErrors($manager->errors());
             }
