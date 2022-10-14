@@ -40,9 +40,6 @@
                     {% if access.has('show') %}
                         {{ action.btn_show_link2_ico(path('cliente_show', {'id': cliente.id})) }}
                     {% endif %}
-                    {% if access.has('edit', cliente) %}
-                        {{ action.btn_edit_link2_ico(path('cliente_edit', {'id': cliente.id})) }}
-                    {% endif %}
                 </td>
             </tr>
         {% else %}
